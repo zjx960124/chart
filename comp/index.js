@@ -12,7 +12,7 @@ const install = function(Vue, opts = {}) {
   comp.forEach(component => {
     Vue.component(component.component.name, component.component);
   });
-  Vue.prototype.$cChart = comp;
+  Vue.prototype && (Vue.prototype.$cChart = comp);
 
 };
 
