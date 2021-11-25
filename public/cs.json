@@ -1,0 +1,398 @@
+[{
+  "layouts": [{
+    "layout": "rowFrame",
+    "type": "container",
+    "style": {
+      "flexDirection": "row",
+      "display": "flex",
+      "padding": "10",
+      "flex": 2,
+      "backgroundColor": "#E1FFFF"
+    },
+    "children": [{
+      "layout": "rowFrame",
+      "type": "chartContainer",
+      "style": {
+        "flexDirection": "row",
+        "display": "flex",
+        "padding": "10",
+        "flex": 2,
+        "backgroundColor": "#E1FFFF"
+      },
+      "children": [{
+        "layout": "ClBar",
+        "label": "柱状图组件",
+        "type": "cChart",
+        "props": {
+          "theme": "walden",
+          "category": "businessName",
+          "legend": "businessName",
+          "dataModel": "1",
+          "sql": "select count(1),businessName,depName from transaction group by businessName,depName",
+          "styleOption": {
+            "flexDirection": "row",
+            "display": "flex",
+            "padding": "10",
+            "flex": 2,
+            "backgroundColor": "",
+            "color": "red",
+            "height": "100%"
+          },
+          "deployOption": {
+            "barWidth": "6",
+            "legendBottom": "15",
+            "legendLeft": 0,
+            "legendRight": 0
+          }
+        },
+        "formId": 3,
+        "renderKey": "31637806971426",
+        "componentName": "row3"
+      }],
+      "formId": 2,
+      "renderKey": "21637806971426",
+      "componentName": "row2"
+    }, {
+      "layout": "rowFrame",
+      "type": "chartContainer",
+      "style": {
+        "flexDirection": "row",
+        "display": "flex",
+        "padding": "10",
+        "flex": 2,
+        "backgroundColor": "#E1FFFF"
+      },
+      "children": [{
+        "layout": "ClBar",
+        "label": "柱状图组件",
+        "type": "cChart",
+        "props": {
+          "theme": "walden",
+          "category": "businessName",
+          "legend": "businessName",
+          "dataModel": "1",
+          "sql": "select count(1),businessName,depName from transaction group by businessName,depName",
+          "styleOption": {
+            "flexDirection": "row",
+            "display": "flex",
+            "padding": "10",
+            "flex": 2,
+            "backgroundColor": "",
+            "color": "red",
+            "height": "100%"
+          },
+          "deployOption": {
+            "barWidth": "6",
+            "legendBottom": "15",
+            "legendLeft": 0,
+            "legendRight": 0
+          }
+        },
+        "formId": 5,
+        "renderKey": "51637806971426",
+        "componentName": "row5"
+      }],
+      "formId": 4,
+      "renderKey": "41637806971426",
+      "componentName": "row4"
+    }, {
+      "layout": "rowFrame",
+      "type": "chartContainer",
+      "style": {
+        "flexDirection": "row",
+        "display": "flex",
+        "padding": "10",
+        "flex": 2,
+        "backgroundColor": "#E1FFFF"
+      },
+      "children": [{
+        "layout": "ClBar",
+        "label": "柱状图组件",
+        "type": "cChart",
+        "props": {
+          "theme": "walden",
+          "category": "businessName",
+          "legend": "businessName",
+          "dataModel": "1",
+          "sql": "select count(1),businessName,depName from transaction group by businessName,depName",
+          "styleOption": {
+            "flexDirection": "row",
+            "display": "flex",
+            "padding": "10",
+            "flex": 2,
+            "backgroundColor": "",
+            "color": "red",
+            "height": "100%"
+          },
+          "deployOption": {
+            "barWidth": "6",
+            "legendBottom": "15",
+            "legendLeft": 0,
+            "legendRight": 0
+          }
+        },
+        "formId": 7,
+        "renderKey": "71637806971426",
+        "componentName": "row7"
+      }],
+      "formId": 6,
+      "renderKey": "61637806971426",
+      "componentName": "row6"
+    }],
+    "formId": 1,
+    "renderKey": "11637806971426",
+    "componentName": "row1",
+    "name": "柱状图模板",
+    "theme": "walden"
+  }],
+  "conf": {
+    "span": 24,
+    "gutter": 10,
+    "flexDirection": "row",
+    "theme": "walden"
+  }
+}, {
+  "layouts": [{
+    "layout": "rowFrame",
+    "type": "container",
+    "style": {
+      "flexDirection": "row",
+      "display": "flex",
+      "padding": "10",
+      "flex": 2,
+      "backgroundColor": "#E1FFFF"
+    },
+    "children": [{
+      "layout": "rowFrame",
+      "type": "chartContainer",
+      "style": {
+        "flexDirection": "row",
+        "display": "flex",
+        "padding": "10",
+        "flex": 2,
+        "backgroundColor": "#E1FFFF"
+      },
+      "children": [{
+        "layout": "ClBar",
+        "label": "柱状图组件",
+        "type": "cChart",
+        "props": {
+          "theme": "walden",
+          "category": "businessName",
+          "legend": "businessName",
+          "dataModel": "1",
+          "sql": "select count(1),businessName,depName from transaction group by businessName,depName",
+          "styleOption": {
+            "flexDirection": "row",
+            "display": "flex",
+            "padding": "10",
+            "flex": 2,
+            "backgroundColor": "",
+            "color": "red",
+            "height": "100%"
+          },
+          "deployOption": {
+            "barWidth": "6",
+            "legendBottom": "15",
+            "legendLeft": 0,
+            "legendRight": 0
+          }
+        },
+        "formId": 3,
+        "renderKey": "31637746354897",
+        "componentName": "row3"
+      }],
+      "formId": 2,
+      "renderKey": "21637746354897",
+      "componentName": "row2"
+    }, {
+      "layout": "rowFrame",
+      "type": "chartContainer",
+      "style": {
+        "flexDirection": "row",
+        "display": "flex",
+        "padding": "10",
+        "flex": 2,
+        "backgroundColor": "#E1FFFF"
+      },
+      "children": [{
+        "layout": "ClBar",
+        "label": "柱状图组件",
+        "type": "cChart",
+        "props": {
+          "theme": "walden",
+          "category": "businessName",
+          "legend": "businessName",
+          "dataModel": "1",
+          "sql": "select count(1),businessName,depName from transaction group by businessName,depName",
+          "styleOption": {
+            "flexDirection": "row",
+            "display": "flex",
+            "padding": "10",
+            "flex": 2,
+            "backgroundColor": "",
+            "color": "red",
+            "height": "100%"
+          },
+          "deployOption": {
+            "barWidth": "6",
+            "legendBottom": "15",
+            "legendLeft": 0,
+            "legendRight": 0
+          }
+        },
+        "formId": 5,
+        "renderKey": "51637746354897",
+        "componentName": "row5"
+      }],
+      "formId": 4,
+      "renderKey": "41637746354897",
+      "componentName": "row4"
+    }],
+    "formId": 1,
+    "renderKey": "11637746354897",
+    "componentName": "row1",
+    "name": "柱状图模板",
+    "theme": "walden"
+  }],
+  "conf": {
+    "span": 24,
+    "gutter": 10,
+    "flexDirection": "row",
+    "theme": "walden"
+  }
+}, {
+  "layouts": [{
+    "layout": "rowFrame",
+    "type": "container",
+    "style": {
+      "flexDirection": "row",
+      "display": "flex",
+      "padding": "10",
+      "flex": 2,
+      "backgroundColor": "#E1FFFF"
+    },
+    "children": [{
+      "layout": "rowFrame",
+      "type": "chartContainer",
+      "style": {
+        "flexDirection": "row",
+        "display": "flex",
+        "padding": "10",
+        "flex": 2,
+        "backgroundColor": "#E1FFFF"
+      },
+      "children": [{
+        "layout": "ClLine",
+        "label": "折线图组件",
+        "type": "cChart",
+        "props": {
+          "theme": "dark",
+          "category": "businessName",
+          "legend": "businessName",
+          "dataModel": "1",
+          "sql": "select count(1),businessName,depName from transaction group by businessName,depName",
+          "styleOption": {
+            "flexDirection": "row",
+            "display": "flex",
+            "padding": "10",
+            "flex": 2,
+            "backgroundColor": "",
+            "color": "red",
+            "height": "100%"
+          }
+        },
+        "formId": 10,
+        "renderKey": "31637811958944",
+        "componentName": "row10"
+      }],
+      "formId": 9,
+      "renderKey": "21637811958944",
+      "componentName": "row9"
+    }, {
+      "layout": "rowFrame",
+      "type": "chartContainer",
+      "style": {
+        "flexDirection": "row",
+        "display": "flex",
+        "padding": "10",
+        "flex": 2,
+        "backgroundColor": "#E1FFFF"
+      },
+      "children": [{
+        "layout": "ClLine",
+        "label": "折线图组件",
+        "type": "cChart",
+        "props": {
+          "theme": "dark",
+          "category": "businessName",
+          "legend": "businessName",
+          "dataModel": "1",
+          "sql": "select count(1),businessName,depName from transaction group by businessName,depName",
+          "styleOption": {
+            "flexDirection": "row",
+            "display": "flex",
+            "padding": "10",
+            "flex": 2,
+            "backgroundColor": "",
+            "color": "red",
+            "height": "100%"
+          }
+        },
+        "formId": 12,
+        "renderKey": "51637811958944",
+        "componentName": "row12"
+      }],
+      "formId": 11,
+      "renderKey": "41637811958944",
+      "componentName": "row11"
+    }, {
+      "layout": "rowFrame",
+      "type": "chartContainer",
+      "style": {
+        "flexDirection": "row",
+        "display": "flex",
+        "padding": "10",
+        "flex": 2,
+        "backgroundColor": "#E1FFFF"
+      },
+      "children": [{
+        "layout": "ClLine",
+        "label": "折线图组件",
+        "type": "cChart",
+        "props": {
+          "theme": "dark",
+          "category": "depName",
+          "legend": "depName",
+          "dataModel": "1",
+          "sql": "select count(1),businessName,depName from transaction group by businessName,depName",
+          "styleOption": {
+            "flexDirection": "row",
+            "display": "flex",
+            "padding": "10",
+            "flex": 2,
+            "backgroundColor": "",
+            "color": "red",
+            "height": "100%"
+          }
+        },
+        "formId": 14,
+        "renderKey": "71637811958944",
+        "componentName": "row14"
+      }],
+      "formId": 13,
+      "renderKey": "61637811958944",
+      "componentName": "row13"
+    }],
+    "formId": 8,
+    "renderKey": "11637811958944",
+    "componentName": "row8",
+    "theme": "walden"
+  }],
+  "conf": {
+    "span": 24,
+    "gutter": 10,
+    "flexDirection": "row",
+    "theme": "walden"
+  }
+}]
