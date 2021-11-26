@@ -47,9 +47,9 @@ const pageBuild = {
     }
   },
   render(h) {
-    const options = this.options;
-    const layouts = options.layouts;
-    const conf = options.conf;
+    const options = this.options || {};
+    const layouts = options.layouts || [];
+    const conf = options.conf || {};
     const childComp = [];
     const layoutComponents = layouts.map((item, index) => {
       let func = item.type === 'cChart' ? componentObj['cChart'] : componentObj[item.layout];
