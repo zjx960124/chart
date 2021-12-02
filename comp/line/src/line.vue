@@ -7,6 +7,7 @@
 </template>
 <script>
   import echarts from 'echarts';
+  import axios from 'axios'
   export default {
     name: 'ClLine',
 
@@ -17,7 +18,8 @@
       dataModel: String,
       legend: String,
       category: String,
-      sql: String
+      sql: String,
+      deployOption: Object
     },
 
     data() {
@@ -39,6 +41,17 @@
         handler: function (newV, oldV) {
           this.renderOption();
         }
+      },
+      theme: {
+        handler: function (newV, oldV) {
+          this.renderOption();
+        }
+      },
+      deployOption: {
+        deep: true,
+        handler: function (newV, oldV) {
+          this.renderOption();
+        }
       }
     },
 
@@ -49,12 +62,17 @@
 
     methods: {
       renderEChart() {
-        this.http.get('/rest/report/sql', {
+        /*this.http.get('/rest/report/sql', {
           datasourceId: this.dataModel,
           sql: this.sql
         }).then((res) => {
           this.baseData = res.data.rows;
           this.columns = res.data.columns;
+          this.renderOption();
+        })*/
+        axios.get('/mock.json').then((res) => {
+          this.baseData = res.data.line.rows;
+          this.columns = res.data.line.columns;
           this.renderOption();
         })
       },
@@ -75,13 +93,12 @@
             symbol: 'none',
             showAllSymbol: true,
             symbolSize: 0,
-            lineStyle: {
+            /*lineStyle: {
               normal: {
                 width: 3,
-                color: '#04F9FA', // 线条颜色
-              },
-              borderColor: 'rgba(0,0,0,.4)',
-            },
+                color: this.deployOption.lineColor || '#04F9FA', // 线条颜色
+              }
+            },*/
             areaStyle: { //区域填充样式
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -98,8 +115,6 @@
           }
         })
         let option = {
-          backgroundColor: "#000211",
-          color: ['#04F9FA', '#D3DEE0', '#D6731A'],
           tooltip: {
             trigger: 'axis',
             transitionDuration: 0,
@@ -115,7 +130,6 @@
           },
           xAxis: {
             type: 'category',
-            // data: ['11-05', '11-06', '11-07', '11-08', '11-09', '11-10', '11-11', '11-12', '11-13', '11-14'],
             data: xAxisData,
             axisLabel: {
               show: true,
@@ -222,7 +236,6 @@
         this[this.refName + 'Chart'].setOption(option);
       },
       setTheme() {
-        console.log(this.theme);
         let str = this.theme;
         function jikj(str) {   return `../../conf/${str}.js`; }
         try {

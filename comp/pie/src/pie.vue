@@ -7,6 +7,7 @@
 </template>
 <script>
   import echarts from 'echarts';
+  import axios from 'axios'
   export default {
     name: 'ClPie',
 
@@ -65,12 +66,18 @@
         this.renderEChart();
       },
       renderEChart() {
-        this.http.get('/rest/report/sql', {
+        /*this.http.get('/rest/report/sql', {
           datasourceId: this.dataModel,
           sql: this.sql
         }).then((res) => {
           this.baseData = res.data.rows;
           this.columns = res.data.columns;
+          this.renderOption();
+        })*/
+        axios.get('/mock.json').then((res) => {
+          console.log(res)
+          this.baseData = res.data.pie.rows;
+          this.columns = res.data.pie.columns;
           this.renderOption();
         })
       },
@@ -78,7 +85,7 @@
         if (this[this.refName + 'Chart']) {
           this[this.refName + 'Chart'].dispose();
         }
-        this[this.refName + 'Chart'] = echarts.init(this.$refs[this.refName]);
+        this[this.refName + 'Chart'] = echarts.init(this.$refs[this.refName], this.theme);
         let xAxisIndex = this.columns.indexOf(this.category);
         let legendIndex = this.columns.indexOf(this.legend);
         let xAxisData = Array.from(new Set(...new Array(1).fill(this.baseData.map((item) => item[xAxisIndex]))));
@@ -90,21 +97,21 @@
           }
         })
         let option = {
-          backgroundColor: this.deployOption.backgroundColor || "#000211",
-          color: [
+          /*backgroundColor: this.deployOption.backgroundColor ? this.deployOption.backgroundColor : "#000211",*/
+          /*color: [
             '#04E0E0',
             '#039494',
             '#D3DEE0',
             '#D6731A',
             '#048FFA',
             '#D6961A'
-          ],
+          ],*/
           legend: {
             orient: 'vertical',
             type: 'scroll',
             selectedMode: true,
-            right: 120,
-            top: 'center',
+            right: this.deployOption.legendRight || 100,
+            top: this.deployOption.legendTop || 'center',
             bottom: 0,
             itemHeight: 8,
             itemWidth: 8,
@@ -128,7 +135,7 @@
             },
             formatter: function (value) {
               value = value.toString()
-              if (value.length > 7) {
+              if (value.length > 12) {
                 return value.substring(0, 6) + '...'
               } else {
                 return value
@@ -138,8 +145,7 @@
           },
           series: {
             type: 'pie',
-            radius: ["45%", "52%"],
-            center: ['30%', '55%'],
+            center: [this.deployOption.pieCenterLeft || '50%', this.deployOption.pieCenterTop || '55%'],
             label: {
               show: false,
               formatter: '{d}'

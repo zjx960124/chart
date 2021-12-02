@@ -7,4 +7,7 @@ ClLine.install = function(Vue) {
 export default {
   component: ClLine,
   name: '折线图组件',
+  deployOption: {
+    lineColor: ''
+  }
 };

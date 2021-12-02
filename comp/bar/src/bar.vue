@@ -8,6 +8,7 @@
 
 <script>
   import echarts from 'echarts';
+  import axios from 'axios'
   export default {
     name: 'ClBar',
 
@@ -50,7 +51,6 @@
       deployOption: {
         deep: true,
         handler: function (newV, oldV) {
-          console.log(newV)
           this.renderOption();
         }
       }
@@ -63,17 +63,21 @@
 
     methods: {
       renderEChart() {
-        this.http.get('/rest/report/sql', {
+        /*this.http.get('/rest/report/sql', {
           datasourceId: this.dataModel,
           sql: this.sql
         }).then((res) => {
           this.baseData = res.data.rows;
           this.columns = res.data.columns;
           this.renderOption();
+        })*/
+        axios.get('/mock.json').then((res) => {
+          this.baseData = res.data.bar.rows;
+          this.columns = res.data.bar.columns;
+          this.renderOption();
         })
       },
       renderOption() {
-        console.log('render')
         if (this[this.refName + 'Chart']) {
           this[this.refName + 'Chart'].dispose();
         }
@@ -125,19 +129,10 @@
             name: this.deployOption.yAxisName || ''
           },
           series: seriesData
-          /*series: [
-            {
-              data: [120, 200, 150, 80, 70, 110, 130],
-              type: 'bar',
-              name: '数据',
-              barWidth: this.deployOption.barWidth || 6,
-            }
-          ]*/
         };
         this[this.refName + 'Chart'].setOption(option);
       },
       setTheme() {
-        console.log(this.theme);
         let str = this.theme;
         function jikj(str) {   return `../../conf/${str}.js`; }
         try {

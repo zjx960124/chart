@@ -1,9 +1,9 @@
-const modulesFiles = require.context("/comp/", true,  /.js$/);
+const modulesFiles = require.context("../comp", true,  /.js$/);
 
 let comp = [];
 
 modulesFiles.keys().forEach(key => {
-  if (key === './index.js') return;
+  if (key === './index.js' || key === './utils/index.js' || key.indexOf("utils") > -1 ) return;
   modulesFiles(key).default && (comp = comp.concat(modulesFiles(key).default))
 });
 

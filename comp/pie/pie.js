@@ -8,7 +8,9 @@ export default {
   component: ClPie,
   name: '饼图组件',
   deployOption: {
-    gird: 0,
-    backgroundColor: '',
+    legendRight: '',
+    legendTop: '',
+    pieCenterLeft: '',
+    pieCenterTop: ''
   }
 };

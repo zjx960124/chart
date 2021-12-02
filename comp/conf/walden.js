@@ -22,9 +22,12 @@
   }
   echarts.registerTheme('walden', {
     "color": [
-      '#04F9FA',
+      '#04E0E0',
+      '#039494',
       '#D3DEE0',
-      '#D6731A'
+      '#D6731A',
+      '#048FFA',
+      '#D6961A'
     ],
     "backgroundColor": "#000211",
     "textStyle": {},
@@ -66,7 +69,11 @@
     "pie": {
       "itemStyle": {
         "borderWidth": 0,
-        "borderColor": "#ccc"
+        "borderColor": [
+          '#04F9FA',
+          '#D3DEE0',
+          '#D6731A'
+        ]
       }
     },
     "scatter": {
