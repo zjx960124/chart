@@ -96,10 +96,10 @@
           clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-          new Promise.any([axios.get('/mock.json'), axios.get('/report/mock.json')]).then((res) => {
-            this.baseData = res.data.pie.rows;
-            this.columns = res.data.pie.columns;
-            this.renderOption();
+          axios.get(`${process.env.VUE_APP_REPORT_PATH}/mock.json`).then((res) => {
+            this.baseData = res.data.hat.rows;
+            this.columns = res.data.hat.columns;
+            this.handleData();
           })
         }, 1000);
       },

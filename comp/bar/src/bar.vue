@@ -88,12 +88,12 @@
           clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-          axios.get('/mock.json').then((res) => {
-            this.baseData = res.data.bar.rows;
-            this.columns = res.data.bar.columns;
-            this.renderOption();
+          axios.get(`${process.env.VUE_APP_REPORT_PATH}/mock.json`).then((res) => {
+            this.baseData = res.data.hat.rows;
+            this.columns = res.data.hat.columns;
+            this.handleData();
           })
-        }, 1000)
+        }, 1000);
       },
       getData() {
         if (this.timeout) {
