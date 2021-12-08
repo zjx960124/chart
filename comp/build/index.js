@@ -47,9 +47,10 @@ const componentObj = {
     }
     // 背景图
     let backOption = {};
+    let backV = '../../../assets/backV/';
     if (obj.style.backgroundImage) {
       backOption = {
-        background: 'url('+ require(`../../../assets/backV/${obj.style.backgroundImage}`) +') no-repeat',
+        background: 'url('+ require(`${backV}${obj.style.backgroundImage}`) +') no-repeat',
         backgroundSize: '100% 100%'
       }
     }
@@ -74,9 +75,10 @@ const componentObj = {
   'title': function generateTitleComponent(h, obj, conf, bool, parentDirection, vm) {
     // 背景图
     let backOption = {};
+    let dataV = '../../../assets/dataV/';
     if (obj.style.backgroundImage) {
       backOption = {
-        background: 'url('+ require(`../../../assets/dataV/${obj.style.backgroundImage}`) +') no-repeat',
+        background: 'url('+ require(`${dataV}${obj.style.backgroundImage}`) +') no-repeat',
         backgroundSize: '100% 100%'
       }
     }
