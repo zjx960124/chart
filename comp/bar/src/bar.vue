@@ -88,12 +88,12 @@
           clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-          new Promise.any([axios.get('/mock.json'), axios.get('/report/mock.json')]).then((res) => {
+          axios.get('/mock.json').then((res) => {
             this.baseData = res.data.bar.rows;
             this.columns = res.data.bar.columns;
             this.renderOption();
           })
-        }, 1000);
+        }, 1000)
       },
       getData() {
         if (this.timeout) {
