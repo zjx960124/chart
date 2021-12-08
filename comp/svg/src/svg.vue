@@ -136,7 +136,7 @@
 
     mounted() {
       this.$nextTick(() => {
-        this.getData();
+        this.renderComp();
       })
     }
   }
