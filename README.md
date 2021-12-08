@@ -20,5 +20,21 @@ npm run build
 npm run lint
 ```
 
+### patch version
+```
+npm version patch
+```
+
+### packaging
+```
+npm run lib
+```
+
+### publish
+```
+npm publish
+```
+
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
