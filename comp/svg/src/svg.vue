@@ -84,7 +84,7 @@
     methods: {
       renderComp() {
         if (this.datasourceId && this.sql) {
-          this.getData();
+          this.getMock();
         } else {
           this.getMock();
         }
@@ -105,7 +105,7 @@
         }, 1000);
       },
       getMock() {
-        axios.get('/mock.json').then((res) => {
+        axios.get('/report/mock.json').then((res) => {
           this.baseData = res.data.zzmm.rows;
           this.columns = res.data.zzmm.columns;
           this.handleData();

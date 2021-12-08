@@ -76,7 +76,7 @@
     methods: {
       renderComp() {
         if (this.datasourceId && this.sql) {
-          this.getData();
+          this.getMock();
         } else {
           this.getMock();
         }
