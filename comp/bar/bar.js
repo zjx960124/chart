@@ -12,6 +12,12 @@ export default {
     legendBottom: 0,
     legendLeft: 0,
     legendRight: 0,
-    yAxisName: ''
+    yAxisName: '',
+    showXAxisLine: true,
+    showYAxisLine: true,
+    girdLeft: '8%',
+    girdTop: 60,
+    girdRight: '8%',
+    girdBottom: 60
   }
 };

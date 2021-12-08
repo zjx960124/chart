@@ -9,10 +9,10 @@
 <script>
   import handle from '../../utils'
   import echarts from 'echarts'
-  import { Legend } from '../../utils/construction'
+  import Legend from '../../utils/construction'
   import axios from 'axios'
   export default {
-    name: 'ClRing',
+    name: 'ClRings',
     mixins: [handle],
     props: {
       refName: String,
@@ -51,45 +51,11 @@
           seriesData.push(
             {
               name: item,
-              itemStyle: {
-                normal: {
-                  borderWidth: 10,
-                  borderRadius: 0,
-                  shadowBlur: 5,
-                  borderColor: color[index]
-                }
-              },
               value: Number(this.baseData.filter((items, index) => { return items[1] === item}).map((item2, index2) => item2[0])[0]),
             }
-            ,{
-            value: .5,
-              name: '',
-              itemStyle: {
-              normal: {
-                label: {
-                  show: false,
-                },
-                labelLine: {
-                  show: false,
-                },
-                color: 'rgba(0, 0, 0, 0)',
-                  borderColor: 'rgba(0, 0, 0, 0)',
-                  borderWidth: 0,
-              },
-            },
-          }
           )
         })
         let option = {
-          // backgroundColor: this.deployOption.backgroundColor || "#000211",
-          /*color: [
-            '#04E0E0',
-            '#039494',
-            '#D3DEE0',
-            '#D6731A',
-            '#048FFA',
-            '#D6961A'
-          ],*/
           legend: new Legend(legendData).splitArray(2, this.deployOption),
           series: {
             type: 'pie',

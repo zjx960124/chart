@@ -8,7 +8,8 @@
 
 <script>
   import echarts from 'echarts';
-  import axios from 'axios'
+  import axios from 'axios';
+  import { xAxis, Grid, debounce, fitChartSize, fitChartHeight } from '../../utils/construction';
   export default {
     name: 'ClBar',
 
@@ -16,7 +17,7 @@
       refName: String,
       styleOption: Object,
       theme: String,
-      dataModel: String,
+      datasourceId: String | Number,
       legend: String,
       category: String,
       sql: String,
@@ -26,7 +27,8 @@
     data() {
       return {
         baseData: [],
-        columns: []
+        columns: [],
+        timeout: null
       }
     },
 
@@ -41,6 +43,18 @@
         deep:true, //深度监听设置为 true
         handler: function (newV, oldV) {
           this.renderOption();
+        }
+      },
+      sql: {
+        deep:true, //深度监听设置为 true
+        handler: function (newV, oldV) {
+          this.renderEChart();
+        }
+      },
+      datasourceId: {
+        deep:true, //深度监听设置为 true
+        handler: function (newV, oldV) {
+          this.renderEChart();
         }
       },
       theme: {
@@ -63,19 +77,38 @@
 
     methods: {
       renderEChart() {
-        /*this.http.get('/rest/report/sql', {
-          datasourceId: this.dataModel,
-          sql: this.sql
-        }).then((res) => {
-          this.baseData = res.data.rows;
-          this.columns = res.data.columns;
-          this.renderOption();
-        })*/
-        axios.get('/mock.json').then((res) => {
-          this.baseData = res.data.bar.rows;
-          this.columns = res.data.bar.columns;
-          this.renderOption();
-        })
+        if (this.datasourceId && this.sql) {
+          this.getData();
+        } else {
+          this.getMock();
+        }
+      },
+      getMock() {
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
+          axios.get('/mock.json').then((res) => {
+            this.baseData = res.data.bar.rows;
+            this.columns = res.data.bar.columns;
+            this.renderOption();
+          })
+        }, 1000)
+      },
+      getData() {
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
+          this.http.get('/rest/report/sql', {
+            datasourceId: this.datasourceId,
+            sql: this.sql
+          }).then((res) => {
+            this.baseData = res.data.rows;
+            this.columns = res.data.columns;
+            this.renderOption();
+          })
+        }, 1000)
       },
       renderOption() {
         if (this[this.refName + 'Chart']) {
@@ -95,18 +128,20 @@
           }
         })
         let option = {
+          // grid: new Grid(this.deployOption).getData(),
           legend: {
             data: legendData,
             itemHeight: 5,
             itemWidth: 5,
             itemGap: 25,
+            fontSize: fitChartSize(12),
             bottom: this.deployOption.legendBottom || 0,
             type: 'scroll',
             selectedMode: true,
             textStyle: {
               padding: [0, 0, 0, 2],
               color: 'rgba(167, 199, 199, .8)',
-              fontSize: 11,
+              fontSize: fitChartSize(11),
               fontWeight: '500',
               fontFamily: 'DINPro-Medium, PingFang SC, sans-serif'
             },
@@ -122,10 +157,22 @@
           },
           xAxis: {
             type: 'category',
-            data: xAxisData
+            axisLine: {
+              show: this.deployOption.showXAxisLine
+            },
+            axisLabel: {
+              fontSize: fitChartSize(12)
+            },
+            data: new xAxis(xAxisData).getData()
           },
           yAxis: {
             type: 'value',
+            axisLine: {
+              show: this.deployOption.showYAxisLine
+            },
+            axisLabel: {
+              fontSize: fitChartSize(12)
+            },
             name: this.deployOption.yAxisName || ''
           },
           series: seriesData

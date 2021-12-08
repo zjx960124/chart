@@ -7,6 +7,7 @@
 </template>
 <script>
   import echarts from 'echarts';
+  import { fitChartSize } from '../../utils/construction'
   import axios from 'axios'
   export default {
     name: 'ClPie',
@@ -15,7 +16,7 @@
       refName: String,
       styleOption: Object,
       theme: String,
-      dataModel: String,
+      datasourceId: String | Number,
       legend: String,
       category: String,
       sql: String,
@@ -25,7 +26,8 @@
     data() {
       return {
         baseData: [],
-        columns: []
+        columns: [],
+        timeout: null
       }
     },
 
@@ -48,7 +50,24 @@
           console.log(newV)
           this.renderOption();
         }
-      }
+      },
+      theme: {
+        handler: function (newV, oldV) {
+          this.renderOption();
+        }
+      },
+      sql: {
+        deep:true, //深度监听设置为 true
+        handler: function (newV, oldV) {
+          this.renderEChart();
+        }
+      },
+      datasourceId: {
+        deep:true, //深度监听设置为 true
+        handler: function (newV, oldV) {
+          this.renderEChart();
+        }
+      },
     },
 
     beforeDestroy() {
@@ -66,20 +85,38 @@
         this.renderEChart();
       },
       renderEChart() {
-        /*this.http.get('/rest/report/sql', {
-          datasourceId: this.dataModel,
-          sql: this.sql
-        }).then((res) => {
-          this.baseData = res.data.rows;
-          this.columns = res.data.columns;
-          this.renderOption();
-        })*/
-        axios.get('/mock.json').then((res) => {
-          console.log(res)
-          this.baseData = res.data.pie.rows;
-          this.columns = res.data.pie.columns;
-          this.renderOption();
-        })
+        if (this.datasourceId && this.sql) {
+          this.getData();
+        } else {
+          this.getMock();
+        }
+      },
+      getMock() {
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
+          axios.get('/mock.json').then((res) => {
+            this.baseData = res.data.pie.rows;
+            this.columns = res.data.pie.columns;
+            this.renderOption();
+          })
+        }, 1000)
+      },
+      getData() {
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
+          this.http.get('/rest/report/sql', {
+            datasourceId: this.datasourceId,
+            sql: this.sql
+          }).then((res) => {
+            this.baseData = res.data.rows;
+            this.columns = res.data.columns;
+            this.renderOption();
+          })
+        }, 1000)
       },
       renderOption() {
         if (this[this.refName + 'Chart']) {
@@ -108,9 +145,9 @@
           ],*/
           legend: {
             orient: 'vertical',
-            type: 'scroll',
+            // type: 'scroll',
             selectedMode: true,
-            right: this.deployOption.legendRight || 100,
+            right: this.deployOption.legendRight || fitChartSize(100),
             top: this.deployOption.legendTop || 'center',
             bottom: 0,
             itemHeight: 8,
@@ -121,7 +158,7 @@
               padding: [0, 0, 0, 2],
               color: 'rgba(167, 199, 199, .8)',
               fontWeight: 500,
-              fontSize: 11,
+              fontSize: fitChartSize(11),
               fontFamily: 'DIN-MEDIUM,sans-serif'
             },
             tooltip: {

@@ -29,7 +29,7 @@
       '#048FFA',
       '#D6961A'
     ],
-    "backgroundColor": "#000211",
+    "backgroundColor": "transparent",
     "textStyle": {},
     "title": {
       "textStyle": {

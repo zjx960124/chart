@@ -6,7 +6,7 @@ ClRing.install = function(Vue) {
 
 export default {
   component: ClRing,
-  name: '环形图组件',
+  name: '圆角环形图组件',
   deployOption: {
     legendBottom: 0,
     legendLeft: 'center',
