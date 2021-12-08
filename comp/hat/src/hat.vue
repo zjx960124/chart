@@ -101,7 +101,7 @@
           clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-          axios.get('/mock.json').then((res) => {
+          new Promise.any([axios.get('/mock.json'), axios.get('/report/mock.json')]).then((res) => {
             this.baseData = res.data.hat.rows;
             this.columns = res.data.hat.columns;
             this.handleData();
@@ -114,7 +114,7 @@
           let a = new Object();
           this.columns.forEach((items, indexs) => {
             a[items] = item[indexs]
-          })
+          });
           base.push(a)
         });
         console.log(base);
