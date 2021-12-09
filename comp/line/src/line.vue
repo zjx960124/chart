@@ -90,7 +90,7 @@
           axios.get(`/report/mock.json`).then((res) => {
             this.baseData = res.data.hat.rows;
             this.columns = res.data.hat.columns;
-            this.handleData();
+            this.renderOption();
           })
         }, 1000);
       },
