@@ -7,13 +7,21 @@ modulesFiles.keys().forEach(key => {
   modulesFiles(key).default && (comp = comp.concat(modulesFiles(key).default))
 });
 
+let themeFiles = require.context("../comp/conf/", true, /\.js$/);
+let themeFileList = themeFiles.keys().reduce((modules, modulePath) => {
+  const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, "$1");
+  const value = themeFiles(modulePath);
+  modules.push({label: moduleName, value: moduleName});
+  return modules;
+}, []);
+
 const install = function(Vue, opts = {}) {
 
   comp.forEach(component => {
     Vue.component(component.component.name, component.component);
   });
   Vue.prototype && (Vue.prototype.$cChart = comp);
-
+  Vue.prototype && (Vue.prototype.$theme = themeFileList)
 };
 
 if (typeof window !== 'undefined' && window.Vue) {

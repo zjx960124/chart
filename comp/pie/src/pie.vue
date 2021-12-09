@@ -98,9 +98,9 @@
         }
         this.timeout = setTimeout(() => {
           axios.get(`/report/mock.json`).then((res) => {
-            this.baseData = res.data.hat.rows;
-            this.columns = res.data.hat.columns;
-            this.handleData();
+            this.baseData = res.data.pie.rows;
+            this.columns = res.data.pie.columns;
+            this.renderOption();
           })
         }, 1000);
       },
@@ -123,8 +123,8 @@
           this[this.refName + 'Chart'].dispose();
         }
         this[this.refName + 'Chart'] = echarts.init(this.$refs[this.refName], this.theme);
-        let xAxisIndex = this.columns.indexOf(this.category);
-        let legendIndex = this.columns.indexOf(this.legend);
+        let xAxisIndex = this.category ?  this.columns.indexOf(this.category) : 1;
+        let legendIndex = this.legend ? this.columns.indexOf(this.legend) : 2;
         let xAxisData = Array.from(new Set(...new Array(1).fill(this.baseData.map((item) => item[xAxisIndex]))));
         let legendData = Array.from(new Set(...new Array(1).fill(this.baseData.map((item) => item[legendIndex]))));
         let seriesData = legendData.map((item, index) => {

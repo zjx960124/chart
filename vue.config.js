@@ -1,4 +1,5 @@
 // vue-config.js
+const path = require('path');
 module.exports = {
   // 修改 src 目录 为 examples 目录
   pages: {
@@ -9,7 +10,14 @@ module.exports = {
       template: 'public/index.html',
       // 在 dist/index.html 的输出
       filename: 'index.html'
-    }
+    },
+  },
+  configureWebpack: {
+    resolve: {
+      alias: {
+        '@': path.join(__dirname, 'examples')
+      }
+    },
   },
   lintOnSave: false,
   // 扩展 webpack 配置，使 packages 加入编译

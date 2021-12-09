@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <page-build :options="pageData"></page-build>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -9,23 +9,11 @@
     name: 'App',
     data() {
       return {
-        baseIndex: 0,
-        pageList: [],
-        pageData: {}
       }
     },
     mounted() {
-      this.getData();
     },
     methods: {
-      getData() {
-        this.http.get("/cs.json").then(res=> {
-          console.log(res);
-          this.pageList = res;
-          this.pageData = this.pageList[this.baseIndex];
-        }).catch(err => {
-        });
-      }
     }
   }
 </script>
