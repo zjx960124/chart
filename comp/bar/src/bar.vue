@@ -102,8 +102,7 @@
         }
         this.timeout = setTimeout(() => {
           this.http.get('/rest/report/sql/id', {
-            datasourceId: this.datasourceId,
-            sql: this.sql
+            id: this.DSId
           }).then((res) => {
             this.baseData = res.data.rows;
             this.columns = res.data.columns;
