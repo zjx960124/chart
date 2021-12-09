@@ -17,11 +17,12 @@
       refName: String,
       styleOption: Object,
       theme: String,
-      datasourceId: String | Number,
       legend: String,
       category: String,
+      deployOption: Object,
+      datasourceId: String | Number,
       sql: String,
-      deployOption: Object
+      DSId: String | Number,
     },
 
     data() {
@@ -77,7 +78,7 @@
 
     methods: {
       renderEChart() {
-        if (this.datasourceId && this.sql) {
+        if (this.DSId) {
           this.getData();
         } else {
           this.getMock();
@@ -100,7 +101,7 @@
           clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql', {
+          this.http.get('/rest/report/sql/id', {
             datasourceId: this.datasourceId,
             sql: this.sql
           }).then((res) => {

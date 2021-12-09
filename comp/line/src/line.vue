@@ -19,7 +19,8 @@
       legend: String,
       category: String,
       sql: String,
-      deployOption: Object
+      deployOption: Object,
+      DSId: String | Number,
     },
 
     data() {
@@ -75,7 +76,7 @@
 
     methods: {
       renderEChart() {
-        if (this.datasourceId && this.sql) {
+        if (this.DSId) {
           this.getData();
         } else {
           this.getMock();
@@ -98,7 +99,7 @@
           clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql', {
+          this.http.get('/rest/report/sql/id', {
             datasourceId: this.datasourceId,
             sql: this.sql
           }).then((res) => {
