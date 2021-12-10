@@ -72,7 +72,7 @@
       },
       getMock() {
         if (this.timeout) {
-          clearTimeout(this.timeout)
+          clearTimeout(this.timeout);
         }
         this.timeout = setTimeout(() => {
           axios.get(`/report/mock.json`).then((res) => {
@@ -105,10 +105,9 @@
           });
           base.push(a)
         });
-        console.log(base);
         this.rankingData = [];
         this.rankingData.push(base.slice(0, 5));
-        this.rankingData.push(base.slice(5, base.length))
+        this.rankingData.push(base.slice(5, base.length));
       }
     }
   }

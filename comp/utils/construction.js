@@ -111,6 +111,12 @@ function isNumber(val) {
   }
 }
 
+function getScale() {
+  let w = document.documentElement.clientWidth / 1920;
+  let h = document.documentElement.clientHeight / 1080;
+  return w < h ? w : h
+}
+
 
 /**
  * 防抖
@@ -134,4 +140,5 @@ export {
   debounce,
   fitChartSize,
   fitChartHeight,
+  getScale,
 }
