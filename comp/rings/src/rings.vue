@@ -9,7 +9,7 @@
 <script>
   import handle from '../../utils'
   import echarts from 'echarts'
-  import Legend from '../../utils/construction'
+  import { Legend } from '../../utils/construction'
   import axios from 'axios'
   export default {
     name: 'ClRings',
@@ -54,13 +54,14 @@
               value: Number(this.baseData.filter((items, index) => { return items[1] === item}).map((item2, index2) => item2[0])[0]),
             }
           )
-        })
+        });
         let option = {
-          legend: new Legend(legendData).splitArray(2, this.deployOption),
+          legend: new Legend(legendData, this.deployOption).getData(),
           series: {
             type: 'pie',
-            radius: ["49%", "51%"],
-            center: ['50%', '45%'],
+            radius: [this.deployOption.pieRadiusStart || '49%', this.deployOption.pieRadiusEnd || '51%'],
+            roseType: this.deployOption.pieRoseType,
+            center: [this.deployOption.pieCenterLeft || '50%', this.deployOption.pieCenterTop || '45%'],
             label: {
               show: false,
               formatter: '{d}'
@@ -74,6 +75,9 @@
             data: seriesData
           }
         };
+        // 是否分组
+        this.deployOption.itemNumber &&
+        (option.legend = new Legend(legendData, this.deployOption).splitArray(this.deployOption.itemNumber, this.deployOption));
         this[this.refName + 'Chart'].setOption(option);
       },
     }

@@ -140,7 +140,8 @@ const pageBuild = {
   },
 }
 
-export default {
+// tool 暂不管理解析器与组件库绑定
+/*export default {
   component: pageBuild,
   name: '解析器',
-}
+}*/

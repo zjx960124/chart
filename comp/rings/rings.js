@@ -8,7 +8,16 @@ export default {
   component: ClRings,
   name: '环形图组件',
   deployOption: {
-    legendBottom: 0,
-    legendLeft: 'center',
+    legendBottom: '',
+    legendLeft: '',
+    legendTop: 'center',
+    legendRight: 'center',
+    legendOrient: 'vertical',
+    pieCenterLeft: '',
+    pieCenterTop: '',
+    pieRadiusStart: '',
+    pieRadiusEnd: '',
+    pieRoseType: false,
+    itemNumber: ''
   }
 };

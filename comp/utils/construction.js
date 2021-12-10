@@ -4,31 +4,49 @@
  * @constructor
  */
 class Legend {
-  constructor(legendData) {
-    this.baseData = legendData;
+  constructor(legendData, option) {
+    this.baseData = {
+      data: legendData,
+      left: option.legendLeft,
+      top: option.legendTop,
+      bottom: option.legendBottom,
+      right: option.legendRight,
+      orient: option.legendOrient,
+    };
   }
   getData() {
     return this.baseData;
   }
   splitArray(arrLength, option) {
     let result = [];
-    this.baseData.reduce((x, y, index, arr) => {
-      if (x.length < arrLength) {
+    this.baseData.data.reduce((x, y, index, arr) => {
+      if (x.length < Number(arrLength)) {
         x.push({name: y})
       } else {
         result.push({
           data: x,
-          left: option.legendLeft,
-          bottom: Number(option.legendBottom) + (result.length * 24)
+          left: option.legendOrient === 'vertical' ?
+            fitChartSize(option.legendLeft) + (result.length * 88)
+            : fitChartSize(option.legendLeft)
+          ,
+          orient: option.legendOrient,
+          bottom: option.legendOrient === 'horizontal' ?
+            fitChartSize(option.legendBottom) + (result.length * 24) :
+            fitChartSize(option.legendBottom),
         });
         x = [];
         x.push({name: y});
       }
       index === arr.length - 1 && result.push({
         data: x,
-        left: option.legendLeft,
-        bottom: Number(option.legendBottom) + (result.length * 24)
-      })
+        left: option.legendOrient === 'vertical' ?
+          fitChartSize(option.legendLeft) + (result.length * 88)
+          : fitChartSize(option.legendLeft),
+        orient: option.legendOrient,
+        bottom: option.legendOrient === 'horizontal' ?
+          fitChartSize(option.legendBottom) + (result.length * 24) :
+          fitChartSize(option.legendBottom),
+      });
       return x
     }, []);
     return result;
@@ -53,10 +71,10 @@ class xAxis {
 class Grid {
   constructor(option) {
     this.baseData = {
-      left: option.girdLeft,
-      top: option.girdTop,
-      right: option.girdRight,
-      bottom: option.girdBottom
+      left: fitChartSize(option.girdLeft),
+      top: fitChartSize(option.girdTop),
+      right: fitChartSize(option.girdRight),
+      bottom: fitChartSize(option.girdBottom)
     }
   }
   getData() {
@@ -72,27 +90,35 @@ class Grid {
  */
 const fitChartSize = (size, defalteWidth = 1920) => {
   let clientWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  if (!clientWidth) return size;
+  if (!clientWidth || !isNumber(size)) return size;
   let scale = (clientWidth / defalteWidth);
-  return Number((size*scale).toFixed(3));
-}
+  return Number((size*scale).toFixed(8));
+};
 const fitChartHeight = (size, defalteHeight = 1080) => {
   let clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
   if (!clientHeight) return size;
   let scale = (clientHeight / defalteHeight);
   return Number((size*scale).toFixed(3));
+};
+
+function isNumber(val) {
+  let regPos = /^\d+(\.\d+)?$/; //非负浮点数
+  let regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+  if (regPos.test(val) || regNeg.test(val)) {
+    return true;
+  } else {
+    return false;
+  }
 }
+
 
 /**
  * 防抖
  */
 const debounce = (fn, delay) => {
-  console.log('触发');
   let timer
   return function (...args) {
-    console.log('触发');
     if (timer) {
-      console.log('取消触发');
       clearTimeout(timer)
     }
     timer = setTimeout(() => {

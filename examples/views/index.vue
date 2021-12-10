@@ -241,7 +241,7 @@
           type: 'input'
         },
         showXAxisLine: {
-          name: '是否显示X轴轴线',
+          name: '显示X轴轴线',
           type: 'select',
           enums: [
             {
@@ -255,7 +255,7 @@
           ]
         },
         showYAxisLine: {
-          name: '是否显示Y轴轴线',
+          name: '显示Y轴轴线',
           type: 'select',
           enums: [
             {
@@ -267,6 +267,92 @@
               value: false
             }
           ]
+        },
+        showXSplitLine: {
+          name: '显示X轴分隔线',
+          type: 'select',
+          enums: [
+            {
+              label: '是',
+              value: true
+            },
+            {
+              label: '否',
+              value: false
+            }
+          ]
+        },
+        showYSplitLine: {
+          name: '显示Y轴分隔线',
+          type: 'select',
+          enums: [
+            {
+              label: '是',
+              value: true
+            },
+            {
+              label: '否',
+              value: false
+            }
+          ]
+        },
+        isTransverse: {
+          name: '是否横向',
+          type: 'select',
+          enums: [
+            {
+              label: '是',
+              value: true
+            },
+            {
+              label: '否',
+              value: false
+            }
+          ]
+        },
+        legendOrient: {
+          name: '图例布局朝向',
+          type: 'select',
+          enums: [
+            {
+              label: '横向',
+              value: 'horizontal'
+            },
+            {
+              label: '纵向',
+              value: 'vertical'
+            }
+          ]
+        },
+        pieRadiusStart: {
+          name: '半径起始值',
+          type: 'input'
+        },
+        pieRadiusEnd: {
+          name: '半径终止值',
+          type: 'input'
+        },
+        pieRoseType: {
+          name: '形状',
+          type: 'select',
+          enums: [
+            {
+              label: '常规图',
+              value: false
+            },
+            {
+              label: '玫瑰图',
+              value: 'radius'
+            }
+          ]
+        },
+        itemNumber: {
+          name: '分组数量',
+          type: 'input'
+        },
+        utils: {
+          name: '单位',
+          type: 'input'
         }
       };
       return {
@@ -314,6 +400,7 @@
       this.themeFileList = this.$theme;
       this.comp = this.$cChart[0].component.name;
       this.compProps = this.$cChart.find( item => item.component.name === this.comp );
+      this.props.deployOption = {...this.compProps.deployOption};
       /*Promise.all([this.getCompProps(), this.getDataSourceList(), this.getDSList()])
         .then(res => {
           this.props.sql && this.props.datasourceId && this.getChartData();

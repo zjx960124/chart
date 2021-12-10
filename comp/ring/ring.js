@@ -10,5 +10,6 @@ export default {
   deployOption: {
     legendBottom: 0,
     legendLeft: 'center',
+    legendOrient: 'vertical'
   }
 };

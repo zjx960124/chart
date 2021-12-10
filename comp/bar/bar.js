@@ -15,9 +15,12 @@ export default {
     yAxisName: '',
     showXAxisLine: true,
     showYAxisLine: true,
+    showXSplitLine: true,
+    showYSplitLine: true,
     girdLeft: '8%',
     girdTop: 60,
     girdRight: '8%',
-    girdBottom: 60
+    girdBottom: 60,
+    isTransverse: false
   }
 };

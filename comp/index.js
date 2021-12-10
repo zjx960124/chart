@@ -21,7 +21,8 @@ const install = function(Vue, opts = {}) {
     Vue.component(component.component.name, component.component);
   });
   Vue.prototype && (Vue.prototype.$cChart = comp);
-  Vue.prototype && (Vue.prototype.$theme = themeFileList)
+  Vue.prototype && (Vue.prototype.$theme = themeFileList);
+
 };
 
 if (typeof window !== 'undefined' && window.Vue) {

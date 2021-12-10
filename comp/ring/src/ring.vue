@@ -90,7 +90,7 @@
             '#048FFA',
             '#D6961A'
           ],*/
-          legend: new Legend(legendData).splitArray(2, this.deployOption),
+          legend: new Legend(legendData).splitArray(this.deployOption.itemNumber || legendData.length, this.deployOption),
           series: {
             type: 'pie',
             radius: ["49%", "51%"],

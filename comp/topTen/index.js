@@ -1,0 +1,13 @@
+import ClTopTen from './src/topTen'
+
+ClTopTen.install = function(Vue) {
+  Vue.component(ClTopTen.name, ClTopTen);
+};
+
+export default {
+  component: ClTopTen,
+  name: 'top10组件',
+  deployOption: {
+    utils: '个'
+  }
+};

@@ -128,7 +128,7 @@
           }
         });
         let option = {
-          // grid: new Grid(this.deployOption).getData(),
+          grid: new Grid(this.deployOption).getData(),
           legend: {
             data: legendData,
             itemHeight: 5,
@@ -156,9 +156,12 @@
             },
           },
           xAxis: {
-            type: 'category',
+            type: this.deployOption.isTransverse ? 'value' : 'category',
             axisLine: {
               show: this.deployOption.showXAxisLine
+            },
+            splitLine: {
+              show: this.deployOption.showXSplitLine
             },
             axisLabel: {
               fontSize: fitChartSize(12)
@@ -166,14 +169,18 @@
             data: new xAxis(xAxisData).getData()
           },
           yAxis: {
-            type: 'value',
+            type: this.deployOption.isTransverse ? 'category' : 'value',
             axisLine: {
               show: this.deployOption.showYAxisLine
+            },
+            splitLine: {
+              show: this.deployOption.showYSplitLine
             },
             axisLabel: {
               fontSize: fitChartSize(12)
             },
-            name: this.deployOption.yAxisName || ''
+            name: this.deployOption.yAxisName || '',
+            data: new xAxis(xAxisData).getData()
           },
           series: seriesData
         };

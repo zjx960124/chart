@@ -117,7 +117,6 @@
         let legendIndex = this.legend ? this.columns.indexOf(this.legend) : 1;
         let xAxisData = Array.from(new Set(...new Array(1).fill(this.baseData.map((item) => item[xAxisIndex]))));
         let legendData = Array.from(new Set(...new Array(1).fill(this.baseData.map((item) => item[legendIndex]))));
-        console.log(legendData)
         let seriesData = legendData.map((item, index) => {
           return {
             name: item,
@@ -146,8 +145,7 @@
               }
             },
           }
-        })
-        console.log(seriesData)
+        });
         let option = {
           tooltip: {
             trigger: 'axis',
@@ -178,21 +176,14 @@
               }
             },
             splitLine: {
-              show: false,
-              lineStyle: {
-                width: 1,
-                color: '#001414'
-              }
+              show: this.deployOption.showXSplitLine
             },
             axisTick: {
               show: false
             },
             axisLine: {
-              lineStyle: {
-                color: 'rgba(0, 0, 0, 0)',
-                width: 1
-              }
-            }
+              show: this.deployOption.showXAxisLine
+            },
           },
           yAxis: {
             type: 'value',
@@ -222,21 +213,14 @@
               }
             },
             splitLine: {
-              show: true,
-              lineStyle: {
-                width: 1,
-                color: '#001414'
-              }
+              show: this.deployOption.showYSplitLine
             },
             axisTick: {
               show: false
             },
             axisLine: {
-              lineStyle: {
-                color: 'rgba(0, 0, 0, 0)',
-                width: 1
-              }
-            }
+              show: this.deployOption.showYAxisLine
+            },
           },
           legend: {
             orient: 'horizontal',
