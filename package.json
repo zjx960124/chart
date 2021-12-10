@@ -1,6 +1,6 @@
 {
   "name": "hy-charts",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "渲染echartJSON组件",
   "main": "lib/vcolorpicker.umd.js",
   "private": false,
