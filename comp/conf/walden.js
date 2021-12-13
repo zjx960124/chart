@@ -167,8 +167,8 @@
     },
     "geo": {
       "itemStyle": {
-        "areaColor": "#eeeeee",
-        "borderColor": "#aaaaaa",
+        "areaColor": "#37376e",
+        "borderColor": "rgba(0, 0, 0, 0.2)",
         "borderWidth": 0.5
       },
       "label": {

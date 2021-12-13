@@ -15,6 +15,8 @@ let themeFileList = themeFiles.keys().reduce((modules, modulePath) => {
   return modules;
 }, []);
 
+console.log(comp)
+
 const install = function(Vue, opts = {}) {
 
   comp.forEach(component => {

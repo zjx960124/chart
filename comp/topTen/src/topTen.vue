@@ -101,7 +101,7 @@
         this.baseData && this.baseData.forEach((item, index) => {
           let a = new Object();
           this.columns.forEach((items, indexs) => {
-            a[items] = item[indexs]
+            a[items] = item[indexs];
           });
           base.push(a)
         });
