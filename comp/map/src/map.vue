@@ -11,6 +11,7 @@
   import 'echarts/map/js/china.js';
   import axios from "axios";
   const fjJson = require('../../conf/mapData/fj.json');
+  import { provincialCapital } from "../../conf/province";
   export default {
     name: "ClMap",
     props: {
@@ -150,9 +151,42 @@
       initChart() {
         // echarts.registerMap('fj', fjJson);
         this.chart = echarts.init(this.$refs['mapChart'], 'shine');
-        this.setOptions(this.seriesData, this.provinceData);
+        this.renderOption(this.seriesData, this.provinceData);
       },
-      setOptions(seriesData, provinceData) {
+      renderOption(seriesData, provinceData) {
+        console.log(this.baseData);
+        let linesData = {
+          "type": "lines",
+          "zlevel": 2,
+          "effect": {
+            "show": true,
+            "period": 4,
+            "trailLength": 0.02,
+            "symbol": "arrow",
+            "symbolSize": 5
+          },
+          "lineStyle": {
+            "normal": {
+              "width": 1,
+              "opacity": 0.6,
+              "curveness": 0.2
+            }
+          },
+          "tooltip": {
+            "trigger": "item"
+          },
+          data: this.baseData.map((item, index) => {
+            return {
+              "fromName": item[1],
+              "toName": "福建",
+              "value": item[0],
+              "coords": [
+                provincialCapital[item[1]],
+                provincialCapital['福建']
+              ]
+            }
+          })
+        };
         this.chart.setOption({
           backgroundColor: '#000211',
           /*tooltip: {
@@ -254,7 +288,7 @@
             ]
           },
           series: [
-            {
+            /*{
               "type": "lines",
               "zlevel": 2,
               "effect": {
@@ -546,7 +580,8 @@
                   ]
                 },
               ]
-            },
+            },*/
+            linesData,
             {
               "name": "收货地址",
               "type": "effectScatter",
