@@ -1,7 +1,6 @@
 <template>
   <div
-    id="mapChart"
-    ref="mapChart"
+    :ref="refName"
     :style="{ ...styleOption }"
   />
 </template>
@@ -130,7 +129,7 @@
           axios.get(`/report/mock.json`).then((res) => {
             this.baseData = res.data.migration.rows;
             this.columns = res.data.migration.columns;
-            this.initChart();
+            this.renderOption();
           })
         }, 1000);
       },
@@ -148,13 +147,11 @@
           })
         }, 1000)
       },
-      initChart() {
-        // echarts.registerMap('fj', fjJson);
-        this.chart = echarts.init(this.$refs['mapChart'], 'shine');
-        this.renderOption(this.seriesData, this.provinceData);
-      },
       renderOption(seriesData, provinceData) {
-        console.log(this.baseData);
+        if (this[this.refName + 'Chart']) {
+          this[this.refName + 'Chart'].dispose();
+        };
+        this[this.refName + 'Chart'] = echarts.init(this.$refs[this.refName], this.theme);
         let linesData = {
           "type": "lines",
           "zlevel": 2,
@@ -187,7 +184,7 @@
             }
           })
         };
-        this.chart.setOption({
+        let option = {
           backgroundColor: '#000211',
           /*tooltip: {
             show: true,
@@ -806,7 +803,8 @@
               ]
             }
           ]
-        });
+        };
+        this[this.refName + 'Chart'].setOption(option);
         /*const _this = this;
         if (_this.timer) {
           clearInterval(_this.timer);
