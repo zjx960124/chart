@@ -8,5 +8,7 @@ export default {
   component: ClMap,
   name: '基础地图组件',
   deployOption: {
+    showVisualMap: true,
+    migration: true,
   }
 };

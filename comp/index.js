@@ -15,8 +15,6 @@ let themeFileList = themeFiles.keys().reduce((modules, modulePath) => {
   return modules;
 }, []);
 
-console.log(comp)
-
 const install = function(Vue, opts = {}) {
 
   comp.forEach(component => {
@@ -24,6 +22,9 @@ const install = function(Vue, opts = {}) {
   });
   Vue.prototype && (Vue.prototype.$cChart = comp);
   Vue.prototype && (Vue.prototype.$theme = themeFileList);
+  Vue.filter('locale', function (val) {
+    return Number.isFinite(val) ? val.toLocaleString('zh', { style: 'decimal' }) : 0;
+  })
 
 };
 

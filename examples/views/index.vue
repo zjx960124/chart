@@ -353,6 +353,38 @@
         utils: {
           name: '单位',
           type: 'input'
+        },
+        showVisualMap: {
+          name: '视觉映射组件',
+          type: 'select',
+          enums: [
+            {
+              label: '是',
+              value: true
+            },
+            {
+              label: '否',
+              value: false
+            }
+          ]
+        },
+        migration: {
+          name: '迁徙图',
+          type: 'select',
+          enums: [
+            {
+              label: '是',
+              value: true
+            },
+            {
+              label: '否',
+              value: false
+            }
+          ]
+        },
+        animationTime: {
+          name: '动画播放时间',
+          type: 'input'
         }
       };
       return {
