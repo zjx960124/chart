@@ -166,7 +166,8 @@
             "normal": {
               "width": 1,
               "opacity": 0.6,
-              "curveness": 0.2
+              "curveness": 0.2,
+              "color": "#00ffff"
             }
           },
           "tooltip": {
@@ -184,22 +185,29 @@
             }
           })
         };
+        let distributionData = {
+          name: '生源分布',
+          type: 'map',
+          geoIndex: 0,
+          zlevel: 2,
+          data: this.baseData.map((item, index) => { return {name: item[1], value: item[0]}})
+        };
+        console.log(distributionData)
         let option = {
           backgroundColor: '#000211',
-          /*tooltip: {
+          tooltip: {
             show: true,
             formatter: function (params) {
               return (
-                '&nbsp;&nbsp;' + params.name + '&nbsp;&nbsp;&nbsp;' + (isNaN(params.value) ? '0' : params.value) + '人&nbsp;&nbsp;'
+                '&nbsp;&nbsp;' + params.name + '&nbsp;&nbsp;&nbsp;'
+                + (isNaN(params.value) ? '0' : params.value) + '人&nbsp;&nbsp;'
               )
             }
-          },*/
+          },
           geo: {
             map: 'china',
-            // map: 'fj',
             backgroundColor: 'transparent',
             center: [105.185312, 35.116778], // 中国
-            // center: [118.316239, 26.075302], // 福建
             zoom: 1.2,
             roam: false,
             label: {
@@ -255,10 +263,10 @@
             },
           },
           visualMap: {
-            show: false,
+            show: true,
             type: 'piecewise',
             min: 0,
-            max: 200,
+            max: 500,
             splitNumber: 4,
             right: 20,
             bottom: 30,
@@ -269,6 +277,7 @@
             itemSymbol: 'rect',
             showLabel: true,
             // text: ['高', '低'],
+            seriesIndex: 3,
             textStyle: {
               color: '#039494',
               fontSize: '10',
@@ -280,8 +289,8 @@
               color: ['#00cdd4', '#00a2ad', '#007a87', '#005461']
             },
             pieces: [
-              { min: 1, max: 200, label: '0-200', color: 'rgba(0, 205, 212, .6)' },
-              { min: 201, label: '>200', color: '#04c7c7' }
+              { min: 1, max: 200, label: '0-200', color: '#ff0000' },
+              { min: 201, label: '>200', color: '#0000ff' }
             ]
           },
           series: [
@@ -596,6 +605,7 @@
                 "normal": {
                   "show": true,
                   "position": "left",
+                  "color": "#00ffff",
                   "offset": [
                     -5,
                     5
@@ -612,7 +622,7 @@
               "itemStyle": {
                 "normal": {
                   "show": false,
-                  "color": "#f00"
+                  "color": "#00ffff"
                 }
               },
               "data": [
@@ -794,14 +804,15 @@
               },
               "data": [
                 {
-                  "name": "南京",
+                  "name": "福州",
                   "value": [
-                    118.796252,
-                    32.0739
+                    "119.454",
+                    "25.922"
                   ]
                 }
               ]
-            }
+            },
+            distributionData
           ]
         };
         this[this.refName + 'Chart'].setOption(option);
