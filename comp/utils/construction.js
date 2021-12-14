@@ -7,10 +7,10 @@ class Legend {
   constructor(legendData, option) {
     this.baseData = {
       data: legendData,
-      left: option.legendLeft,
-      top: option.legendTop,
-      bottom: option.legendBottom,
-      right: option.legendRight,
+      left: option.legendLeft || 'auto',
+      top: option.legendTop || 'auto',
+      bottom: option.legendBottom || 'auto',
+      right: option.legendRight || 'auto',
       orient: option.legendOrient,
     };
   }

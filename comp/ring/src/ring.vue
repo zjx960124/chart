@@ -81,16 +81,8 @@
           )
         })
         let option = {
-          // backgroundColor: this.deployOption.backgroundColor || "#000211",
-          /*color: [
-            '#04E0E0',
-            '#039494',
-            '#D3DEE0',
-            '#D6731A',
-            '#048FFA',
-            '#D6961A'
-          ],*/
-          legend: new Legend(legendData).splitArray(this.deployOption.itemNumber || legendData.length, this.deployOption),
+          // legend: new Legend(legendData).splitArray(this.deployOption.itemNumber || legendData.length, this.deployOption),
+          legend: new Legend(legendData, this.deployOption).getData(),
           series: {
             type: 'pie',
             radius: ["49%", "51%"],

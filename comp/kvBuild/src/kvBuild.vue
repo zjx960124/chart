@@ -104,8 +104,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 55px;
-    margin-bottom: 18px;
     .item {
       width: 2.22rem;
       display: flex;

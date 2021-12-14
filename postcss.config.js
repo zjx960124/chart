@@ -1,5 +1,5 @@
 module.exports = {
   "plugins": {
-    "postcss-auto-rem": {size: 100},
+    // "postcss-auto-rem": {size: 100},
   }
 }
