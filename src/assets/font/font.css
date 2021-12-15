@@ -1,0 +1,83 @@
+@font-face {
+    font-family: 'DINPro-Bold';
+    src: url('DINPro-Bold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINPro-Light';
+    src: url('DINPro-Light.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DINPro-Medium';
+    src: url('DINPro-Medium.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FZPSCHJT';
+    src: url('FZPSCHJT.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PingFangSC-Bold';
+    src: url('PingFang Bold.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PingFangSC-Medium';
+    src: url('PingFang Medium.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PingFangSC-Regular';
+    src: url('PingFang Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'DIN-BLACK';
+  src: url('DIN-BLACK.OTF');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DIN-BOLD';
+  src: url('DIN-BOLD.OTF');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DIN-LIGHT';
+  src: url('DIN-LIGHT.OTF');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DIN-MEDIUM';
+  src: url('DIN-MEDIUM.OTF');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PMZD';
+  src: url('PMZD.TTF');
+  font-weight: normal;
+  font-style: normal;
+}

@@ -5,21 +5,22 @@ module.exports = {
   pages: {
     index: {
       // page 的入口
-      entry: 'examples/main.js',   // 把src 修改为examples
+      entry: 'src/main.js',   // 把src 修改为examples
       // 模板来源
       template: 'public/index.html',
       // 在 dist/index.html 的输出
       filename: 'index.html'
     },
   },
+  lintOnSave: process.env.NODE_ENV === 'development',
   configureWebpack: {
     resolve: {
+      extensions: [".js", ".vue", ".json", ".css"],
       alias: {
-        '@': path.join(__dirname, 'examples')
+        '@': path.join(__dirname, 'src')
       }
     },
   },
-  lintOnSave: false,
   // 扩展 webpack 配置，使 packages 加入编译
   /* chainWebpack 是一个函数，会接收一个基于 webpack-chain 的 ChainableConfig 实例。允许对内部的 webpack 配置进行更细粒度的修改。 */
   chainWebpack: config => {
@@ -33,6 +34,14 @@ module.exports = {
         .tap(options => {
           // 修改它的选项...
           return options
-        })
+        }).end()
+   /* config.module
+      .rule("vue")
+      .use("vue-loader")
+      .loader("vue-loader")
+      .options({
+        prefix: false,
+      })
+      .end()*/
   }
 };
