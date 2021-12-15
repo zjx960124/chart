@@ -124,6 +124,21 @@
             name: item,
             type: 'bar',
             barWidth: this.deployOption.barWidth || 6,
+            barGap: this.deployOption.barGap || '100%',
+            label: {
+              show: this.deployOption.seriesLabelShow || false,
+              distance: 5,
+              position: this.deployOption.seriesLabelPosition || 'top',
+              fontSize: fitChartSize(12),
+              fontFamily: "DIN-Medium",
+              fontWeight: 500,
+              formatter: function (params) {
+                return params.value.toLocaleString('zh', { style: 'decimal' });
+              }
+            },
+            itemStyle: {
+              barBorderRadius: this.deployOption.barBorderRadius
+            },
             data: this.baseData.filter((items, index) => { return items[legendIndex] === item}).map((item2, index2) => item2[0]),
           }
         });

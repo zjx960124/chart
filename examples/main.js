@@ -7,8 +7,8 @@ import router from './utils/router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import PageForm from './utils/PageForm'
-// import smartRem from 'smart-rem'
-// smartRem(1920);
+import smartRem from 'smart-rem'
+smartRem(1920);
 
 // 注册组件库
 Vue.use(xChart);

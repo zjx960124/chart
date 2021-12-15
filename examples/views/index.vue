@@ -206,7 +206,7 @@
         },
         barWidth: {
           name: '柱子宽度',
-          type: 'input'
+          type: 'number'
         },
         legendTop: {
           name: '图例顶部距离',
@@ -348,7 +348,7 @@
         },
         itemNumber: {
           name: '分组数量',
-          type: 'input'
+          type: 'number'
         },
         utils: {
           name: '单位',
@@ -385,6 +385,69 @@
         animationTime: {
           name: '动画播放时间',
           type: 'input'
+        },
+        smooth: {
+          name: '平滑曲线',
+          type: 'select',
+          enums: [
+            {
+              label: '是',
+              value: true
+            },
+            {
+              label: '否',
+              value: false
+            }
+          ]
+        },
+        lineWidth: {
+          name: '线条宽度',
+          type: 'number'
+        },
+        barBorderRadius: {
+          name: '柱子圆角',
+          type: 'number'
+        },
+        barGap: {
+          name: '柱子间距',
+          type: 'input'
+        },
+        seriesLabelShow: {
+          name: '显示图形文本标签',
+          type: 'select',
+          enums: [
+            {
+              label: '是',
+              value: true
+            },
+            {
+              label: '否',
+              value: false
+            }
+          ]
+        },
+        seriesLabelPosition: {
+          name: '图形文本标签位置',
+          type: 'select',
+          precondition: 'seriesLabelShow',
+          enums: [
+            {
+              label: '上',
+              value: 'top'
+            },
+            {
+              label: '下',
+              value: 'bottom'
+            },
+            {
+              label: '左',
+              value: 'left'
+            },
+            {
+              label: '右',
+              value: 'right'
+            }
+          ]
         }
       };
       return {
@@ -398,7 +461,7 @@
         comp: '',
         refName: 'row1',
         props: {
-          theme: 'dark',
+          theme: 'walden',
           category: '',
           legend: '',
           datasourceId: '',

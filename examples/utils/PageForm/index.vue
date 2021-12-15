@@ -13,7 +13,10 @@
     >
       <template v-for="field in modelFields">
         <el-col
-          v-if="!field.hidden && model.hasOwnProperty(field.key)"
+          v-if="
+          !field.hidden &&
+          model.hasOwnProperty(field.key) &&
+          hasPrecondition(field)"
           :key="field.key"
           :span="field.colSpan || colSpan || 12"
         >
@@ -100,6 +103,7 @@ export default {
           v.key = k
           result.push(v)
         }
+        console.log(result)
         return result
       } else {
         return this.fields
@@ -176,6 +180,13 @@ export default {
     },
     chooseImgCallBack(imgUrl, field, fieldKey, model) {
       this.$emit('chooseImgCallBack', imgUrl, field, fieldKey, model)
+    },
+    hasPrecondition(field) {
+      if (field.hasOwnProperty('precondition')) {
+        return this.model[field['precondition']]
+      } else {
+        return true
+      }
     }
   }
 }

@@ -7,7 +7,8 @@
 </template>
 <script>
   import echarts from 'echarts';
-  import axios from 'axios'
+  import axios from 'axios';
+  import { fitChartSize } from '../../utils/construction';
   export default {
     name: 'ClLine',
 
@@ -122,24 +123,25 @@
             name: item,
             type: 'line',
             data: this.baseData.filter((items, index) => { return items[legendIndex] === item}).map((item2, index2) => item2[0]),
-            symbol: 'none',
+            symbol: 'circle',
+            showSymbol: false,
             showAllSymbol: true,
-            symbolSize: 0,
-            /*lineStyle: {
+            symbolSize: 4,
+            smooth: this.deployOption.smooth,
+            lineStyle: {
               normal: {
-                width: 3,
-                color: this.deployOption.lineColor || '#04F9FA', // 线条颜色
+                width: this.deployOption.lineWidth || 3,
               }
-            },*/
+            },
             areaStyle: { //区域填充样式
               normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
-                  color: "rgba(211, 222, 224, .2)"
+                  color: "rgba(4, 249, 250,.48)"
                 },
                   {
                     offset: 1,
-                    color: "rgba(211, 222, 224, 0)"
+                    color: "rgba(4, 249, 250, 0)"
                   }
                 ], false),
               }
@@ -152,11 +154,11 @@
             transitionDuration: 0,
             axisPointer: {
               type: 'cross',
-              crossStyle: {
-                color: '#999'
-              },
               lineStyle: {
                 type: 'dashed'
+              },
+              label: {
+                backgroundColor: 'transparent'
               }
             }
           },
@@ -169,7 +171,7 @@
               margin: 8,
               textStyle: {
                 color: 'rgba(167, 199, 199, .8)',
-                fontSize: 11,
+                fontSize: fitChartSize(12),
                 fontStyle: 'normal',
                 fontWeight: '400',
                 fontFamily: 'DIN-MEDIUM, sans-serif'
@@ -177,9 +179,6 @@
             },
             splitLine: {
               show: this.deployOption.showXSplitLine
-            },
-            axisTick: {
-              show: false
             },
             axisLine: {
               show: this.deployOption.showXAxisLine
@@ -206,7 +205,7 @@
               margin: 8,
               textStyle: {
                 color: 'rgba(167, 199, 199, .8)',
-                fontSize: 11,
+                fontSize: fitChartSize(12),
                 fontStyle: 'normal',
                 fontWeight: '400',
                 fontFamily: 'DIN-MEDIUM, sans-serif'
@@ -215,12 +214,9 @@
             splitLine: {
               show: this.deployOption.showYSplitLine
             },
-            axisTick: {
-              show: false
-            },
             axisLine: {
               show: this.deployOption.showYAxisLine
-            },
+            }
           },
           legend: {
             orient: 'horizontal',
@@ -234,7 +230,7 @@
             textStyle: {
               padding: [0, 0, 0, 2],
               color: 'rgba(167, 199, 199, .8)',
-              fontSize: 11,
+              fontSize: fitChartSize(12),
               fontWeight: '500',
               fontFamily: 'DINPro-Medium, PingFang SC, sans-serif'
             },

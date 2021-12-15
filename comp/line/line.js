@@ -8,10 +8,11 @@ export default {
   component: ClLine,
   name: '折线图组件',
   deployOption: {
-    lineColor: '',
-    showXSplitLine: true,
+    showXSplitLine: false,
     showYSplitLine: true,
-    showXAxisLine: true,
-    showYAxisLine: true,
+    showXAxisLine: false,
+    showYAxisLine: false,
+    smooth: true,
+    lineWidth: 5
   }
 };

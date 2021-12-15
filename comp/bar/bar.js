@@ -13,14 +13,18 @@ export default {
     legendLeft: 0,
     legendRight: 0,
     yAxisName: '',
-    showXAxisLine: true,
-    showYAxisLine: true,
-    showXSplitLine: true,
-    showYSplitLine: true,
+    showXAxisLine: false,
+    showYAxisLine: false,
+    showXSplitLine: false,
+    showYSplitLine: false,
     girdLeft: '8%',
     girdTop: 60,
     girdRight: '8%',
     girdBottom: 60,
-    isTransverse: false
+    isTransverse: false,
+    barBorderRadius: 0,
+    barGap: '100%',
+    seriesLabelShow: false,
+    seriesLabelPosition: 'top'
   }
 };

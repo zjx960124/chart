@@ -23,9 +23,9 @@
   echarts.registerTheme('walden', {
     "color": [
       '#04E0E0',
-      '#039494',
-      '#D3DEE0',
       '#D6731A',
+      '#D3DEE0',
+      '#039494',
       '#048FFA',
       '#D6961A'
     ],
@@ -189,7 +189,7 @@
       "axisLine": {
         "show": true,
         "lineStyle": {
-          "color": "#cccccc"
+          "color": "#001414"
         }
       },
       "axisTick": {
@@ -206,7 +206,7 @@
         "show": false,
         "lineStyle": {
           "color": [
-            "#eeeeee"
+            "#001414"
           ]
         }
       },
@@ -343,11 +343,11 @@
     "tooltip": {
       "axisPointer": {
         "lineStyle": {
-          "color": "#cccccc",
+          "color": "transparent",
           "width": 1
         },
         "crossStyle": {
-          "color": "#cccccc",
+          "color": "transparent",
           "width": 1
         }
       }
