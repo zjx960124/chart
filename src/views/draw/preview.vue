@@ -14,8 +14,8 @@
       }
     },
     mounted() {
-      console.log(this.pageData)
       this.pageData = JSON.parse(sessionStorage.getItem("pageData"))
+      console.log(this.pageData)
     },
     methods: {
     }

@@ -299,9 +299,6 @@
                     names = value.name;
                   }
                   if (value.name === '') return '';
-                  console.log(sortData);
-                  console.log(value.dataIndex)
-                  console.log(keys)
                   return `{value|${sortData[value.dataIndex][keys]}}\n{name|${names}}`;
                 },
                 rich: {

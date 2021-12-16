@@ -8,6 +8,6 @@ export default {
   component: ClHat,
   name: '博士帽图',
   deployOption: {
-
+    hatBackSize: 8
   }
 };

@@ -448,6 +448,10 @@
               value: 'right'
             }
           ]
+        },
+        hatBackSize: {
+          name: '帽子数量',
+          type: 'input'
         }
       };
       return {
@@ -458,7 +462,7 @@
           name: '',
           sqlValue: ''
         },
-        comp: '',
+        comp: 'ClHat',
         refName: 'row1',
         props: {
           theme: 'walden',

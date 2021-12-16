@@ -25,7 +25,6 @@ const formBuild = {
     const conf = options.conf; // 画布属性, 根属性
     const childComp = [];
     if(!layouts) return;
-    console.log(layouts)
     const layoutComponents = layouts.map((item, index) => {
       let func = item.type === 'cChart' ? componentObj['cChart'] : componentObj[item.layout];
       return func ? func.call(this, h, item, conf, layouts.length === index + 1, conf.flexDirection, this) : null;
@@ -36,7 +35,6 @@ const formBuild = {
       style: {
         display: 'flex',
         flex: 1,
-        flexDirection: conf.flexDirection
       }
       }, [childComp]);
   },

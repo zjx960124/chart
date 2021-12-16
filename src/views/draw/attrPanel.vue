@@ -54,16 +54,16 @@
             </el-select>
           </el-form-item>
           <el-form-item label="左边距">
-            <el-input v-model="activeData.style.marginLeft" placeholder="请输入文本字体大小" />
+            <el-input type="number" v-model="activeData.style.marginLeft" placeholder="请输入文本字体大小" />
           </el-form-item>
           <el-form-item label="上边距">
-            <el-input v-model="activeData.style.marginTop" placeholder="请输入文本字体大小" />
+            <el-input type="number" v-model="activeData.style.marginTop" placeholder="请输入文本字体大小" />
           </el-form-item>
           <el-form-item label="下边距">
-            <el-input v-model="activeData.style.marginBottom" placeholder="请输入文本字体大小" />
+            <el-input type="number" v-model="activeData.style.marginBottom" placeholder="请输入文本字体大小" />
           </el-form-item>
           <el-form-item label="右边距">
-            <el-input v-model="activeData.style.marginRight" placeholder="请输入文本字体大小" />
+            <el-input type="number" v-model="activeData.style.marginRight" placeholder="请输入文本字体大小" />
           </el-form-item>
         </div>
         <div v-show="activeType === 'title'">
@@ -114,17 +114,17 @@
           </el-form-item>
         </div>
         <div v-show="activeType === 'chartContainer'">
-          <el-form-item label="左边距">
-            <el-input v-model="activeData.style.marginLeft" placeholder="请输入文本字体大小" />
+          <el-form-item label="左边距(内)">
+            <el-input type="number" v-model="activeData.style.paddingLeft" placeholder="请输入文本字体大小" />
           </el-form-item>
-          <el-form-item label="上边距">
-            <el-input v-model="activeData.style.marginTop" placeholder="请输入文本字体大小" />
+          <el-form-item label="上边距(内)">
+            <el-input type="number" v-model="activeData.style.paddingTop" placeholder="请输入文本字体大小" />
           </el-form-item>
-          <el-form-item label="下边距">
-            <el-input v-model="activeData.style.marginBottom" placeholder="请输入文本字体大小" />
+          <el-form-item label="下边距(内)">
+            <el-input type="number" v-model="activeData.style.paddingBottom" placeholder="请输入文本字体大小" />
           </el-form-item>
-          <el-form-item label="右边距">
-            <el-input v-model="activeData.style.marginRight" placeholder="请输入文本字体大小" />
+          <el-form-item label="右边距(内)">
+            <el-input type="number" v-model="activeData.style.paddingRight" placeholder="请输入文本字体大小" />
           </el-form-item>
         </div>
       </el-form>

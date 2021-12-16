@@ -3,6 +3,8 @@
  * @param legendData
  * @constructor
  */
+import logger from "vuex/dist/logger";
+
 class Legend {
   constructor(legendData, option) {
     this.baseData = {
@@ -13,6 +15,7 @@ class Legend {
       right: option.legendRight || 'auto',
       orient: option.legendOrient,
     };
+
   }
   getData() {
     return this.baseData;
@@ -111,6 +114,27 @@ function isNumber(val) {
   }
 }
 
+const getStringSize = (value) => {
+  if (!value) {
+    return 0;
+  }
+  // 计算长度
+  let ins = 0;
+  const charCount = value.split('').reduce((prev, curr, index) => {
+    if (/[a-z]|[0-9]|[,;.!@#-+/\\$%^*()<>?:"'{}~]/i.test(curr)) {
+      return prev + 1
+    }
+    (prev === 10 || prev === 11) && (ins = index);
+    return prev + 2
+  }, 0);
+  // 处理字符串
+  if ( Math.ceil(charCount / 2) > 6 ) {
+    return value.substring(0, ins) + '...'
+  } else {
+    return value
+  }
+};
+
 function getScale() {
   let w = document.documentElement.clientWidth / 1920;
   let h = document.documentElement.clientHeight / 1080;
@@ -141,4 +165,5 @@ export {
   fitChartSize,
   fitChartHeight,
   getScale,
+  getStringSize
 }

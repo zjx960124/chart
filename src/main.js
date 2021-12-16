@@ -13,7 +13,7 @@ smartRem(1920);
 
 Vue.use(xChart);
 Vue.use(ElementUI);
-Vue.use(FormBuild)
+Vue.use(FormBuild);
 Vue.component('PageForm', PageForm);
 
 Vue.prototype.http = http;

@@ -92,7 +92,7 @@
           }).then((res) => {
             this.baseData = res.data.rows;
             this.columns = res.data.columns;
-            this.handleData();
+            this.renderOption();
           })
         }, 1000);
       },
@@ -104,11 +104,11 @@
           axios.get(`/report/mock.json`).then((res) => {
             this.baseData = res.data.hat.rows;
             this.columns = res.data.hat.columns;
-            this.handleData();
+            this.renderOption();
           })
         }, 1000);
       },
-      handleData() {
+      renderOption() {
         let base = [];
         this.baseData.forEach((item, index) => {
           let a = new Object();
@@ -121,9 +121,9 @@
         let all = 0;
         base.forEach(item => { all += Number(item[this.columns[0]]) });
         console.log(all)
-        let baseNum = parseInt(all / 8);
+        let baseNum = parseInt(all / (this.deployOption.hatBackSize || 8));
         base.forEach((item, index) => {
-          item.backSize = 8;
+          item.backSize = this.deployOption.hatBackSize || 8;
           item.fullNum = parseInt(item[this.columns[0]] / baseNum);
           item.halfNum = item[this.columns[0]] % baseNum / baseNum >= 0.5 ? 1 : 0;
           item.remainingNum = item.backSize - item.fullNum - item.halfNum;

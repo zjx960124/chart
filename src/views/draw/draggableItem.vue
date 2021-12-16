@@ -60,297 +60,7 @@
     }
   }
   const layoutt = {
-    /*rowFormItem(h, currentItem, index, list) {
-      const { activeItem } = this.$listeners
-      const config = currentItem
-      const className = this.activeId === config.formId
-        ? 'drawing-row-item active-from-item'
-        : 'drawing-row-item'
-      let child = renderChildren.apply(this, arguments);
-      return (
-        <el-col span={24}>
-        <el-row gutter={0} class={className}
-      nativeOnClick={event => { activeItem(currentItem); event.stopPropagation() }}>
-    <span class="component-name">{config.componentName}</span>
-        <draggable list={config.children || []} animation={340}
-      group="componentsGroup" class="drag-wrapper">
-        {child}
-        </draggable>
-      {components.itemBtns.apply(this, arguments)}
-    </el-row>
-      </el-col>
-    )
-    },*/
-    elForm(h, currentItem, index, list) {
-      const { activeItem } = this.$listeners;
-      const config = currentItem;
-      const className = this.activeId === config.formId
-        ? 'drawing-row-item active-from-item'
-        : 'drawing-row-item';
-      let child = renderChildren.apply(this, arguments);
-      let name = h('span', { class: 'component-name' }, config.componentName);
-      let draggable = h('draggable', {
-        props: {
-          animation: 340,
-          group: 'componentsGroup',
-          list: config.children || []
-        },
-        attrs: {
-          animation: 340,
-          group: 'componentsGroup',
-          list: config.children || []
-        },
-        style: {
-          width: '100%',
-          ...config.style
-        },
-        class: 'drag-wrapper'
-      }, [child]);
-      let form = h('el-form', {
-        attrs: {
-        },
-        style: {
-          width: '100%',
-          height: '100%',
-          ...config.style
-        },
-      }, [draggable]);
-      return h('div', {
-        on: {
-          click: () => {
-            activeItem(currentItem);
-            event.stopPropagation();
-          }
-        },
-        style: {
-          ...config.style,
-          padding: config.style.padding + 'px'
-        },
-        class: className,
-      }, [name, form, ...components.vnBtns.apply(this, arguments)]);
-    },
-    elInput(h, currentItem, index, list) {
-      const { activeItem } = this.$listeners;
-      const config = currentItem;
-      const className = this.activeId === config.formId
-        ? 'drawing-row-item active-from-item'
-        : 'drawing-row-item';
-      let child = renderChildren.apply(this, arguments);
-      let vNode = h('el-input', {
-        props: {
-          ...config.props,
-        },
-        attrs: {
-          value: config.props.value
-        },
-        style: config.style,
-        slot: config.slot
-      }, child);
-      return h('el-form-item', {
-        attrs: {
-          label: '输入框'
-        }
-      }, [vNode, ...components.vnBtns.apply(this, arguments)]);
-    },
-    elRadio(h, currentItem, index, list) {
-      const { activeItem } = this.$listeners;
-      const config = currentItem;
-      const className = this.activeId === config.formId
-        ? 'drawing-row-item active-from-item'
-        : 'drawing-row-item';
-      let child = renderChildren.apply(this, arguments);
-      let vNode = h('el-radio', {
-        props: {
-          ...config.props,
-        },
-        attrs: {
-          value: config.props.value
-        },
-        style: config.style,
-        slot: config.slot
-      }, child);
-      return h('el-form-item', {
-        attrs: {
-          label: '输入框'
-        }
-      }, [vNode, ...components.vnBtns.apply(this, arguments)]);
-    },
-    echart(h, currentItem, index, list) {
-      const config = currentItem;
-      const { activeItem } = this.$listeners;
-      const className = this.activeId === config.formId
-        ? 'drawing-row-item active-from-item'
-        : 'drawing-row-item';
-      let name = h('span', { class: 'component-name' }, config.componentName);
-      return h('div', {
-        on: {
-          click: () => {
-            activeItem(currentItem);
-            event.stopPropagation();
-          }
-        },
-          class: className,
-          style: {
-            ...config.style,
-          },
-        attrs: {
-          id: currentItem.componentName
-        },
-        ref: currentItem.componentName
-        },[name, ...components.vnBtns.apply(this, arguments)]
-      )
-    },
-    elTabs(h, currentItem, index, list) {
-      const { activeItem } = this.$listeners;
-      const config = currentItem;
-      const className = this.activeId === config.formId
-        ? 'drawing-row-item active-from-item'
-        : 'drawing-row-item';
-      let child = renderChildren.apply(this, arguments);
-      let vNode = h('el-tabs', {
-        props: {
-          ...config.props,
-        },
-        style: config.style,
-        slot: config.slot
-      }, child);
-      return h('div', {
-        on: {
-          click: () => {
-            activeItem(currentItem);
-            event.stopPropagation();
-          }
-        },
-        class: className,
-      }, [vNode, ...components.vnBtns.apply(this, arguments)]);
-    },
-    elTabPane(h, currentItem, index, list) {
-      return h('el-tab-pane', {
-        props: {
-          ...currentItem.props,
-        },
-        style: currentItem.style,
-        slot: currentItem.slot
-      }, [])
-    },
-    elMenu(h, currentItem, index, list) {
-      const { activeItem } = this.$listeners;
-      const config = currentItem;
-      const className = this.activeId === config.formId
-        ? 'drawing-row-item active-from-item'
-        : 'drawing-row-item';
-      let child = renderChildren.apply(this, arguments);
-      let vNode = h('el-menu', {
-        props: {
-          ...config.props,
-        },
-        on: {
-        },
-        mode: {
-          value: config.props.mode
-        },
-        style: config.style,
-        slot: config.slot
-      }, child);
-      return h('div', {
-        on: {
-          click: () => {
-            activeItem(currentItem);
-            event.stopPropagation();
-          }
-        },
-        class: className,
-      }, [vNode, ...components.vnBtns.apply(this, arguments)]);
-    },
-    elMenuItem(h, currentItem, index, list) {
-      let i = h('i', {
-        class: currentItem.iconClassName
-      }, []);
-      let span = h('span', {
-        props: {
-          ...currentItem.props
-        }
-      }, currentItem.content);
-      return h('el-menu-item', {
-        props: {
-          index: (index + 1).toString()
-        }
-      }, [i, span])
-    },
-    // chart
-    clSub(h, currentItem, index, list) {
-      const config = currentItem;
-      const { activeItem } = this.$listeners;
-      return h('cl-sub', {
-        props: {
-          refName: config.componentName,
-          styleOption: config.style,
-          chartData: config.data
-        }
-      })
-    },
-    clDis(h, currentItem, index, list) {
-      const config = currentItem;
-      const { activeItem } = this.$listeners;
-      const renderKey = config.formId + new Date();
-      return h('cl-dis', {
-        props: {
-          refName: config.componentName,
-          styleOption: config.style,
-          chartData: config.data,
-          sql: config.sql,
-          dataModel: config.dataModel,
-          category: config.category,
-          legend: config.legend
-        }
-      })
-    },
-    clPie(h, currentItem, index, list) {
-      const config = currentItem;
-      const { activeItem } = this.$listeners;
-      const renderKey = config.formId + new Date();
-      return h('cl-pie', {
-        props: {
-          refName: config.componentName,
-          styleOption: config.style,
-          chartData: config.data
-        }
-      })
-    },
-    clLine(h, currentItem, index, list) {
-      const config = currentItem;
-      const { activeItem } = this.$listeners;
-      const className = this.activeId === config.formId
-        ? 'drawing-row-item active-from-item'
-        : 'drawing-row-item';
-      let child = renderChildren.apply(this, arguments);
-      let name = h('span', { class: 'component-name' }, config.componentName);
-      let childNode = h('cl-line', {
-        props: {
-          refName: config.componentName,
-          styleOption: config.style,
-          chartData: config.data,
-          sql: config.sql,
-          dataModel: config.dataModel,
-          category: config.category,
-          legend: config.legend
-        }
-      })
-      return h('div', {
-        on: {
-          click: () => {
-            activeItem(currentItem);
-            event.stopPropagation();
-          }
-        },
-        style: {
-          ...config.style,
-          padding: '10px'
-        },
-        class: className,
-      }, [name, childNode, ...components.vnBtns.apply(this, arguments)]);
-    },
-    rowFrame(h, currentItem, index, list) {
+    rowFrame(h, currentItem, index, list, parentDirection) {
       const { activeItem } = this.$listeners;
       const config = currentItem;
       const className = this.activeId === config.formId
@@ -377,7 +87,43 @@
         },
         class: 'drag-wrapper'
       }, child);
+      if (config.type === 'canvas') {
+        draggable = h('draggable', {
+          props: {
+            animation: 340,
+            group: 'componentsGroup',
+            list: config.children || []
+          },
+          attrs: {
+            animation: 340,
+            group: 'componentsGroup',
+            list: config.children || []
+          },
+          style: {
+            width: '100%',
+            height: '100%',
+            flexDirection: config.style.flexDirection,
+            display: 'flex',
+          },
+          class: 'drag-wrapper'
+        }, child)
+      }
       // let back = config.style.backgroundImg && require(`../../assets/backV/${config.style.backgroundImg}`) || '';
+      // 编辑额外配置项
+      let otherOption = {};
+      if ( config.type === 'chartContainer' || config.type === 'title' || config.type === 'canvas' || config.type === 'container') {
+        otherOption['padding'] = '10px'
+      }
+      // 拼接单位
+      console.log(config.style);
+      let utils = {};
+      if (config.type === 'container') {
+        utils.marginTop = config.style.marginTop.toString() + 'px';
+        utils.marginBottom = config.style.marginBottom.toString() + 'px';
+        utils.marginLeft = config.style.marginLeft.toString() + 'px';
+        utils.marginRight = config.style.marginRight.toString() + 'px';
+      }
+
       // 背景图
       let backOption = {};
       if (config.style.backgroundImage) {
@@ -386,6 +132,8 @@
           backgroundSize: '100% 100%'
         }
       }
+
+
       return h('div', {
         on: {
           click: () => {
@@ -395,9 +143,9 @@
         },
         style: {
           ...config.style,
-          padding: config.style.padding + 'px',
-          // background: 'url('+ back +') 100% 100% no-repeat',
-          ...backOption
+          ...backOption,
+          ...otherOption,
+          ...utils
         },
         class: className,
         key: config.renderKey,
@@ -460,7 +208,7 @@
     return config.children.map((el, i) => {
       const layout = layoutt[el.layout]
       if (layout && el.type !== 'cChart') {
-        return layout.call(this, h, el, i, config.children)
+        return layout.call(this, h, el, i, config.children, el.style.flexDirection)
         // return layout.call(this, h, el, i, list, config)
       }
       if (el.type === 'cChart') {

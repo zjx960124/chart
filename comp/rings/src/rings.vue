@@ -9,8 +9,10 @@
 <script>
   import handle from '../../utils'
   import echarts from 'echarts'
-  import { Legend } from '../../utils/construction'
+  import { Legend, fitChartSize } from '../../utils/construction'
+  import * as themeConfig from '../../utils/style'
   import axios from 'axios'
+  import _ from 'lodash'
   export default {
     name: 'ClRings',
     mixins: [handle],
@@ -66,18 +68,14 @@
               show: false,
               formatter: '{d}'
             },
-            labelLine: {
-              show: false,
-              lineStyle: {
-                color: '#D3DEE0'
-              }
-            },
             data: seriesData
           }
         };
         // 是否分组
         this.deployOption.itemNumber &&
         (option.legend = new Legend(legendData, this.deployOption).splitArray(this.deployOption.itemNumber, this.deployOption));
+        // 渲染主题
+        option = this.theme && themeConfig[this.theme] ? _.merge(option, themeConfig[this.theme].rings) : option;
         this[this.refName + 'Chart'].setOption(option);
       },
     }

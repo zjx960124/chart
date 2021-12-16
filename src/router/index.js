@@ -92,6 +92,11 @@ const constantRoutes = [
     name: 'preview',
     component: () => import('@/views/draw/preview')
   },
+  {
+    path: '/development',
+    name: 'development',
+    component: () => import('../../examples/views/index')
+  }
 ];
 
 const router = new Router({

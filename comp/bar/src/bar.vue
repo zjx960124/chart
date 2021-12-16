@@ -10,6 +10,7 @@
   import echarts from 'echarts';
   import axios from 'axios';
   import { xAxis, Grid, debounce, fitChartSize, fitChartHeight } from '../../utils/construction';
+  import * as themeConfig from '../../utils/style'
   export default {
     name: 'ClBar',
 
@@ -179,7 +180,7 @@
               show: this.deployOption.showXSplitLine
             },
             axisLabel: {
-              fontSize: fitChartSize(12)
+              fontSize: fitChartSize(10)
             },
             data: new xAxis(xAxisData).getData()
           },
@@ -192,13 +193,15 @@
               show: this.deployOption.showYSplitLine
             },
             axisLabel: {
-              fontSize: fitChartSize(12)
+              fontSize: fitChartSize(10)
             },
             name: this.deployOption.yAxisName || '',
             data: new xAxis(xAxisData).getData()
           },
           series: seriesData
         };
+        // 渲染主题
+        option = this.theme && themeConfig[this.theme] ? _.merge(option, themeConfig[this.theme].bar) : option;
         this[this.refName + 'Chart'].setOption(option);
       },
       setTheme() {
