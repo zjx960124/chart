@@ -126,9 +126,9 @@
 
       // 背景图
       let backOption = {};
-      if (config.style.backgroundImage) {
+      if (config.style.backgroundGroup && config.style.backgroundImage) {
         backOption = {
-          background: 'url('+ require(`../../assets/backV/${config.style.backgroundImage}`) +') no-repeat',
+          background: 'url('+ require(`../../assets/group/${config.style.backgroundGroup}/${config.style.backgroundImage}`) +') no-repeat',
           backgroundSize: '100% 100%'
         }
       }
@@ -183,6 +183,11 @@
           backgroundSize: '100% 100%'
         }
       }
+      let utils = {};
+      utils.marginTop = config.style.marginTop && config.style.marginTop.toString() + 'px';
+      utils.marginBottom = config.style.marginBottom && config.style.marginBottom.toString() + 'px';
+      utils.marginLeft = config.style.marginLeft && config.style.marginLeft.toString() + 'px';
+      utils.marginRight = config.style.marginRight && config.style.marginRight.toString() + 'px';
       return h('div', {
         on: {
           click: () => {
@@ -195,7 +200,8 @@
           padding: config.style.padding + 'px',
           fontSize: config.style.fontSize + 'px',
           // background: 'url('+ back +') 100% 100% no-repeat',
-          ...backOption
+          ...backOption,
+          ...utils
         },
         class: className,
         key: config.renderKey,

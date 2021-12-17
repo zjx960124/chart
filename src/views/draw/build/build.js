@@ -37,9 +37,11 @@ const componentObj = {
     }
     // 背景图
     let backOption = {};
-    if (obj.style.backgroundImage) {
+    if (obj.style.backgroundGroup && obj.style.backgroundImage) {
+      console.log(obj);
+      console.log(obj.style.backgroundGroup);
       backOption = {
-        background: 'url('+ require(`../../../assets/backV/${obj.style.backgroundImage}`) +') no-repeat',
+        background: 'url('+ require(`../../../assets/group/${obj.style.backgroundGroup}/${obj.style.backgroundImage}`) +') no-repeat',
         backgroundSize: '100% 100%'
       }
     }
@@ -85,6 +87,10 @@ const componentObj = {
         backgroundSize: '100% 100%'
       }
     }
+    obj.style.marginLeft = fitChartWidth(obj.style.marginLeft, 1920);
+    obj.style.marginRight = fitChartWidth(obj.style.marginRight, 1920);
+    obj.style.marginTop = fitChartHeight(obj.style.marginTop, 1080);
+    obj.style.marginBottom = fitChartHeight(obj.style.marginBottom, 1080);
     return h('div', {
       style: {
         ...obj.style,

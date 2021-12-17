@@ -505,6 +505,9 @@
           this.props.sql && this.props.datasourceId && this.getChartData();
         })*/
     },
+    mounted() {
+
+    },
     methods: {
       /**
        * 数据源列表

@@ -177,19 +177,18 @@
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          text-align: left;
           .item-label {
             font-family: PingFangSC-Regular;
             font-size: 12px;
             font-weight: 400;
-            color: #04F9FA;
-            max-width: 100%;
+            color: #A7C7C7;
           }
           .item-value {
             background: #134B50;
             height: 16px;
             line-height: 16px;
             text-align: center;
-            max-width: 100%;
             padding: 0 .1rem;
             color: #04F9FA;
             font-size: 14px;

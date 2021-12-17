@@ -41,7 +41,7 @@
           <el-color-picker v-model="activeData.style.backgroundColor" show-alpha></el-color-picker>
         </el-form-item>
         <div v-show="activeType === 'container'">
-          <el-form-item label="容器背景图">
+          <!--<el-form-item label="容器背景图">
             <el-select
               v-model="activeData.style.backgroundImage"
             >
@@ -52,7 +52,7 @@
                 :value="item"
               ></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item label="左边距">
             <el-input type="number" v-model="activeData.style.marginLeft" placeholder="请输入文本字体大小" />
           </el-form-item>
@@ -64,6 +64,33 @@
           </el-form-item>
           <el-form-item label="右边距">
             <el-input type="number" v-model="activeData.style.marginRight" placeholder="请输入文本字体大小" />
+          </el-form-item>
+          <el-form-item label="背景图(文件夹)">
+            <el-select
+              v-model="activeData.style.backgroundGroup"
+            >
+              <el-option
+                v-for="(item, key, index) in imgGroup"
+                :key="key"
+                :label="key"
+                :value="key"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="背景图(图片)">
+            <el-select
+              v-model="activeData.style.backgroundImage"
+            >
+              <el-option
+                v-for="(item, index) in imgGroup[activeData.style.backgroundGroup]"
+                :key="item"
+                :label="item"
+                :value="item"
+              >
+                <span style="float: left">{{ item }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">预览</span>
+              </el-option>
+            </el-select>
           </el-form-item>
         </div>
         <div v-show="activeType === 'title'">
@@ -98,7 +125,9 @@
                 v-for="(item, index) in fontFamilyList"
                 :label="item"
                 :value="item"
-              ></el-option>
+              >
+                <span :style="{fontFamily: item}">{{ item }}</span>
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="标题背景图">
@@ -111,6 +140,18 @@
                 :value="item"
               ></el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item label="左边距">
+            <el-input type="number" v-model="activeData.style.marginLeft" placeholder="" />
+          </el-form-item>
+          <el-form-item label="上边距">
+            <el-input type="number" v-model="activeData.style.marginTop" placeholder="" />
+          </el-form-item>
+          <el-form-item label="下边距">
+            <el-input type="number" v-model="activeData.style.marginBottom" placeholder="" />
+          </el-form-item>
+          <el-form-item label="右边距">
+            <el-input type="number" v-model="activeData.style.marginRight" placeholder="" />
           </el-form-item>
         </div>
         <div v-show="activeType === 'chartContainer'">
@@ -188,14 +229,19 @@
         fontFamilyList: [],
         imgList: [],
         backImgList: [],
-        activeType: ''
+        activeType: '',
+        imgGroup: null,
+        currentGroupIndex: '',
+        currentGroup: '',
+        allImage: []
       }
     },
     watch: {
       activeData(old) {
         if (old.componentName.indexOf('echart') !== -1) this.currentTab = '3';
         this.activeType = old.type;
-        console.log(this.activeType)
+        // this.currentGroup = this.allImage.filter((item) => item.indexOf(this.activeData.style.backgroundImage) > -1)[0].split('/')[0] || '';
+        // console.log(this.currentGroup);
         // old.type === 'title' && (this.activeData = new Map(Object.entries(old)));
       }
     },
@@ -207,7 +253,7 @@
         modules.push({label: moduleName, value: moduleName})
         return modules;
       }, []);*/
-      let fontFamilyFiles = require.context("@/assets/font/", true, /\.OTF|\.ttf$/);
+      let fontFamilyFiles = require.context("@/assets/font/", true, /\.OTF|\.ttf|\.TTF$/);
       this.fontFamilyList = fontFamilyFiles.keys().reduce((modules, modulePath) => {
         const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, "$1");
         modules.push(moduleName);
@@ -227,6 +273,7 @@
       }, []);
     },
     mounted() {
+      this.requireImg();
     },
     methods: {
       handleSelect(val) {
@@ -234,6 +281,24 @@
       },
       changeTemplateTheme(val) {
         this.$emit('changeTemplateTheme', val)
+      },
+      requireImg() {
+        let imgFiles = require.context("@/assets/group/", true, /\.jpg|\.png$/);
+        let group = imgFiles.keys().reduce((modules, modulePath) => {
+          const moduleName = modulePath.replace(/^\.\/(.*)$/, "$1");
+          modules.push(moduleName);
+          return modules;
+        }, []);
+        let groups = Array.from(new Set(Array.from(group.map((item) => item.split('/')[0]))));
+        let a = new Object();
+        for (let i = 0; i < groups.length; i++) {
+          let b = group.filter((item, index) => {
+            return item.indexOf(groups[i]) > -1
+          }).map((item) => item.split('/')[1]);
+          a[groups[i]] = b;
+        }
+        this.allImage = group;
+        this.imgGroup = a;
       }
     }
   }
