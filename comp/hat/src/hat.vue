@@ -150,8 +150,6 @@
     .jzgxlfb-item {
       position: relative;
       height: 40px;
-      margin-left: .35rem;
-      margin-right: .35rem;
       display: flex;
       align-items: center;
       .label {
@@ -181,7 +179,6 @@
         height: 100%;
         margin-right: .22rem;
         margin-left: .20rem;
-        min-width: 2.61rem;
         .icon-view {
           position: relative;
         }

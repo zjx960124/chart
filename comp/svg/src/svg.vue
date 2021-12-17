@@ -170,6 +170,7 @@
           width: .09rem;
           height: 27px;
           background-size: 100% 100%;
+          flex-shrink: 0;
         }
         .item-info {
           height: 100%;
@@ -181,14 +182,14 @@
             font-size: 12px;
             font-weight: 400;
             color: #04F9FA;
+            max-width: 100%;
           }
           .item-value {
             background: #134B50;
             height: 16px;
             line-height: 16px;
             text-align: center;
-            min-width: .53rem;
-            width: .53rem;
+            max-width: 100%;
             padding: 0 .1rem;
             color: #04F9FA;
             font-size: 14px;

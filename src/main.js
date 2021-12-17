@@ -5,6 +5,7 @@ import router from './router/index'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import PageForm from '../examples/utils/PageForm'
+import PageTable from './components/PageTable/index'
 import http from './utils/http'
 import store from './store'
 import FormBuild from '@/views/draw/build/index';
@@ -15,6 +16,7 @@ Vue.use(xChart);
 Vue.use(ElementUI);
 Vue.use(FormBuild);
 Vue.component('PageForm', PageForm);
+Vue.component('PageTable', PageTable);
 
 Vue.prototype.http = http;
 Vue.prototype.$Bus = new Vue();

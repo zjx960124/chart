@@ -1,7 +1,7 @@
 module.exports = {
   "plugins": {
     // "postcss-auto-rem": {size: 100},
-   /* "postcss-px-to-viewport": {
+    /*"postcss-px-to-viewport": {
       unitToConvert: "px", // 要转化的单位
       viewportWidth: 1080, // UI设计稿的宽度
       unitPrecision: 6, // 转换后的精度，即小数点位数
