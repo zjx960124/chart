@@ -14,11 +14,16 @@
           <i class="el-icon-document"></i>
           <span slot="title">数据集</span>
         </el-menu-item>
+        <el-menu-item index="3">
+          <i class="el-icon-document"></i>
+          <span slot="title">数据格式</span>
+        </el-menu-item>
       </el-menu>
     </div>
     <div class="right">
       <data-source v-show="activeIndex === '1'"></data-source>
       <d-s v-show="activeIndex === '2'"></d-s>
+      <data-format v-show="activeIndex === '3'"></data-format>
     </div>
   </div>
 </template>
@@ -26,9 +31,10 @@
 <script>
   import DataSource from './dataSource'
   import DS from './DS'
+  import DataFormat from "./dataFormat";
   export default {
     name: 'index',
-    components: { DS, DataSource },
+    components: {DataFormat, DS, DataSource },
     data() {
       return{
         activeIndex: '1'

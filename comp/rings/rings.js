@@ -18,6 +18,9 @@ export default {
     pieRadiusStart: '',
     pieRadiusEnd: '',
     pieRoseType: false,
-    itemNumber: ''
+    itemNumber: '',
+    hasBackground: false,
+    heightLightIndex: '',
+    heightLightColor: 'transparent'
   }
 };

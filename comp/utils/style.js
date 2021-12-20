@@ -64,7 +64,7 @@ const walden = {
       }
     },
     series: {
-      radius: ["45%", "52%"],
+      // radius: ["45%", "52%"],
       labelLine: {
         show: false,
       },

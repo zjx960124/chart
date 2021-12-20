@@ -488,6 +488,30 @@
         hatBackSize: {
           name: '帽子数量',
           type: 'input'
+        },
+        hasBackground: {
+          name: '背景图层',
+          type: 'select',
+          enums: [
+            {
+              label: '是',
+              value: true
+            },
+            {
+              label: '否',
+              value: false
+            }
+          ]
+        },
+        heightLightIndex: {
+          name: '高亮数据索引',
+          precondition: 'hasBackground',
+          type: 'number',
+        },
+        heightLightColor: {
+          name: '非高亮背景色',
+          precondition: 'hasBackground',
+          type: 'colorPicker'
         }
       };
       return {

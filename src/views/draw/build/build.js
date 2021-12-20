@@ -38,8 +38,6 @@ const componentObj = {
     // 背景图
     let backOption = {};
     if (obj.style.backgroundGroup && obj.style.backgroundImage) {
-      console.log(obj);
-      console.log(obj.style.backgroundGroup);
       backOption = {
         background: 'url('+ require(`../../../assets/group/${obj.style.backgroundGroup}/${obj.style.backgroundImage}`) +') no-repeat',
         backgroundSize: '100% 100%'
@@ -66,9 +64,6 @@ const componentObj = {
     obj.style.paddingBottom = fitChartHeight(obj.style.paddingBottom, 1080);
     obj.style.paddingLeft = fitChartWidth(obj.style.paddingLeft, 1920);
     obj.style.paddingRight = fitChartWidth(obj.style.paddingRight, 1920);
-    if (obj.componentName === 'row12') {
-      console.log(obj);
-    }
     return h('div', {
       style: {
         ...obj.style,

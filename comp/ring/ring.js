@@ -4,7 +4,7 @@ ClRing.install = function(Vue) {
   Vue.component(ClRing.name, ClRing);
 };
 
-export default {
+/*export default {
   component: ClRing,
   name: '圆角环形图组件',
   deployOption: {
@@ -12,4 +12,4 @@ export default {
     legendLeft: 'center',
     legendOrient: 'vertical'
   }
-};
+};*/
