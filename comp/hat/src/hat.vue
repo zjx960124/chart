@@ -120,10 +120,9 @@
         console.log(base);
         let all = 0;
         base.forEach(item => { all += Number(item[this.columns[0]]) });
-        console.log(all)
-        let baseNum = parseInt(all / (this.deployOption.hatBackSize || 8));
+        let baseNum = parseInt(all / (Number(this.deployOption.hatBackSize) || 8));
         base.forEach((item, index) => {
-          item.backSize = this.deployOption.hatBackSize || 8;
+          item.backSize = Number(this.deployOption.hatBackSize) || 8;
           item.fullNum = parseInt(item[this.columns[0]] / baseNum);
           item.halfNum = item[this.columns[0]] % baseNum / baseNum >= 0.5 ? 1 : 0;
           item.remainingNum = item.backSize - item.fullNum - item.halfNum;

@@ -12,7 +12,7 @@
   import { xAxis, Grid, debounce, fitChartSize, fitChartHeight } from '../../utils/construction';
   import * as themeConfig from '../../utils/style'
   export default {
-    name: 'ClBar',
+    name: 'ClBattery',
 
     props: {
       refName: String,
@@ -91,8 +91,8 @@
         }
         this.timeout = setTimeout(() => {
           axios.get(`/report/mock.json`).then((res) => {
-            this.baseData = res.data.bar.rows;
-            this.columns = res.data.bar.columns;
+            this.baseData = res.data.battery.rows;
+            this.columns = res.data.battery.columns;
             this.renderOption();
           })
         }, 1000);
@@ -120,30 +120,133 @@
         let legendIndex = this.legend ? this.columns.indexOf(this.legend) : 1;
         let xAxisData = Array.from(new Set(...new Array(1).fill(this.baseData.map((item) => item[xAxisIndex]))));
         let legendData = Array.from(new Set(...new Array(1).fill(this.baseData.map((item) => item[legendIndex]))));
-        let seriesData = legendData.map((item, index) => {
-          return {
-            name: item,
-            type: 'bar',
-            barWidth: this.deployOption.barWidth || 6,
-            barGap: this.deployOption.barGap || '100%',
-            label: {
-              show: this.deployOption.seriesLabelShow || false,
-              distance: 5,
-              position: this.deployOption.seriesLabelPosition || 'top',
-              fontSize: fitChartSize(12),
-              fontFamily: "DIN-Medium",
-              fontWeight: 500,
-              formatter: function (params) {
-                return params.value.toLocaleString('zh', { style: 'decimal' });
+        let
+          base = this.baseData.map(item => Number(item[0])),
+          max = Math.ceil(Math.max(...base) / 100) * 100, // 取最大值(则算100倍数)
+          baseData = new Array(base.length).fill(max), // 最大电量和背景框
+          // 高亮区
+          countData = Array.apply(null,new Array(base.length)).map((item, index) => {
+            return {
+              value: base[index],
+              itemStyle: {
+                normal: {
+                  color: "#04F9FA"
+                }
+              },
+              label: {
+                normal: {
+                  show: true,
+                  position: 'top',
+                  distance: 10,
+                  offset: [0, 0],
+                  textStyle: {
+                    color: '#04F9FA',
+                    fontFamily: 'DIN-MEDIUM'
+                  },
+                },
+              }
+            }
+          });
+        let backSeries = [
+          {
+            type: "pictorialBar",
+            itemStyle: {
+              normal: {
+                color: "rgba(87,220,222,0.3)"
               }
             },
-            itemStyle: {
-              barBorderRadius: this.deployOption.barBorderRadius
+            symbolRepeat: "fixed",
+            symbolMargin: 4,
+            symbol: "rect",
+            symbolClip: true,
+            symbolSize: [38, 2],
+            symbolPosition: "start",
+            symbolOffset: [0, 5],
+            data:  baseData,
+            width: 1,
+            z: 0,
+          },
+          {
+            type: "bar",
+            // barGap: "-100%", // 设置外框粗细
+            name: '边框',
+            data: baseData,
+            barWidth: 48,
+            emphasis: {
+              label: {
+                show: false
+              },
             },
-            data: this.baseData.filter((items, index) => { return items[legendIndex] === item}).map((item2, index2) => item2[0]),
+            itemStyle: {
+              color: "transparent", // 填充色
+              borderWidth: 1,
+              borderColor: '#002E2E',
+              label: {
+                show: false,
+              }
+            },
+            z: 0
+          },
+          {
+            // 分隔
+            type: "pictorialBar",
+            itemStyle: {
+              normal: {
+                color: "#026161"
+              }
+            },
+            label: {
+              normal: {
+                show: true,
+                position: 'top',
+                distance: 10,
+                offset: [0, 0],
+                textStyle: {
+                  color: '#026161',
+                  fontFamily: 'DIN-MEDIUM'
+                },
+              },
+            },
+            emphasis: {
+              itemStyle: {
+                color: "#04F9FA"
+              },
+              label: {
+                color: '#04F9FA',
+                normal: {
+                  color: '#04F9FA'
+                }
+              }
+            },
+            symbolRepeat: "fixed",
+            symbolMargin: 4,
+            symbol: "rect",
+            symbolClip: true,
+            fontSize: 12,
+            symbolSize: [38, 2],
+            symbolPosition: "start",
+            symbolOffset: [0,5],
+            data: countData,
+            width: 1,
+            z: 99,
           }
-        });
+        ];
+        console.log(backSeries);
+        let tip = {
+          trigger: 'axis',
+          confine: true,
+          transitionDuration: 0,
+          axisPointer: {
+            type: 'none'
+          },
+          formatter: (params) => {
+            if (params.name !== '') {
+              return params[2].name + ' : ' + bzkqDatas[params[2].dataIndex];
+            }
+          }
+        };
         let option = {
+          backgroundColor: '#000211',
           grid: new Grid(this.deployOption).getData(),
           legend: {
             data: legendData,
@@ -173,7 +276,6 @@
           },
           xAxis: {
             type: this.deployOption.isTransverse ? 'value' : 'category',
-            interval: 1,
             axisLine: {
               show: this.deployOption.showXAxisLine
             },
@@ -199,7 +301,7 @@
             name: this.deployOption.yAxisName || '',
             data: new xAxis(xAxisData).getData()
           },
-          series: seriesData
+          series: backSeries
         };
         // 渲染主题
         option = this.theme && themeConfig[this.theme] ? _.merge(option, themeConfig[this.theme].bar) : option;

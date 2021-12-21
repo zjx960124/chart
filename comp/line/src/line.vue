@@ -8,7 +8,9 @@
 <script>
   import echarts from 'echarts';
   import axios from 'axios';
-  import { fitChartSize } from '../../utils/construction';
+  import {fitChartSize, Grid, Legend} from '../../utils/construction';
+  import * as themeConfig from "../../utils/style";
+  import _ from "lodash";
   export default {
     name: 'ClLine',
 
@@ -123,32 +125,16 @@
             name: item,
             type: 'line',
             data: this.baseData.filter((items, index) => { return items[legendIndex] === item}).map((item2, index2) => item2[0]),
-            symbol: 'circle',
-            showSymbol: false,
-            showAllSymbol: true,
-            symbolSize: 4,
             smooth: this.deployOption.smooth,
             lineStyle: {
               normal: {
                 width: this.deployOption.lineWidth || 3,
               }
             },
-            areaStyle: { //区域填充样式
-              normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                  offset: 0,
-                  color: "rgba(4, 249, 250,.48)"
-                },
-                  {
-                    offset: 1,
-                    color: "rgba(4, 249, 250, 0)"
-                  }
-                ], false),
-              }
-            },
           }
         });
         let option = {
+          grid: new Grid(this.deployOption).getData(),
           tooltip: {
             trigger: 'axis',
             transitionDuration: 0,
@@ -165,18 +151,6 @@
           xAxis: {
             type: 'category',
             data: xAxisData,
-            axisLabel: {
-              show: true,
-              rotate: 0,
-              margin: 8,
-              textStyle: {
-                color: 'rgba(167, 199, 199, .8)',
-                fontSize: fitChartSize(12),
-                fontStyle: 'normal',
-                fontWeight: '400',
-                fontFamily: 'DIN-MEDIUM, sans-serif'
-              }
-            },
             splitLine: {
               show: this.deployOption.showXSplitLine
             },
@@ -218,7 +192,8 @@
               show: this.deployOption.showYAxisLine
             }
           },
-          legend: {
+          // legend: new Legend(legendData, this.deployOption).getData(),
+          /*legend: {
             orient: 'horizontal',
             type: 'scroll',
             bottom: 5,
@@ -244,9 +219,15 @@
               color: '#04F9FA'
             },
             data: legendData
-          },
+          },*/
           series: seriesData
         };
+        // 渲染主题
+        option = this.theme && themeConfig[this.theme] ? _.merge(option, themeConfig[this.theme].line) : option;
+        // merge只能合并index为0
+        if (option.series.length > 1 && themeConfig[this.theme]) {
+          option.series.map((item, index) => _.merge(item, themeConfig[this.theme].line.series[0]))
+        }
         this[this.refName + 'Chart'].setOption(option);
       },
       setTheme() {

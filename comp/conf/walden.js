@@ -63,7 +63,6 @@
     },
     "bar": {
       "itemStyle": {
-        "barBorderWidth": 0,
       }
     },
     "pie": {

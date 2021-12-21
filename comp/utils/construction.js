@@ -74,10 +74,10 @@ class xAxis {
 class Grid {
   constructor(option) {
     this.baseData = {
-      left: fitChartSize(option.girdLeft),
-      top: fitChartSize(option.girdTop),
-      right: fitChartSize(option.girdRight),
-      bottom: fitChartSize(option.girdBottom)
+      left: fitChartSize(option.girdLeft) || '5%',
+      top: fitChartSize(option.girdTop) || '40',
+      right: fitChartSize(option.girdRight) || '2%',
+      bottom: fitChartSize(option.girdBottom) || '40'
     }
   }
   getData() {

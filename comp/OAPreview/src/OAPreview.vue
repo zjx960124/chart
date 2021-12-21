@@ -128,7 +128,8 @@
 <style lang="scss" scoped>
   .center-top {
     width: 100%;
-    height: 100%;
+    max-height: 100%;
+    height: fit-content;
     margin-bottom: 20px;
     flex-direction: column;
     background: #000211;

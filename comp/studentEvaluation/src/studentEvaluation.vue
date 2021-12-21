@@ -216,6 +216,7 @@
 <style lang="scss" scoped>
   .student-evaluation {
     display: flex;
+    width: 100%;
     flex-direction: column;
     .search-view {
       flex-shrink: 0;
@@ -312,9 +313,9 @@
       .overflow-view {
         width: 0;
         flex: 1;
-        margin-left: .35rem;
         height: 100%;
         overflow-x: hidden;
+        overflow-y: hidden;
         .scroll-view {
           width: fit-content;
           display: flex;

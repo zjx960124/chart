@@ -3,7 +3,7 @@
     <div class="search-view">
       <el-form :inline="true">
         <el-form-item label="数据格式名称:">
-          <el-input size="small" v-model="dataFormatName"></el-input>
+          <el-input size="small" v-model="name"></el-input>
         </el-form-item>
         <el-button size="small" type="primary" @click="getList">查询</el-button>
         <el-button size="small" type="primary" @click="create">新增</el-button>
@@ -41,7 +41,19 @@
         ref="sourceForm"
       >
         <el-form-item label="名称">
-          <el-input v-model="dataFormatForm.dataFormatName"></el-input>
+          <el-input v-model="dataFormatForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="脚本">
+          <!--<el-input type="textarea" autosize v-model="dataFormatForm.script"></el-input>-->
+          <codemirror
+            class="vue-codemirror"
+            v-model="dataFormatForm.script"
+            :options="sqlOptions"
+            style="text-align: left"
+          ></codemirror>
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model="dataFormatForm.description"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -53,21 +65,32 @@
 </template>
 
 <script>
+  import { codemirror } from 'vue-codemirror'
+  import 'codemirror/lib/codemirror.css'
+  import 'codemirror/mode/sql/sql.js' // sql高亮 配置mode为x-sql
   export default {
     name: "dataFormat",
 
+    components: {
+      codemirror
+    },
+
     data() {
       return {
-        dataFormatName: '',
+        name: '',
         dataFormatList:[],
         fields: [
           {
             name: "数据格式名称",
-            key: "dataSourceType"
+            key: "name"
           },
           {
             name: "描述",
-            key: "dataSourceName"
+            key: "description"
+          },
+          {
+            name: "脚本",
+            key: "script"
           }
         ],
         operation: [
@@ -80,65 +103,104 @@
           total: 0
         },
         dataFormatForm: {
-          dataFormatName: '',
+          name: '',
+          script: '',
           description: ''
         },
         dialogType: '新增数据格式',
-        dataFormatVisible: false
+        dataFormatVisible: false,
+        sqlOptions: {
+          tabSize: 4, // tab四个空格
+          theme: 'default', // 主题样式
+          lineNumbers: true, // 是否显示行数
+          styleActiveLine: true, // line 选择是否高亮
+          matchBrackets: true, // 括号匹配
+          mode: 'text/x-sql', // 实现vue代码高亮
+          readOnly: false, // 只读
+        },
+        rules: {
+          name: [
+            { required: true, message: '请输入数据格式名称', trigger: 'blur' }
+          ],
+          script: [
+            { required: true, message: '请输入脚本', trigger: 'blur' }
+          ],
+          description: [
+            { required: true, message: '请输入描述', trigger: 'blur' }
+          ]
+        },
       }
     },
 
     mounted() {
+      this.getList();
     },
 
     methods: {
-      getList() {},
-      create() {},
-      handelDelClick(data) {
-        let param = { id: data.id };
-        this.http.delete('/rest/report/data-source-info/', param)
+      getList() {
+        let param = {
+          name: this.name
+        };
+        this.http.get('/rest/report/groovy/page', param)
           .then(res => {
             console.log(res);
+            this.dataFormatList = res.data.content;
+            this.total = res.data.totalElements;
           })
+      },
+      create() {
+        this.dataFormatVisible = true;
+        this.dialogType = '新增数据格式';
+      },
+      handelDelClick(data) {
+        let param = { id: data.id };
+        this.http.delete('/rest/report/groovy', param)
+          .then(res => {
+            console.log(res);
+        })
       },
       handleEditClick(data) {
         this.dataFormatForm = data;
         this.dialogType = '编辑数据格式';
-        this.dataSourceVisible = true;
+        this.dataFormatVisible = true;
       },
       cancer() {
         this.dataFormatForm = {
-          dataFormatName: '',
+          name: '',
+          script: '',
           description: ''
         };
       },
       close() {
         this.dataFormatForm = {
-          dataFormatName: '',
+          name: '',
+          script: '',
           description: ''
         };
-        this.dataSourceVisible = false;
+        this.dataFormatVisible = false;
       },
       sure() {
         this.$refs['sourceForm'].validate((valid) => {
           if (valid) {
             if (this.dialogType === '新增数据格式') {
-              let param = this.dataSourceForm;
-              this.http.post('/rest/report/data-source-info/', param)
+              let param = this.dataFormatForm;
+              this.http.post('/rest/report/groovy', param)
                 .then(res => {
                   this.dataFormatForm = {
-                    dataFormatName: '',
+                    name: '',
+                    script: '',
                     description: ''
                   };
                   this.dataFormatVisible = false;
                 })
             }
             if (this.dialogType === '编辑数据格式') {
-              let param = this.dataSourceForm;
-              this.http.put('/rest/report/data-source-info/', param)
+              let param = this.dataFormatForm;
+              this.http.put('/rest/report/groovy', param)
                 .then(res => {
                   this.dataFormatForm = {
-                    dataFormatName: '',
+                    name: '',
+                    script: '',
                     description: ''
                   };
                   this.dataFormatVisible = false;

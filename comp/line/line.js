@@ -13,6 +13,10 @@ export default {
     showXAxisLine: false,
     showYAxisLine: false,
     smooth: true,
-    lineWidth: 5
+    girdLeft: '5%',
+    girdTop: 20,
+    girdRight: '2%',
+    girdBottom: 40,
+    lineWidth: 3
   }
 };
