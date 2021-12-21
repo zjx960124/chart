@@ -798,6 +798,7 @@
       flex: 1;
       height: 100%;
       flex-shrink: 0;
+      overflow-y: auto;
       .type-title {
         width: 100%;
         height: 40px;

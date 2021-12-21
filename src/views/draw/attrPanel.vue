@@ -67,6 +67,7 @@
           </el-form-item>
           <el-form-item label="背景图(文件夹)">
             <el-select
+              clearable
               v-model="activeData.style.backgroundGroup"
             >
               <el-option
@@ -79,6 +80,7 @@
           </el-form-item>
           <el-form-item label="背景图(图片)">
             <el-select
+              clearable
               v-model="activeData.style.backgroundImage"
             >
               <el-option
