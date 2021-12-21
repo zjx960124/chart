@@ -7,6 +7,7 @@ ClHat.install = function(Vue) {
 export default {
   component: ClHat,
   name: '博士帽图',
+  isChart: false,
   deployOption: {
     hatBackSize: 8
   }

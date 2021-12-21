@@ -4,7 +4,7 @@
       class="jzgxlfb-item"
       v-for="(item, index) in compData"
     >
-      <div class="label">{{ item.name }}</div>
+      <div class="label">{{ item[columns[1]] }}</div>
       <div class="icon">
         <dynamic-icon
           class="icon-view"
@@ -17,7 +17,7 @@
           :back-icon="require('../../images/backicon.png')"
         ></dynamic-icon>
       </div>
-      <div class="value">{{ item.value }}</div>
+      <div class="value">{{ item[columns[0]] }}</div>
     </div>
   </div>
 </template>
@@ -76,7 +76,7 @@
     methods: {
       renderComp() {
         if (this.datasourceId && this.sql) {
-          this.getMock();
+          this.getData();
         } else {
           this.getMock();
         }
@@ -117,7 +117,6 @@
           });
           base.push(a)
         });
-        console.log(base);
         let all = 0;
         base.forEach(item => { all += Number(item[this.columns[0]]) });
         let baseNum = parseInt(all / (Number(this.deployOption.hatBackSize) || 8));
@@ -128,6 +127,7 @@
           item.remainingNum = item.backSize - item.fullNum - item.halfNum;
         });
         this.compData = base;
+        console.log(this.compData)
       }
     },
 
