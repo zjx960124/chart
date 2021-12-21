@@ -139,14 +139,18 @@
     methods: {
       getList() {
         let param = {
-          name: this.name
+          name: this.name,
+          page: this.page.index,
         };
         this.http.get('/rest/report/groovy/page', param)
           .then(res => {
-            console.log(res);
             this.dataFormatList = res.data.content;
-            this.total = res.data.totalElements;
-          })
+            this.page.total = res.data.totalElements;
+        })
+        this.http.get('/rest/report/groovy/list', param).then(res => {
+          console.log(res);
+          // this.dataFormatList = res.data;
+        })
       },
       create() {
         this.dataFormatVisible = true;
@@ -156,7 +160,8 @@
         let param = { id: data.id };
         this.http.delete('/rest/report/groovy', param)
           .then(res => {
-            console.log(res);
+            this.$message.success(res.data.msg);
+            this.getList();
         })
       },
       handleEditClick(data) {
@@ -192,6 +197,7 @@
                     description: ''
                   };
                   this.dataFormatVisible = false;
+                  this.getList();
                 })
             }
             if (this.dialogType === '编辑数据格式') {
@@ -204,6 +210,7 @@
                     description: ''
                   };
                   this.dataFormatVisible = false;
+                  this.getList();
                 })
             }
           } else {

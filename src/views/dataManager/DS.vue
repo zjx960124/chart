@@ -110,7 +110,7 @@
         this.http.get('/rest/report/data-sql/list')
           .then(res => {
             this.DSList = res.data;
-            this.page.total = res.data.length;
+            // this.page.total = res.data.length;
           })
       },
       getSourceList() {
@@ -235,6 +235,7 @@
       padding: .2rem .8rem .2rem 1rem;
       display: flex;
       flex-wrap: wrap;
+      overflow-y: auto;
     }
     ::v-deep .el-dialog__header {
       font-size: 12px;
