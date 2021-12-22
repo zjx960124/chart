@@ -2,15 +2,15 @@
   <div class="edit-project">
     <div class="detail-view">
       <div class="title">新增版面</div>
-      <div class="info">
+      <!--<div class="info">
         <div>项目名称：福州商旅学校</div>
         <div>领域：高职院校</div>
         <div>
           <span>项目编辑时分辨率:</span>
           <el-input size="small"></el-input>
         </div>
-      </div>
-      <div class="info">
+      </div>-->
+      <!--<div class="info">
         <div>
           <span>模板名称：</span>
           <el-input size="small"></el-input>
@@ -27,7 +27,7 @@
           <el-button type="primary" size="small">查询</el-button>
           <el-button size="small">重置</el-button>
         </div>
-      </div>
+      </div>-->
     </div>
     <div class="main-view">
       <div

@@ -173,7 +173,6 @@
           },
           xAxis: {
             type: this.deployOption.isTransverse ? 'value' : 'category',
-            interval: 1,
             axisLine: {
               show: this.deployOption.showXAxisLine
             },
@@ -201,6 +200,8 @@
           },
           series: seriesData
         };
+        // x轴全渲染
+        this.deployOption.isTransverse ? option.yAxis.interval = 0 : option.xAxis.interval;
         // 渲染主题
         option = this.theme && themeConfig[this.theme] ? _.merge(option, themeConfig[this.theme].bar) : option;
         this[this.refName + 'Chart'].setOption(option);

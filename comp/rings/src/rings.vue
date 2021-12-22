@@ -24,15 +24,42 @@
       legend: String,
       category: String,
       sql: String,
-      deployOption: Object
+      deployOption: Object,
+      DSId: String | Number,
     },
     methods: {
       renderEChart() {
-        axios.get('/mock.json').then((res) => {
-          this.baseData = res.data.ring.rows;
-          this.columns = res.data.ring.columns;
-          this.renderOption();
-        })
+        if (this.DSId) {
+          this.getData();
+        } else {
+          this.getMock();
+        }
+      },
+      getMock() {
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
+          axios.get(`/report/mock.json`).then((res) => {
+            this.baseData = res.data.ring.rows;
+            this.columns = res.data.ring.columns;
+            this.renderOption();
+          })
+        }, 1000);
+      },
+      getData() {
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
+          this.http.get('/rest/report/sql/id', {
+            id: this.DSId
+          }).then((res) => {
+            this.baseData = res.data.rows;
+            this.columns = res.data.columns;
+            this.renderOption();
+          })
+        }, 1000)
       },
       renderOption() {
         if (this[this.refName + 'Chart']) {

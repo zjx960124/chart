@@ -7,5 +7,6 @@ ClTurnPage.install = function(Vue) {
 export default {
   component: ClTurnPage,
   name: '翻页图',
+  backgroundImage: require('../assets/turn.png'),
   deployOption: {}
 };

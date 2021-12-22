@@ -7,6 +7,7 @@ ClTopTen.install = function(Vue) {
 export default {
   component: ClTopTen,
   name: 'top10组件',
+  backgroundImage: require('../assets/OATop10.png'),
   deployOption: {
     utils: '个'
   }

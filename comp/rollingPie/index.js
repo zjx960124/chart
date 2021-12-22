@@ -7,5 +7,6 @@ ClRollingPie.install = function(Vue) {
 export default {
   component: ClRollingPie,
   name: '滚动饼图',
+  backgroundImage: require('../assets/shuffingRing.png'),
   deployOption: {}
 };

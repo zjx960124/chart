@@ -6,7 +6,8 @@ ClRings.install = function(Vue) {
 
 export default {
   component: ClRings,
-  name: '环形图组件',
+  name: '环形图',
+  backgroundImage: require('../assets/ring.png'),
   deployOption: {
     legendBottom: '',
     legendLeft: '',

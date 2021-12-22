@@ -17,7 +17,7 @@
       <el-form
         v-show="currentTab === '1'"
         size="small"
-        label-width="125px"
+        label-width="100px"
       >
         <el-form-item label="容器排列方向">
           <el-select
@@ -32,10 +32,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="容器内间距">
-          <el-input v-model="activeData.style.padding" placeholder="请输入容器内间距" />
+          <el-input-number v-model="activeData.style.padding" />
         </el-form-item>
         <el-form-item label="容器占比">
-          <el-input v-model="activeData.style.flex" placeholder="请输入容器内间距" />
+          <el-input-number v-model="activeData.style.flex" />
         </el-form-item>
         <el-form-item label="容器背景色">
           <el-color-picker v-model="activeData.style.backgroundColor" show-alpha></el-color-picker>
@@ -54,16 +54,16 @@
             </el-select>
           </el-form-item>-->
           <el-form-item label="左边距">
-            <el-input type="number" v-model="activeData.style.marginLeft" placeholder="请输入文本字体大小" />
+            <el-input-number type="number" v-model="activeData.style.marginLeft" />
           </el-form-item>
           <el-form-item label="上边距">
-            <el-input type="number" v-model="activeData.style.marginTop" placeholder="请输入文本字体大小" />
+            <el-input-number type="number" v-model="activeData.style.marginTop" />
           </el-form-item>
           <el-form-item label="下边距">
-            <el-input type="number" v-model="activeData.style.marginBottom" placeholder="请输入文本字体大小" />
+            <el-input-number type="number" v-model="activeData.style.marginBottom" />
           </el-form-item>
           <el-form-item label="右边距">
-            <el-input type="number" v-model="activeData.style.marginRight" placeholder="请输入文本字体大小" />
+            <el-input-number type="number" v-model="activeData.style.marginRight" />
           </el-form-item>
           <el-form-item label="背景图(文件夹)">
             <el-select
@@ -103,10 +103,10 @@
             <el-color-picker v-model="activeData.style.color"></el-color-picker>
           </el-form-item>
           <el-form-item label="字体大小">
-            <el-input v-model="activeData.style.fontSize" placeholder="请输入文本字体大小" />
+            <el-input-number v-model="activeData.style.fontSize" />
           </el-form-item>
           <el-form-item label="容器高度">
-            <el-input v-model="activeData.style.height" />
+            <el-input-number v-model="activeData.style.height" />
           </el-form-item>
           <el-form-item label="字体位置">
             <el-select
@@ -144,40 +144,40 @@
             </el-select>
           </el-form-item>
           <el-form-item label="左边距">
-            <el-input type="number" v-model="activeData.style.marginLeft" placeholder="" />
+            <el-input-number type="number" v-model="activeData.style.marginLeft" />
           </el-form-item>
           <el-form-item label="上边距">
-            <el-input type="number" v-model="activeData.style.marginTop" placeholder="" />
+            <el-input-number type="number" v-model="activeData.style.marginTop" />
           </el-form-item>
           <el-form-item label="下边距">
-            <el-input type="number" v-model="activeData.style.marginBottom" placeholder="" />
+            <el-input-number type="number" v-model="activeData.style.marginBottom" />
           </el-form-item>
           <el-form-item label="右边距">
-            <el-input type="number" v-model="activeData.style.marginRight" placeholder="" />
+            <el-input-number type="number" v-model="activeData.style.marginRight" />
           </el-form-item>
         </div>
         <div v-show="activeType === 'chartContainer'">
           <el-form-item label="左边距(内)">
-            <el-input type="number" v-model="activeData.style.paddingLeft" placeholder="请输入文本字体大小" />
+            <el-input-number type="number" v-model="activeData.style.paddingLeft" />
           </el-form-item>
           <el-form-item label="上边距(内)">
-            <el-input type="number" v-model="activeData.style.paddingTop" placeholder="请输入文本字体大小" />
+            <el-input-number type="number" v-model="activeData.style.paddingTop" />
           </el-form-item>
           <el-form-item label="下边距(内)">
-            <el-input type="number" v-model="activeData.style.paddingBottom" placeholder="请输入文本字体大小" />
+            <el-input-number type="number" v-model="activeData.style.paddingBottom" />
           </el-form-item>
           <el-form-item label="右边距(内)">
-            <el-input type="number" v-model="activeData.style.paddingRight" placeholder="请输入文本字体大小" />
+            <el-input-number type="number" v-model="activeData.style.paddingRight" />
           </el-form-item>
         </div>
       </el-form>
       <el-form
         v-show="currentTab === '2'"
         size="small"
-        label-width="125px"
+        label-width="100px"
       >
-        <el-form-item label="画布内容器间隔:">
-          <el-input v-model="formConf.gutter" placeholder="请输入画布内容器间隔" />
+        <el-form-item label="容器间隔:">
+          <el-input-number v-model="formConf.gutter" />
         </el-form-item>
         <el-form-item label="画布排列方向:">
           <el-select
@@ -313,6 +313,8 @@
     }
     .property-view {
       margin-top: 20px;
+      box-sizing: border-box;
+      padding: 0 15px;
       ::v-deep .el-form {
         .el-form-item {
           .el-form-item__content {
@@ -324,5 +326,22 @@
         }
       }
     }
+    .el-menu-demo {
+      border-bottom: none;
+      .el-menu-item {
+        height: 40px;
+        line-height: 40px;
+        width: 50%;
+        color: #666666;
+        background: #DCE8F5;
+      }
+      .el-menu-item.is-active {
+        border: none;
+        border-top: 2px solid #1569EB;
+        color: #1569EB;
+        background: #ffffff;
+      }
+    }
+    /*.el-menu--horizontal>.el-menu-item*/
   }
 </style>

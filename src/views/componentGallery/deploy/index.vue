@@ -539,7 +539,6 @@
       getDataSourceList() {
         this.http.get('/rest/report/data-source-info/list')
         .then(res => {
-          console.log(res);
           this.dataSourceList = res.data;
         })
       },
@@ -565,7 +564,6 @@
           let data = res.data.length > 0 ? JSON.parse(res.data[0].code).props : this.props;
           data.deployOption = {...this.compProps.deployOption, ...data.deployOption} || {};
           this.props = data;
-          console.log(this.props);
         })
       },
       /**
@@ -618,7 +616,6 @@
        */
       changeDS(val) {
         let data = this.DSList.find((item, index) => {return item.id === val});
-        console.log(data);
         this.props.sql = data.sqlValue;
         this.props.datasourceId = data.datasourceId;
         this.getChartData();
@@ -627,9 +624,11 @@
        * 提交组件修改
        */
       submitComp() {
+        console.log(1111111111)
         let param = {
           name: this.comp,
           code: JSON.stringify({
+            backgroundImage: this.compProps.backgroundImage,
             layout: this.compProps.component.name,
             label: this.compProps.name,
             type: 'cChart',
@@ -637,7 +636,8 @@
               ...this.props
             }
           })
-        }
+        };
+        console.log(param);
         this.http.post('/rest/report/chart', param)
         .then((res) => {
           console.log(res)

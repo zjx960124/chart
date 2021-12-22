@@ -7,6 +7,7 @@ ClBar.install = function(Vue) {
 export default {
   component: ClBar,
   name: '柱状图组件',
+  backgroundImage: require('../assets/bar.png'),
   deployOption: {
     barWidth: 6,
     legendBottom: 0,

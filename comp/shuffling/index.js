@@ -7,5 +7,6 @@ ClShuffling.install = function(Vue) {
 export default {
   component: ClShuffling,
   name: '轮播图',
+  backgroundImage: require('../assets/shuffing.png'),
   deployOption: {}
 };

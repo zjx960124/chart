@@ -199,6 +199,7 @@
           ...config.style,
           padding: config.style.padding + 'px',
           fontSize: config.style.fontSize + 'px',
+          height: config.style.height + 'px',
           // background: 'url('+ back +') 100% 100% no-repeat',
           ...backOption,
           ...utils

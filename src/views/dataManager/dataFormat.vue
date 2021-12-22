@@ -146,11 +146,7 @@
           .then(res => {
             this.dataFormatList = res.data.content;
             this.page.total = res.data.totalElements;
-        })
-        this.http.get('/rest/report/groovy/list', param).then(res => {
-          console.log(res);
-          // this.dataFormatList = res.data;
-        })
+        });
       },
       create() {
         this.dataFormatVisible = true;

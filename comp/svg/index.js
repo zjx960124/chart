@@ -6,7 +6,8 @@ ClSvg.install = function(Vue) {
 
 export default {
   component: ClSvg,
-  name: 'svg分布图',
+  name: '政治面貌',
+  backgroundImage: require('../assets/zzmm.png'),
   deployOption: {
 
   }

@@ -10,9 +10,12 @@
   import echarts from 'echarts';
   import axios from 'axios';
   import { xAxis, Grid, debounce, fitChartSize, fitChartHeight } from '../../utils/construction';
-  import * as themeConfig from '../../utils/style'
+  import * as themeConfig from '../../utils/style';
+  import handle from '../../utils'
   export default {
     name: 'ClBattery',
+
+    mixins: [handle],
 
     props: {
       refName: String,
@@ -34,57 +37,7 @@
       }
     },
 
-    watch: {
-      category: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderOption();
-        }
-      },
-      legend: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderOption();
-        }
-      },
-      sql: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderEChart();
-        }
-      },
-      datasourceId: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderEChart();
-        }
-      },
-      theme: {
-        handler: function (newV, oldV) {
-          this.renderOption();
-        }
-      },
-      deployOption: {
-        deep: true,
-        handler: function (newV, oldV) {
-          this.renderOption();
-        }
-      }
-    },
-
-    beforeDestroy() {
-      // this[this.refName + 'Chart'].dispose();
-      // this[this.refName + 'Chart'] = null;
-    },
-
     methods: {
-      renderEChart() {
-        if (this.DSId) {
-          this.getData();
-        } else {
-          this.getMock();
-        }
-      },
       getMock() {
         if (this.timeout) {
           clearTimeout(this.timeout)
@@ -96,20 +49,6 @@
             this.renderOption();
           })
         }, 1000);
-      },
-      getData() {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-        this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql/id', {
-            id: this.DSId
-          }).then((res) => {
-            this.baseData = res.data.rows;
-            this.columns = res.data.columns;
-            this.renderOption();
-          })
-        }, 1000)
       },
       renderOption() {
         if (this[this.refName + 'Chart']) {
@@ -275,7 +214,7 @@
             },
           },
           xAxis: {
-            type: this.deployOption.isTransverse ? 'value' : 'category',
+            type: 'category',
             axisLine: {
               show: this.deployOption.showXAxisLine
             },
@@ -288,7 +227,7 @@
             data: new xAxis(xAxisData).getData()
           },
           yAxis: {
-            type: this.deployOption.isTransverse ? 'category' : 'value',
+            type: 'value',
             axisLine: {
               show: this.deployOption.showYAxisLine
             },
@@ -307,21 +246,8 @@
         option = this.theme && themeConfig[this.theme] ? _.merge(option, themeConfig[this.theme].bar) : option;
         this[this.refName + 'Chart'].setOption(option);
       },
-      setTheme() {
-        let str = this.theme;
-        function jikj(str) {   return `../../conf/${str}.js`; }
-        try {
-          const cc = () => import(jikj());
-        } catch (e) {}
-        this.renderEChart();
-      }
     },
 
-    mounted() {
-      this.$nextTick(() => {
-        this.setTheme();
-      })
-    }
   };
 </script>
 

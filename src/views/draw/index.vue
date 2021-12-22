@@ -1,137 +1,146 @@
 <template>
   <div class="draw-container">
-    <div class="left">
-      <div>
-        <div class="type-title">元件</div>
-        <draggable
-          class="components-draggable"
-          :list="leftComponents"
-          :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
-          :clone="cloneComponent"
-          draggable=".components-item"
-          :sort="false"
-          @end="onEnd"
-        >
-          <div
-            v-for="(element, index) in leftComponents"
-            :key="index"
-            class="components-item"
-            @click="addComponent(element)"
-          >
-            <div class="components-body">
-              {{ element.label }}
-            </div>
-          </div>
-        </draggable>
-      </div>
-      <div>
-        <div class="type-title">组件</div>
-        <draggable
-          class="components-draggable"
-          :list="leftElement"
-          :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
-          :clone="cloneComponent"
-          type="zj"
-          draggable=".components-item"
-          :sort="false"
-          @end="onEnd"
-        >
-          <div
-            v-for="(element, index) in leftElement"
-            :key="index"
-            class="components-item"
-            @click="addComponent(element)"
-          >
-            <div class="components-body">
-              {{ element.label }}
-            </div>
-          </div>
-        </draggable>
-      </div>
-      <div>
-        <div class="type-title">模板</div>
-        <draggable
-          class="components-draggable"
-          :list="templateComponents"
-          :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
-          :clone="cloneComponent"
-          draggable=".components-item"
-          :sort="false"
-          @end="onEnd"
-        >
-          <div
-            v-for="(element, index) in templateComponents"
-            :key="index"
-            class="components-item"
-            @click="addComponent(element, 'temp')"
-          >
-            <div class="components-body">
-              {{ element.name }}
-            </div>
-          </div>
-        </draggable>
-      </div>
+    <div class="operate-view">
+      <el-button type="primary" icon="el-icon-printer" size="small" @click="goBack">返回</el-button>
+      <el-button type="primary" icon="el-icon-printer" size="small" @click="savePage">保存页面</el-button>
+      <el-button type="primary" icon="el-icon-printer" size="small" v-show="currentType !== 'project'" @click="uploadTemplate">保存模板</el-button>
+      <el-button type="primary" icon="el-icon-printer" size="small" @click="generateJSON">导出json文件</el-button>
+      <!--<el-button type="primary" icon="el-icon-printer" size="small" @click="upload">上传</el-button>-->
+      <!--<el-button type="primary" icon="el-icon-printer" size="small" @click="download">导出html文件</el-button>-->
+      <el-button type="primary" icon="el-icon-printer" size="small" @click="preview">预览界面</el-button>
+      <el-button type="primary" icon="el-icon-delete" size="small" @click="empty">清空</el-button>
     </div>
-    <div class="center">
-      <!--<div class="action-bar">
-      &lt;!&ndash;<el-button icon="el-icon-video-play" type="text" @click="run">
-        运行
-      </el-button>
-      <el-button icon="el-icon-view" type="text" @click="showJson">
-        查看json
-      </el-button>
-      <el-button icon="el-icon-download" type="text" @click="download">
-        导出vue文件
-      </el-button>
-      <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy">
-        复制代码
-      </el-button>&ndash;&gt;
-      &lt;!&ndash;<el-button class="delete-btn" icon="el-icon-delete" type="text" @click="empty">
-        清空
-      </el-button>&ndash;&gt;
-      <el-button type="danger" icon="el-icon-delete" size="small" @click="empty">清空</el-button>
-      </div>-->
-      <div class="operate-view">
-        <el-button type="primary" icon="el-icon-printer" size="small" @click="goBack">返回</el-button>
-        <el-button type="primary" icon="el-icon-printer" size="small" @click="savePage">保存页面</el-button>
-        <el-button type="primary" icon="el-icon-printer" size="small" v-show="currentType !== 'project'" @click="uploadTemplate">保存模板</el-button>
-        <el-button type="primary" icon="el-icon-printer" size="small" @click="generateJSON">导出json文件</el-button>
-        <!--<el-button type="primary" icon="el-icon-printer" size="small" @click="upload">上传</el-button>-->
-        <el-button type="primary" icon="el-icon-printer" size="small" @click="download">导出html文件</el-button>
-        <el-button type="primary" icon="el-icon-printer" size="small" @click="preview">预览界面</el-button>
+    <div class="draw-view">
+      <div class="left">
+        <el-collapse v-model="activeNames">
+          <el-collapse-item title="元件" name="1">
+            <div>
+              <draggable
+                class="components-draggable"
+                :list="leftComponents"
+                :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
+                :clone="cloneComponent"
+                draggable=".components-item-widget"
+                :sort="false"
+                @end="onEnd"
+              >
+                <div
+                  v-for="(element, index) in leftComponents"
+                  :key="index"
+                  class="components-item-widget"
+                  @click="addComponent(element)"
+                >
+                  <div class="components-body back">
+                    {{ element.label }}
+                  </div>
+                </div>
+              </draggable>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="组件" name="2">
+            <div>
+              <draggable
+                class="components-draggable"
+                :list="leftElement"
+                :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
+                :clone="cloneComponent"
+                type="zj"
+                draggable=".components-item"
+                :sort="false"
+                @end="onEnd"
+              >
+                <div
+                  v-for="(element, index) in leftElement"
+                  :key="index"
+                  class="components-item"
+                  @click="addComponent(element)"
+                >
+                  <div class="components-body">
+                    <img :src="element.backgroundImage" class="components-image"></img>
+                    <div class="components-label">{{ element.label }}</div>
+                  </div>
+                </div>
+              </draggable>
+            </div>
+          </el-collapse-item>
+          <el-collapse-item title="模板" name="3">
+            <div>
+              <draggable
+                class="components-draggable"
+                :list="templateComponents"
+                :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
+                :clone="cloneComponent"
+                draggable=".components-template"
+                :sort="false"
+                @end="onEnd"
+              >
+                <div
+                  v-for="(element, index) in templateComponents"
+                  :key="index"
+                  class="components-template"
+                  @click="addComponent(element, 'temp')"
+                >
+                  <div class="components-body">
+                    <div class="components-image"></div>
+                    <div class="components-label">{{ element.name }}</div>
+                  </div>
+                </div>
+              </draggable>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
+      <div class="center">
+        <!--<div class="action-bar">
+        &lt;!&ndash;<el-button icon="el-icon-video-play" type="text" @click="run">
+          运行
+        </el-button>
+        <el-button icon="el-icon-view" type="text" @click="showJson">
+          查看json
+        </el-button>
+        <el-button icon="el-icon-download" type="text" @click="download">
+          导出vue文件
+        </el-button>
+        <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy">
+          复制代码
+        </el-button>&ndash;&gt;
+        &lt;!&ndash;<el-button class="delete-btn" icon="el-icon-delete" type="text" @click="empty">
+          清空
+        </el-button>&ndash;&gt;
         <el-button type="danger" icon="el-icon-delete" size="small" @click="empty">清空</el-button>
+        </div>-->
+        <draggable
+          class="drawing-board img-scroll"
+          :list="drawingList"
+          :animation="340"
+          group="componentsGroup"
+          :style="{flexDirection: formConf.flexDirection}"
+          :disabled="dragFlag"
+        >
+          <draggable-item
+            v-for="(item, index) in drawingList"
+            :key="item.renderKey"
+            :drawing-list="drawingList"
+            :current-item="item"
+            :active-id="activeId"
+            :index="index"
+            :form-conf="formConf"
+            :template-theme="templateTheme"
+            @activeItem="activeFormItem"
+            @copyItem="drawingItemCopy"
+            @deleteItem="drawingItemDelete"
+            @editItem="editItem"
+          />
+        </draggable>
       </div>
-      <draggable
-        class="drawing-board img-scroll"
-        :list="drawingList"
-        :animation="340"
-        group="componentsGroup"
-        :style="{flexDirection: formConf.flexDirection}"
-        :disabled="dragFlag"
-      >
-        <draggable-item
-          v-for="(item, index) in drawingList"
-          :key="item.renderKey"
-          :drawing-list="drawingList"
-          :current-item="item"
-          :active-id="activeId"
-          :index="index"
+      <div class="right">
+        <attr-panel
+          :active-data="activeData"
           :form-conf="formConf"
-          :template-theme="templateTheme"
-          @activeItem="activeFormItem"
-          @copyItem="drawingItemCopy"
-          @deleteItem="drawingItemDelete"
-          @editItem="editItem"
-        />
-      </draggable>
-    </div>
-    <div class="right">
-      <attr-panel
-        :active-data="activeData"
-        :form-conf="formConf"
-        :show-field="!!drawingList.length"
-        @changeTemplateTheme="themeOfAttrPanel"
-      ></attr-panel>
+          :show-field="!!drawingList.length"
+          @changeTemplateTheme="themeOfAttrPanel"
+        ></attr-panel>
+      </div>
     </div>
     <widget-deploy
       :visible.sync="widgetDeployVisible"
@@ -240,7 +249,7 @@
               flexDirection: 'row',
               display: 'flex',
               width: '100%',
-              height: '60px',
+              height: 60,
               justifyContent: 'center',
               alignItems: 'center',
               color: '#b4d6d6',
@@ -408,7 +417,8 @@
         pageNameDialogVisible: false,
         dragFlag: false,
         projectCode: '',
-        currentType: ''
+        currentType: '',
+        activeNames: ['1', '2', '3']
       }
     },
     created() {
@@ -444,13 +454,14 @@
         Promise.all([this.http.get('/rest/report/chart/list'), this.http.get('/rest/report/template/list')]).then(([v1, v2]) => {
           this.drawingList = [];
           this.leftElement = v1.data.map((item) => JSON.parse(item.code));
+          console.log(this.leftElement)
           let data = v2.data;
           data.forEach((item) => {item.code = JSON.parse(item.code)});
           this.templateComponents = data.map(item => item.code.layouts[0]);
           let datas = data.find((item, index) => item.id === Number(this.$route.query.tempId) ) || [];
           this.$route.query.tempId && (this.addComponent(datas.code.layouts[0]), this.currentTempId = datas.id, this.currentTempName = datas.name);
           this.$route.query.id && this.getPageData();
-        })
+        });
       },
       getPageData() {
         this.http.get('/rest/report/page', {
@@ -793,238 +804,335 @@
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
+    background: #F0F2F5;
 
-    .left {
-      flex: 1;
-      height: 100%;
+    .operate-view {
+      flex: 55;
+      height: 0;
       flex-shrink: 0;
-      overflow-y: auto;
-      .type-title {
-        width: 100%;
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-        color: #333333;
-        font-size: 16px;
-      }
-      .components-draggable{
-        padding-bottom: 20px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        .components-item {
-          display: inline-block;
-          width: 48%;
-          margin: 1%;
-          transition: transform 0ms !important;
-          .components-body {
-            padding: 8px 10px;
-            background: #f6f7ff;
-            font-size: 12px;
-            cursor: move;
-            border: 1px dashed #f6f7ff;
-            border-radius: 3px;
-            .svg-icon{
-              color: #777;
-              font-size: 15px;
-            }
-            &:hover {
-              border: 1px dashed #787be8;
-              color: #787be8;
-              .svg-icon {
-                color: #787be8;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      box-sizing: border-box;
+      padding: 0 30px;
+    }
+
+    .draw-view {
+      flex: 912;
+      height: 0;
+      flex-shrink: 0;
+      display: flex;
+      margin-bottom: 17px;
+      .left {
+        flex: 304;
+        height: 100%;
+        flex-shrink: 0;
+        overflow-y: auto;
+        background: #ffffff;
+        .type-title {
+          width: 100%;
+          height: 40px;
+          line-height: 40px;
+          text-align: center;
+          color: #333333;
+          font-size: 16px;
+        }
+        .components-draggable{
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: flex-start;
+          .components-item {
+            display: inline-block;
+            width: 32%;
+            transition: transform 0ms !important;
+            .components-body {
+              box-sizing: border-box;
+              cursor: pointer;
+              .components-image {
+                width: 100%;
+                background: #000211;
+                aspect-ratio: auto 88 / 64;
+              }
+              .components-label {
+                font-size: 12px;
+                line-height: 12px;
+                text-align: center;
+                color: #333333;
+                font-family: PingFangSC-Medium;
+              }
+              .svg-icon{
+                color: #777;
+                font-size: 15px;
+              }
+              &:hover {
+                border: 1px dashed #1569EB;
+                color: #1569EB;
+                .svg-icon {
+                  color: #1569EB;
+                }
               }
             }
           }
-        }
-      }
-    }
-
-    .center {
-      flex: 12;
-      background: antiquewhite;
-      height: 100%;
-      width: 0;
-      display: flex;
-      flex-direction: column;
-
-      .action-bar{
-        position: relative;
-        height: 42px;
-        text-align: right;
-        padding: 0 15px;
-        box-sizing: border-box;;
-        border: 1px solid #f1e8e8;
-        background: #ffffff;
-        border-top: none;
-        border-left: none;
-        width: 100%;
-        .delete-btn{
-          color: #F56C6C;
-          line-height: 1;
-          white-space: nowrap;
-          cursor: pointer;
-          background: #FFF;
-          border: 1px solid #DCDFE6;
-          -webkit-appearance: none;
-          text-align: center;
-          -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-          outline: 0;
-          margin: 0;
-          -webkit-transition: .1s;
-          transition: .1s;
-          font-weight: 500;
-          padding: 12px 20px;
-          font-size: 14px;
-          border-radius: 4px;
-          display: inline-block;
-        }
-      }
-
-      .operate-view {
-        height: 42px;
-        padding: 0 15px;
-        text-align: right;
-        border: 1px solid #f1e8e8;
-        background: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-      }
-
-      .drawing-base {
-        width: 100%;
-        flex: 1;
-        display: flex;
-        overflow: hidden;
-        /*position: relative;*/
-      }
-
-      .drawing-board {
-        /*min-width: 100%;
-        min-height: 100%;
-        width: fit-content;
-        height: fit-content;*/
-        /*flex: 1;*/
-        width: 100%;
-        height: 100%;
-        /*display: flex;*/
-        padding: 50px;
-        box-sizing: border-box;
-        overflow: auto;
-        /*position: absolute;*/
-        ::v-deep .drawing-row-item {
-          position: relative;
-          cursor: move;
-          -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-          border: 1px dashed #ccc;
-          border-radius: 3px;
-          padding: 0 2px;
-          /*margin-bottom: 15px;*/
-          margin-right: 15px;
-          min-height: fit-content;
-          .component-name {
-            position: absolute;
-            top: 0;
-            left: 0;
-            font-size: 12px;
-            color: #bbb;
+          .components-item-widget {
             display: inline-block;
-            padding: 0 6px;
-            line-height: 20px;
-          }
-          .drawing-item-copy {
-            display: none;
-            position: absolute;
-            top: -10px;
-            width: 22px;
-            height: 22px;
-            line-height: 22px;
-            text-align: center;
-            border-radius: 50%;
-            font-size: 12px;
-            border: 1px solid;
+            width: 48%;
+            margin: 1%;
+            height: 40px;
+            box-sizing: border-box;
             cursor: pointer;
-            z-index: 1;
+            transition: transform 0ms !important;
+            .back {
+              background: #F0F5FA;
+              height: 100%;
+              line-height: 40px;
+              &:hover {
+                border: 1px dashed #1569EB;
+                color: #1569EB;
+                .svg-icon {
+                  color: #1569EB;
+                }
+              }
+            }
           }
-          .drawing-item-delete {
-            display: none;
-            position: absolute;
-            top: -10px;
-            width: 22px;
-            height: 22px;
-            line-height: 22px;
-            text-align: center;
-            border-radius: 50%;
-            font-size: 12px;
-            border: 1px solid;
+          .components-template {
+            display: inline-block;
+            width: 48%;
+            margin: 1%;
+            box-sizing: border-box;
             cursor: pointer;
-            z-index: 1;
+            transition: transform 0ms !important;
+            .components-body {
+              box-sizing: border-box;
+              cursor: pointer;
+              .components-image {
+                width: 100%;
+                background: #000211;
+                aspect-ratio: auto 134 / 80;
+              }
+              .components-label {
+                font-size: 12px;
+                line-height: 12px;
+                text-align: center;
+                color: #333333;
+                font-family: PingFangSC-Medium;
+                margin: 10px 0;
+              }
+              .svg-icon{
+                color: #777;
+                font-size: 15px;
+              }
+              &:hover {
+                border: 1px dashed #1569EB;
+                color: #1569EB;
+                .svg-icon {
+                  color: #1569EB;
+                }
+              }
+            }
           }
-          .drawing-item-edit {
-            display: none;
-            position: absolute;
-            top: -10px;
-            width: 22px;
-            height: 22px;
-            line-height: 22px;
-            text-align: center;
-            border-radius: 50%;
-            font-size: 12px;
-            border: 1px solid;
-            cursor: pointer;
-            z-index: 1;
-          }
-          .drag-wrapper .drawing-row-item {
-            /*margin-top: 20px;*/
+          .components-item:nth-child(3n + 2) {
+            margin:0 2% 15px;
           }
         }
-        ::v-deep .drawing-row-item > .drag-wrapper {
-          margin: 0 !important;
+        ::v-deep .el-collapse-item__content {
+          padding-left: 12px;
+          padding-right: 12px;
+          padding-bottom: 15px;
         }
-        ::v-deep .active-from-item > .drawing-item-copy {
-          display: initial;
+        ::v-deep .el-collapse-item__header {
+          padding-left: 16px;
         }
-        ::v-deep .active-from-item > .drawing-item-delete {
-          display: initial;
-        }
-        ::v-deep .active-from-item > .drawing-item-edit {
-          display: initial;
-        }
-        ::v-deep .drag-wrapper > .drawing-row-item {
-          margin-right: 0;
-        }
-        ::v-deep .drawing-row-item.active-from-item {
-          border: 1px dashed #409EFF;
-          .drawing-item-copy {
-            right: 46px;
-            border-color: #409EFF;
-            color: #409EFF;
-            background: #fff;
-          }
-          .drawing-item-delete {
-            right: 14px;
-            border-color: #F56C6C;
+      }
+
+      .center {
+        flex: 1274;
+        background: #ffffff;
+        height: 100%;
+        width: 0;
+        display: flex;
+        flex-direction: column;
+        margin: 0 20px;
+
+        .action-bar{
+          position: relative;
+          height: 42px;
+          text-align: right;
+          padding: 0 15px;
+          box-sizing: border-box;;
+          border: 1px solid #f1e8e8;
+          background: #ffffff;
+          border-top: none;
+          border-left: none;
+          width: 100%;
+          .delete-btn{
             color: #F56C6C;
-            background: #fff;
+            line-height: 1;
+            white-space: nowrap;
+            cursor: pointer;
+            background: #FFF;
+            border: 1px solid #DCDFE6;
+            -webkit-appearance: none;
+            text-align: center;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            outline: 0;
+            margin: 0;
+            -webkit-transition: .1s;
+            transition: .1s;
+            font-weight: 500;
+            padding: 12px 20px;
+            font-size: 14px;
+            border-radius: 4px;
+            display: inline-block;
           }
-          .drawing-item-edit {
-            right: 78px;
-            border-color: #409EFF;
-            color: #409EFF;
-            background: #fff;
+        }
+
+        .operate-view {
+          height: 42px;
+          padding: 0 15px;
+          text-align: right;
+          border: 1px solid #f1e8e8;
+          background: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+
+        .drawing-base {
+          width: 100%;
+          flex: 1;
+          display: flex;
+          overflow: hidden;
+          /*position: relative;*/
+        }
+
+        .drawing-board {
+          /*min-width: 100%;
+          min-height: 100%;
+          width: fit-content;
+          height: fit-content;*/
+          /*flex: 1;*/
+          width: 100%;
+          height: 100%;
+          /*display: flex;*/
+          padding: 50px;
+          box-sizing: border-box;
+          overflow: auto;
+          /*position: absolute;*/
+          ::v-deep .drawing-row-item {
+            position: relative;
+            cursor: move;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            border: 1px dashed #ccc;
+            border-radius: 3px;
+            padding: 0 2px;
+            /*margin-bottom: 15px;*/
+            margin-right: 15px;
+            min-height: fit-content;
+            .component-name {
+              position: absolute;
+              top: 0;
+              left: 0;
+              font-size: 12px;
+              color: #bbb;
+              display: inline-block;
+              padding: 0 6px;
+              line-height: 20px;
+            }
+            .drawing-item-copy {
+              display: none;
+              position: absolute;
+              top: -10px;
+              width: 22px;
+              height: 22px;
+              line-height: 22px;
+              text-align: center;
+              border-radius: 50%;
+              font-size: 12px;
+              border: 1px solid;
+              cursor: pointer;
+              z-index: 1;
+            }
+            .drawing-item-delete {
+              display: none;
+              position: absolute;
+              top: -10px;
+              width: 22px;
+              height: 22px;
+              line-height: 22px;
+              text-align: center;
+              border-radius: 50%;
+              font-size: 12px;
+              border: 1px solid;
+              cursor: pointer;
+              z-index: 1;
+            }
+            .drawing-item-edit {
+              display: none;
+              position: absolute;
+              top: -10px;
+              width: 22px;
+              height: 22px;
+              line-height: 22px;
+              text-align: center;
+              border-radius: 50%;
+              font-size: 12px;
+              border: 1px solid;
+              cursor: pointer;
+              z-index: 1;
+            }
+            .drag-wrapper .drawing-row-item {
+              /*margin-top: 20px;*/
+            }
+          }
+          ::v-deep .drawing-row-item > .drag-wrapper {
+            margin: 0 !important;
+          }
+          ::v-deep .active-from-item > .drawing-item-copy {
+            display: initial;
+          }
+          ::v-deep .active-from-item > .drawing-item-delete {
+            display: initial;
+          }
+          ::v-deep .active-from-item > .drawing-item-edit {
+            display: initial;
+          }
+          ::v-deep .drag-wrapper > .drawing-row-item {
+            margin-right: 0;
+          }
+          ::v-deep .drawing-row-item.active-from-item {
+            border: 1px dashed #409EFF;
+            .drawing-item-copy {
+              right: 46px;
+              border-color: #409EFF;
+              color: #409EFF;
+              background: #fff;
+            }
+            .drawing-item-delete {
+              right: 14px;
+              border-color: #F56C6C;
+              color: #F56C6C;
+              background: #fff;
+            }
+            .drawing-item-edit {
+              right: 78px;
+              border-color: #409EFF;
+              color: #409EFF;
+              background: #fff;
+            }
           }
         }
       }
-    }
 
-    .right {
-      flex: 3;
-      flex-shrink: 0;
-      height: 100%;
+      .right {
+        flex: 304;
+        flex-shrink: 0;
+        height: 100%;
+        background: #ffffff;
+      }
     }
 
     .dialog {

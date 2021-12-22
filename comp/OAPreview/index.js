@@ -7,5 +7,6 @@ ClOAPreview.install = function(Vue) {
 export default {
   component: ClOAPreview,
   name: 'OA流程一览',
+  backgroundImage: require('../assets/OAyl.png'),
   deployOption: {}
 };

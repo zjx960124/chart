@@ -6,7 +6,8 @@ ClPie.install = function(Vue) {
 
 export default {
   component: ClPie,
-  name: '饼图组件',
+  name: '饼图',
+  backgroundImage: require('../assets/rings.png'),
   deployOption: {
     legendRight: '',
     legendTop: '',

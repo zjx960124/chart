@@ -8,10 +8,10 @@
         <el-form-item label="项目编号:">
           <el-input size="small" v-model="projectCode"></el-input>
         </el-form-item>
-        <el-button size="small" type="primary" @click="getProjectList">查询</el-button>
-        <el-button size="small">重置</el-button>
+        <el-button size="small" icon="el-icon-search" type="primary" @click="getProjectList">查询</el-button>
+        <!--<el-button size="small" icon="el-icon-refresh">重置</el-button>-->
       </el-form>
-      <el-button type="primary" size="small" @click="createProject">新增项目</el-button>
+      <el-button type="primary" icon="el-icon-plus" size="small" @click="createProject">新增项目</el-button>
     </div>
     <div class="main-view">
       <div

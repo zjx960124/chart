@@ -25,7 +25,7 @@
       <div class="item-child">
         <div class="item-icon"></div>
         <div class="item-info">
-          <div class="item-label">{{ item.name }}</div>
+          <div class="item-label">{{ item[columns[1]] }}</div>
           <div class="item-value">{{ item[columns[0]] }}</div>
         </div>
       </div>
@@ -35,8 +35,11 @@
 
 <script>
   import axios from 'axios';
+  import handle from '../../utils'
   export default {
     name: 'ClSvg',
+
+    mixins: [handle],
 
     props: {
       refName: String,
@@ -44,6 +47,7 @@
       deployOption: Object,
       datasourceId: String | Number,
       sql: String,
+      DSId: String | Number,
     },
 
     data() {
@@ -55,36 +59,11 @@
       }
     },
 
-    watch: {
-      deployOption: {
-        deep: true,
-        handler: function (newV, oldV) {
-          this.renderComp();
-        }
-      },
-      sql: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderComp();
-        }
-      },
-      datasourceId: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderComp();
-        }
-      },
-    },
-
-    beforeDestroy() {
-      // this[this.refName + 'Chart'].dispose();
-      // this[this.refName + 'Chart'] = null;
-    },
-
     methods: {
-      renderComp() {
-        if (this.datasourceId && this.sql) {
-          this.getMock();
+      renderEChart() {
+        console.log(this.DSId);
+        if (this.DSId) {
+          this.getData();
         } else {
           this.getMock();
         }
@@ -94,13 +73,12 @@
           clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql', {
-            datasourceId: this.datasourceId,
-            sql: this.sql
+          this.http.get('/rest/report/sql/id', {
+            id: this.DSId
           }).then((res) => {
             this.baseData = res.data.rows;
             this.columns = res.data.columns;
-            this.handleData();
+            this.renderOption();
           })
         }, 1000);
       },
@@ -108,37 +86,31 @@
         axios.get('/report/mock.json').then((res) => {
           this.baseData = res.data.zzmm.rows;
           this.columns = res.data.zzmm.columns;
-          this.handleData();
+          this.renderOption();
         })
       },
-      handleData() {
+      renderOption() {
         let base = [];
         this.baseData.forEach((item, index) => {
           let a = new Object();
           this.columns.forEach((items, indexs) => {
             a[items] = item[indexs]
-          })
+          });
           base.push(a)
         });
         base.forEach((item, index) => {
-          let x2 = 19 + Math.sin((2 * Math.PI / 360) * (3.6 * item.bili )) * 10;
-          let y2 = 17 - Math.cos((2 * Math.PI / 360) * (3.6 * item.bili )) * 10;
-          let direction = parseInt(item.bili) > 50 ? 1 : 0;
+          let x2 = 19 + Math.sin((2 * Math.PI / 360) * (3.6 * Number(item[this.columns[2]]) )) * 10;
+          let y2 = 17 - Math.cos((2 * Math.PI / 360) * (3.6 * Number(item[this.columns[2]]) )) * 10;
+          let direction = parseInt(item[this.columns[2]]) > 50 ? 1 : 0;
           item.svgString = `
                       <circle cx="19" cy="17" r="10" fill="#134B50"></circle>
                       <path d="M19 17 L19 7 A 10 10, 0, ${direction}, 1, ${parseInt(x2)} ${parseInt(y2)} L19 17 Z" fill="#04F9FA"></path>
-                      <text x="39" y="21" font-size="12" font-family="DIN-MEDIUM" font-weight="500" text-anchor="middle" fill="#D6731A">${parseInt(item.bili)}</text>
+                      <text x="39" y="21" font-size="12" font-family="DIN-MEDIUM" font-weight="500" text-anchor="middle" fill="#D6731A">${parseInt(item[this.columns[2]])}</text>
                       <text x="49" y="21" font-size="9" font-family="DIN-MEDIUM" font-weight="500" text-anchor="middle" fill="#D6731A">%</text>`
         });
         this.compData = base;
       }
     },
-
-    mounted() {
-      this.$nextTick(() => {
-        this.renderComp();
-      })
-    }
   }
 </script>
 

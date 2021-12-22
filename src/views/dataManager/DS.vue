@@ -52,6 +52,16 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="数据格式">
+          <el-select v-model="DSForm.format" style="width: 100%">
+            <el-option
+              v-for="(item, index) in dataFormatList"
+              :key="index"
+              :label="item.name"
+              :value="item.id.toString()"
+            ></el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancer">取 消</el-button>
@@ -96,14 +106,17 @@
         DSForm: {
           datasourceId: '',
           name: '',
-          sqlValue: ''
+          sqlValue: '',
+          format: ''
         },
-        dataSourceList: []
+        dataSourceList: [],
+        dataFormatList: []
       }
     },
     created() {
       this.getDSList();
       this.getSourceList();
+      this.getFormatList();
     },
     methods: {
       getDSList() {
@@ -118,6 +131,11 @@
           .then(res => {
             this.dataSourceList = res.data;
           })
+      },
+      getFormatList() {
+        this.http.get('/rest/report/groovy/list').then(res => {
+          this.dataFormatList = res.data;
+        })
       },
       createDS() {
         this.dialogType = '新增数据集';
@@ -144,7 +162,8 @@
         this.DSForm = {
           datasourceId: '',
           name: '',
-          sqlValue: ''
+          sqlValue: '',
+          format: ''
         };
         this.DSVisible = false;
       },
@@ -153,7 +172,8 @@
           this.DSForm = {
             datasourceId: '',
             name: '',
-            sqlValue: ''
+            sqlValue: '',
+            format: ''
           };
           this.DSVisible = false;
           return false;
@@ -167,7 +187,8 @@
                   this.DSForm = {
                     datasourceId: '',
                     name: '',
-                    sqlValue: ''
+                    sqlValue: '',
+                    format: ''
                   };
                   this.DSVisible = false;
                   this.getDSList();
@@ -180,7 +201,8 @@
                   this.DSForm = {
                     datasourceId: '',
                     name: '',
-                    sqlValue: ''
+                    sqlValue: '',
+                    format: ''
                   };
                   this.DSVisible = false;
                   this.getDSList();
@@ -195,7 +217,8 @@
         this.DSForm = {
           datasourceId: '',
           name: '',
-          sqlValue: ''
+          sqlValue: '',
+          format: ''
         };
         this.DSVisible = false;
       },

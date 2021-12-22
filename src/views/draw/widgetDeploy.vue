@@ -507,11 +507,6 @@
           name: '高亮数据索引',
           precondition: 'hasBackground',
           type: 'number',
-        },
-        heightLightColor: {
-          name: '非高亮背景色',
-          precondition: 'hasBackground',
-          type: 'colorPicker'
         }
       };
       return {
@@ -537,10 +532,7 @@
     },
     methods: {
       init() {
-        console.log(this.widgetItem);
-        console.log(this.$cChart);
         let compProps = this.$cChart.find( item => item.component.name === this.widgetItem.layout );
-        console.log(compProps)
         this.deployOption = {...compProps.deployOption, ...this.widgetItem.props.deployOption} || {};
         this.getDataSourceList();
         this.getDSList();
@@ -566,14 +558,14 @@
           })
       },
       getChartData() {
-        this.http.get('/rest/report/sql', {
-          datasourceId: this.widgetItem.props.dataModel,
-          sql: this.widgetItem.props.sql
-        })
-          .then((res) => {
+        if (this.widgetItem.props.DSId) {
+          this.http.get('/rest/report/sql/id', {
+            id: this.widgetItem.props.DSId
+          }).then((res) => {
             let data = res.data;
             this.dimension = data.columns.splice(1, data.columns.length);
           })
+        }
       },
       /**
        * 修改数据集

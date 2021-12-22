@@ -7,6 +7,7 @@ ClLine.install = function(Vue) {
 export default {
   component: ClLine,
   name: '折线图组件',
+  backgroundImage: require('../assets/line.png'),
   deployOption: {
     showXSplitLine: false,
     showYSplitLine: true,

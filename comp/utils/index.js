@@ -23,24 +23,50 @@ const echartMixin = {
       handler: function (newV, oldV) {
         this.renderOption();
       }
+    },
+    DSId: {
+      handler: function (newV, oldV) {
+        console.log(newV)
+        this.renderEChart();
+      }
     }
   },
   methods: {
     setTheme() {
-      console.log(this.theme);
       let str = this.theme;
       function jikj(str) {   return `../../conf/${str}.js`; }
       try {
         const cc = () => import(jikj());
       } catch (e) {}
       this.renderEChart();
-    }
+    },
+    renderEChart() {
+      if (this.DSId) {
+        this.getData();
+      } else {
+        this.getMock();
+      }
+    },
+    getData() {
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+      }
+      this.timeout = setTimeout(() => {
+        this.http.get('/rest/report/sql/id', {
+          id: this.DSId
+        }).then((res) => {
+          this.baseData = res.data.rows;
+          this.columns = res.data.columns;
+          this.renderOption();
+        })
+      }, 1000)
+    },
   },
   mounted() {
     this.$nextTick(() => {
       this.setTheme();
     })
   }
-}
+};
 
 export default echartMixin

@@ -6,7 +6,8 @@ ClMap.install = function(Vue) {
 
 export default {
   component: ClMap,
-  name: '基础地图组件',
+  name: '地图',
+  backgroundImage: require('../assets/map.png'),
   deployOption: {
     showVisualMap: true,
     migration: true,

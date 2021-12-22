@@ -3,19 +3,18 @@
     <div class="detail-view">
       <div class="title">编辑项目</div>
       <div class="info">
-        <div>项目名称：{{ projectInfo.name }}</div>
-        <div>项目编号：{{ projectInfo.projectCode }}</div>
-        <div>适配分辨率：1920*1080</div>
-        <div>主题风格：深邃蓝</div>
+        <div><span>项目名称:</span>{{ projectInfo.name }}</div>
+        <div><span>项目编号:</span>{{ projectInfo.projectCode }}</div>
+        <div><span>适配分辨率:</span>1920*1080</div>
+        <div><span>主题风格:</span>深邃蓝</div>
       </div>
       <div class="info">
-        <div>创建时间：{{ projectInfo.createTime }}</div>
-        <!--<div>最近发布时间：2021-03-01</div>-->
-        <div>页面数量：{{ this.pageList.length }}</div>
+        <div><span>创建时间:</span>{{ projectInfo.createTime }}</div>
+        <div><span>页面数量:</span>{{ this.pageList.length }}</div>
         <div class="operate">
           <el-button size="small" type="primary">切换主题</el-button>
-          <el-button size="small" type="primary" @click="publish">发布</el-button>
-          <el-button size="small" type="primary" @click="appendPage">新增界面</el-button>
+          <el-button size="small" type="primary" icon="el-icon-s-promotion" @click="publish">发布</el-button>
+          <el-button size="small" type="primary" icon="el-icon-plus" @click="appendPage">新增界面</el-button>
         </div>
       </div>
     </div>
@@ -185,6 +184,12 @@
           display: inline-block;
           margin-right: 20px;
           float: left;
+          span {
+            color: #333333;
+            font-family: PingFangSC-Medium;
+            font-size: 14px;
+            margin-right: 5px;
+          }
         }
         .operate {
           float: right;

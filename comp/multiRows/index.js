@@ -6,6 +6,7 @@ ClMultiRows.install = function(Vue) {
 
 export default {
   component: ClMultiRows,
-  name: '多行组件(办学规模)',
+  name: '办学规模',
+  backgroundImage: require('../assets/bxgm.png'),
   deployOption: {}
 };

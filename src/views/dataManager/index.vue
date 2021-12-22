@@ -21,9 +21,9 @@
       </el-menu>
     </div>
     <div class="right">
-      <data-source v-show="activeIndex === '1'"></data-source>
-      <d-s v-show="activeIndex === '2'"></d-s>
-      <data-format v-show="activeIndex === '3'"></data-format>
+      <data-source v-if="activeIndex === '1'"></data-source>
+      <d-s v-if="activeIndex === '2'"></d-s>
+      <data-format v-if="activeIndex === '3'"></data-format>
     </div>
   </div>
 </template>

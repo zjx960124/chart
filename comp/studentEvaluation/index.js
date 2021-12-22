@@ -7,6 +7,7 @@ ClStudentEvaluation.install = function(Vue) {
 export default {
   component: ClStudentEvaluation,
   name: '学生月评TOP10组件',
+  backgroundImage: require('../assets/shuffingTop10.png'),
   deployOption: {
     animationTime: 40,
   }

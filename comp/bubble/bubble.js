@@ -6,6 +6,7 @@ ClBubble.install = function(Vue) {
 
 export default {
   component: ClBubble,
-  name: '气泡图组件',
+  name: '气泡图',
+  backgroundImage: require('../assets/bubble.png'),
   deployOption: {}
 };
