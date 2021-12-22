@@ -193,9 +193,9 @@
   import { saveAs } from 'file-saver'
   import WidgetDeploy from './widgetDeploy'
   import Viewport from '../viewport'
-  let tempActiveData
-  let beautifier
-  let tempContainer = null
+  let tempActiveData;
+  let beautifier;
+  let tempContainer = null;
   export default {
     name: "Draw",
     components: {

@@ -90,6 +90,7 @@ const componentObj = {
       style: {
         ...obj.style,
         fontSize: obj.style.fontSize + 'px',
+        height: obj.style.height + 'px',
         ...backOption
       },
       ref: obj.componentName,
