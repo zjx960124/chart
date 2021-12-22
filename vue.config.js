@@ -1,6 +1,7 @@
 // vue-config.js
 const path = require('path');
 module.exports = {
+  publicPath: process.env.VUE_APP_PUBLIC_PATH,
   // 修改 src 目录 为 examples 目录
   pages: {
     index: {
