@@ -1,21 +1,22 @@
 import current from 'element-ui/packages/table/src/store/current'
 
-const fitChartWidth = (size, defalteWidth = 1920) => {
+let fitChartWidth = (size, defalteWidth = 1920) => {
   let clientWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  if (!clientWidth) return size;
+  if (!clientWidth || !size) return size;
   let scale = (clientWidth / defalteWidth);
-  return `${(size*scale).toFixed(10)}px`;
+  return `${parseFloat(size*scale).toFixed(8)}px`;
 };
-const fitChartHeight = (size, defalteHeight = 1080) => {
+let fitChartHeight = (size, defalteHeight = 1080) => {
   let clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-  if (!clientHeight) return size;
+  if (!clientHeight || !size) return size;
   let scale = (clientHeight / defalteHeight);
-  return `${(size*scale).toFixed(10)}px`;
+  return `${parseFloat(size*scale).toFixed(8)}px`;
 };
 
 const componentObj = {
   'rowFrame': function generateFrameComponent(h, obj, conf, bool, parentDirection, vm) {
     let currentDirection = parentDirection;
+    let current = obj;
     // bool gutters
     /*if (obj.children.length > 1 && obj.children[0].type !== 'title') {
       currentDirection = obj.type === 'canvas' ? conf.flexDirection : obj.style.flexDirection;
@@ -26,51 +27,61 @@ const componentObj = {
     gutters = {...gutters};*/
     let children = [];
     // 子元素
-    if (obj.children.length > 0) {
-      children = obj.children.map((item, index) => {
+    if (current.children.length > 0) {
+      children = current.children.map((item, index) => {
         let func = item.type === 'cChart' ? componentObj['cChart'] : componentObj[item.layout];
         let component = func? func.call(
-          vm, h, item, conf, obj.children.length === index + 1, obj.style.flexDirection || 'row', vm
+          vm, h, item, conf, current.children.length === index + 1, current.style.flexDirection || 'row', vm
         ) : null;
         return component;
       })
     }
     // 背景图
     let backOption = {};
-    if (obj.style.backgroundGroup && obj.style.backgroundImage) {
+    if (current.style.backgroundGroup && current.style.backgroundImage) {
       backOption = {
-        background: 'url('+ require(`../../../assets/group/${obj.style.backgroundGroup}/${obj.style.backgroundImage}`) +') no-repeat',
+        background: 'url('+ require(`../../../assets/group/${current.style.backgroundGroup}/${current.style.backgroundImage}`) +') no-repeat',
         backgroundSize: '100% 100%'
       }
     }
     // 画布
-    if (obj.type === 'canvas') {
-      delete obj.style.width;
-      delete obj.style.height;
-      obj.style.flex = 1;
+    if (current.type === 'canvas') {
+      delete current.style.width;
+      delete current.style.height;
+      current.style.flex = 1;
     }
     // 解决元素被撑大问题
     let flexObj = {};
-    if (obj.type !== 'cChart' && obj.type !== 'chartContainer') {
+    if (current.type !== 'cChart' && current.type !== 'chartContainer') {
       flexObj = currentDirection === 'row' ?
         { width: 0 } : { height: 0 } || {};
     }
     // 内联style自适应
-    obj.style.marginLeft = fitChartWidth(obj.style.marginLeft, 1920);
-    obj.style.marginRight = fitChartWidth(obj.style.marginRight, 1920);
-    obj.style.marginTop = fitChartHeight(obj.style.marginTop, 1080);
-    obj.style.marginBottom = fitChartHeight(obj.style.marginBottom, 1080);
-    obj.style.paddingTop = fitChartHeight(obj.style.paddingTop, 1080);
-    obj.style.paddingBottom = fitChartHeight(obj.style.paddingBottom, 1080);
-    obj.style.paddingLeft = fitChartWidth(obj.style.paddingLeft, 1920);
-    obj.style.paddingRight = fitChartWidth(obj.style.paddingRight, 1920);
+    let border = {};
+    if (current.type === 'container') {
+      border = {
+        marginTop: fitChartHeight(current.style.marginTop),
+        marginBottom: fitChartHeight(current.style.marginBottom),
+        marginLeft: fitChartWidth(current.style.marginLeft),
+        marginRight: fitChartWidth(current.style.marginRight)
+      }
+    }
+    if (current.type === 'chartContainer') {
+      border = {
+        paddingTop: fitChartHeight(current.style.paddingTop),
+        paddingBottom: fitChartHeight(current.style.paddingBottom),
+        paddingLeft: fitChartWidth(current.style.paddingLeft),
+        paddingRight: fitChartWidth(current.style.paddingRight)
+      }
+    }
     return h('div', {
       style: {
-        ...obj.style,
+        ...current.style,
         ...backOption,
-        ...flexObj
+        ...border
       },
-      ref: obj.componentName,
+      ref: current.renderKey,
+      key: current.renderKey,
     }, children)
   },
   'title': function generateTitleComponent(h, obj, conf, bool, parentDirection, vm) {
@@ -82,16 +93,19 @@ const componentObj = {
         backgroundSize: '100% 100%'
       }
     }
-    obj.style.marginLeft = fitChartWidth(obj.style.marginLeft, 1920);
-    obj.style.marginRight = fitChartWidth(obj.style.marginRight, 1920);
-    obj.style.marginTop = fitChartHeight(obj.style.marginTop, 1080);
-    obj.style.marginBottom = fitChartHeight(obj.style.marginBottom, 1080);
+    let border = {
+      marginTop: fitChartHeight(obj.style.marginTop),
+      marginBottom: fitChartHeight(obj.style.marginBottom),
+      marginLeft: fitChartWidth(obj.style.marginLeft),
+      marginRight: fitChartWidth(obj.style.marginRight)
+    };
     return h('div', {
       style: {
         ...obj.style,
         fontSize: obj.style.fontSize + 'px',
         height: obj.style.height + 'px',
-        ...backOption
+        ...backOption,
+        ...border
       },
       ref: obj.componentName,
     }, [obj.text])

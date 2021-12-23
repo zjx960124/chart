@@ -138,7 +138,7 @@ const pageBuild = {
       }
     }, [childComp]);
   },
-}
+};
 
 // tool 暂不管理解析器与组件库绑定
 /*export default {
