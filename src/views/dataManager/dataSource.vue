@@ -211,7 +211,7 @@
         this.dataSourceVisible = true;
       },
       test() {
-        let param = {dataSourceInfo : {...this.dataSourceForm}};
+        let param = {...this.dataSourceForm};
         this.http.post('/rest/report/data-source-info/test', param)
           .then(res => {
             console.log(res);

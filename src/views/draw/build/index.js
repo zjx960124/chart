@@ -38,16 +38,16 @@ const formBuild = {
       }
       }, [childComp]);
   },
-}
+};
 
 const install = function (Vue, ops = {}) {
   Vue.component('formBuild', formBuild)
-}
+};
 
 const API = {
   install,
   version
-}
+};
 
 if (typeof window !== 'undefined' && window.vue) {
   install(window.vue)
