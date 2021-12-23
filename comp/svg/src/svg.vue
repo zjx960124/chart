@@ -38,18 +38,13 @@
   import handle from '../../utils'
   export default {
     name: 'ClSvg',
-
     mixins: [handle],
-
     props: {
       refName: String,
       styleOption: Object,
       deployOption: Object,
-      datasourceId: String | Number,
-      sql: String,
       DSId: String | Number,
     },
-
     data() {
       return {
         baseData: [],
@@ -58,30 +53,7 @@
         timeout: null
       }
     },
-
     methods: {
-      renderEChart() {
-        console.log(this.DSId);
-        if (this.DSId) {
-          this.getData();
-        } else {
-          this.getMock();
-        }
-      },
-      getData() {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-        this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql/id', {
-            id: this.DSId
-          }).then((res) => {
-            this.baseData = res.data.rows;
-            this.columns = res.data.columns;
-            this.renderOption();
-          })
-        }, 1000);
-      },
       getMock() {
         axios.get('/report/mock.json').then((res) => {
           this.baseData = res.data.zzmm.rows;

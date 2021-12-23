@@ -503,7 +503,7 @@
           DSId: '',
           deployOption: {}
         },
-        themeFileList: this.$conf,
+        themeFileList: [],
         dataSourceList: [],
         DSList: [],
         activeNames: '3',
@@ -520,13 +520,13 @@
     created() {
       this.comp = this.$route.query.comp;
       this.compProps = this.$cChart.find( item => item.component.name === this.$route.query.comp );
-      /*let modulesFiles = require.context("@/cChart/conf/", true, /\.js$/);
+      let modulesFiles = require.context("../../../../comp/conf/", true, /\.js$/);
       this.themeFileList = modulesFiles.keys().reduce((modules, modulePath) => {
         const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, "$1");
         const value = modulesFiles(modulePath);
         modules.push({label: moduleName, value: moduleName})
         return modules;
-      }, []);*/
+      }, []);
       Promise.all([this.getCompProps(), this.getDataSourceList(), this.getDSList()])
       .then(res => {
         this.props.sql && this.props.datasourceId && this.getChartData();
@@ -601,13 +601,14 @@
        */
       getChartData() {
         if (!this.props.sql || !this.props.datasourceId) return false;
-        this.http.get('/rest/report/sql', {
-          datasourceId: this.props.datasourceId,
-          sql: this.props.sql
+        this.http.get('/rest/report/sql/id', {
+          id: this.props.DSId
         })
         .then((res) => {
           let data = res.data;
           this.dimension = data.columns.splice(1, data.columns.length);
+          this.props.legend = this.dimension[0] || '';
+          this.props.category = this.dimension[1] || '';
           this.baseData = res.data.rows;
         })
       },
@@ -624,7 +625,6 @@
        * 提交组件修改
        */
       submitComp() {
-        console.log(1111111111)
         let param = {
           name: this.comp,
           code: JSON.stringify({
@@ -637,7 +637,6 @@
             }
           })
         };
-        console.log(param);
         this.http.post('/rest/report/chart', param)
         .then((res) => {
           console.log(res)

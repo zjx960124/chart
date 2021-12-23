@@ -13,17 +13,14 @@
 
 <script>
   import axios from "axios";
-
+  import handle from '../../utils/index';
   export default {
     name: "KvBuild",
-
+    mixins: [handle],
     props: {
-      category: String,
-      sql: String,
       deployOption: Object,
       DSId: String | Number,
     },
-
     data() {
       return {
         compData: [],
@@ -32,30 +29,7 @@
         timeout: null
       }
     },
-
-    watch: {
-      deployOption: {
-        deep: true,
-        handler: function (newV, oldV) {
-          this.handleData();
-        }
-      },
-    },
-
-    mounted() {
-      this.$nextTick(() => {
-        this.renderEChart();
-      });
-    },
-
     methods: {
-      renderEChart() {
-        if (this.DSId) {
-          this.getData();
-        } else {
-          this.getMock();
-        }
-      },
       getMock() {
         if (this.timeout) {
           clearTimeout(this.timeout);
@@ -67,20 +41,6 @@
             this.handleData();
           })
         }, 1000);
-      },
-      getData() {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-        this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql/id', {
-            id: this.DSId
-          }).then((res) => {
-            this.baseData = res.data.rows;
-            this.columns = res.data.columns;
-            this.handleData();
-          })
-        }, 1000)
       },
       handleData() {
         let base = [];

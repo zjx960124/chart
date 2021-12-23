@@ -11,16 +11,16 @@
   import axios from "axios";
   const fjJson = require('../../conf/mapData/fj.json');
   import { provincialCapital } from "../../conf/mapData/province";
+  import handle from '../../utils/index';
   export default {
     name: "ClMap",
+    mixins: [handle],
     props: {
       refName: String,
       styleOption: Object,
       theme: String,
-      datasourceId: String | Number,
       legend: String,
       category: String,
-      sql: String,
       deployOption: Object,
       DSId: String | Number,
     },
@@ -49,52 +49,6 @@
         ]
       }
     },
-    watch: {
-      category: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderOption();
-        }
-      },
-      legend: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderOption();
-        }
-      },
-      theme: {
-        handler: function (newV, oldV) {
-          this.renderOption();
-        }
-      },
-      deployOption: {
-        deep: true,
-        handler: function (newV, oldV) {
-          this.renderOption();
-        }
-      },
-      sql: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderEChart();
-        }
-      },
-      datasourceId: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderEChart();
-        }
-      },
-    },
-    mounted() {
-      this.$nextTick(() => {
-        this.setTheme();
-      });
-      /*const _this = this;
-      window.onresize = function () {
-        _this.chart.resize();
-      }*/
-    },
     beforeDestroy() {
       if (!this.chart) {
         return;
@@ -105,22 +59,6 @@
       this.timer = null;
     },
     methods: {
-      setTheme() {
-        let str = this.theme;
-        function jikj(str) {   return `../../conf/${str}.js`; }
-        try {
-          const cc = () => import(jikj());
-        } catch (e) {}
-        this.renderEChart();
-      },
-      renderEChart() {
-        if (this.DSId) {
-          this.getData();
-        }
-        else {
-          this.getMock();
-        }
-      },
       getMock() {
         if (this.timeout) {
           clearTimeout(this.timeout)
@@ -132,20 +70,6 @@
             this.renderOption();
           })
         }, 1000);
-      },
-      getData() {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-        this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql/id', {
-            id: this.DSId
-          }).then((res) => {
-            this.baseData = res.data.rows;
-            this.columns = res.data.columns;
-            this.renderOption();
-          })
-        }, 1000)
       },
       renderOption() {
         if (this[this.refName + 'Chart']) {

@@ -84,24 +84,20 @@
 <script>
   import axios from "axios";
   import dynamicIcon from "../../hat/src/dynamicIcon";
-
+  import handle from "../../utils/index";
   export default {
     name: "StudentEvaluation",
-
+    mixins: [handle],
     components: { dynamicIcon },
-
     props: {
       refName: String,
       styleOption: Object,
       theme: String,
-      datasourceId: String | Number,
       legend: String,
       category: String,
-      sql: String,
       deployOption: Object,
       DSId: String | Number,
     },
-
     data() {
       return {
         month: '',
@@ -113,59 +109,7 @@
         timeout: null
       }
     },
-
-    watch: {
-      category: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.handleData();
-        }
-      },
-      legend: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.handleData();
-        }
-      },
-      theme: {
-        handler: function (newV, oldV) {
-          this.handleData();
-        }
-      },
-      deployOption: {
-        deep: true,
-        handler: function (newV, oldV) {
-          this.handleData();
-        }
-      },
-      sql: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderEChart();
-        }
-      },
-      datasourceId: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderEChart();
-        }
-      },
-    },
-
-    mounted() {
-      this.$nextTick(() => {
-        this.renderEChart();
-      });
-    },
-
     methods: {
-      renderEChart() {
-        if (this.DSId) {
-          this.getData();
-        } else {
-          this.getMock();
-        }
-      },
       getMock() {
         if (this.timeout) {
           clearTimeout(this.timeout);
@@ -174,25 +118,11 @@
           axios.get(`/report/mock.json`).then((res) => {
             this.baseData = res.data['evaluation'].rows;
             this.columns = res.data['evaluation'].columns;
-            this.handleData();
+            this.renderOption();
           })
         }, 1000);
       },
-      getData() {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-        this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql/id', {
-            id: this.DSId
-          }).then((res) => {
-            this.baseData = res.data.rows;
-            this.columns = res.data.columns;
-            this.handleData();
-          })
-        }, 1000)
-      },
-      handleData() {
+      renderOption() {
         let base = [];
         this.baseData && this.baseData.forEach((item, index) => {
           let a = new Object();
@@ -220,13 +150,14 @@
     flex-direction: column;
     .search-view {
       flex-shrink: 0;
-      height: 83px;
       display: flex;
       justify-content: flex-end;
       align-items: flex-end;
       position: relative;
       margin-left: .12rem;
       margin-right: .12rem;
+      padding-top: 10px;
+      padding-bottom: 10px;
       width: calc(100% - .24rem);
       .search-select {
         background: url("../../images/jxzl_img1.png") no-repeat;

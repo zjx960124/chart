@@ -24,8 +24,6 @@
       legend: String,
       category: String,
       deployOption: Object,
-      datasourceId: String | Number,
-      sql: String,
       DSId: String | Number,
     },
 
@@ -170,7 +168,6 @@
             z: 99,
           }
         ];
-        console.log(backSeries);
         let tip = {
           trigger: 'axis',
           confine: true,
@@ -224,6 +221,9 @@
             axisLabel: {
               fontSize: fitChartSize(10)
             },
+            axisTick: {
+              show: false,
+            },
             data: new xAxis(xAxisData).getData()
           },
           yAxis: {
@@ -236,6 +236,9 @@
             },
             axisLabel: {
               fontSize: fitChartSize(10)
+            },
+            axisTick: {
+              show: false,
             },
             name: this.deployOption.yAxisName || '',
             data: new xAxis(xAxisData).getData()

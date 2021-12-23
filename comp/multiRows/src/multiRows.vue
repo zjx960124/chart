@@ -7,52 +7,26 @@
     >
       <div class="item-icon"></div>
       <div class="item-info">
-        <div class="item-label" :data-title="item.name">{{ item.name }}</div>
-        <div class="item-value">{{ item.value | locale }}</div>
+        <div class="item-label" :data-title="item.name">{{ item[columns[1]] }}</div>
+        <div class="item-value">{{ item[columns[0]] | locale }}</div>
       </div>
     </div>
-    <!--<div class="center-bot-bot">
-      <div
-        class="item"
-        v-for="(item, index) in bxgm2"
-      >
-        <div class="item-icon"></div>
-        <div class="item-info">
-          <div class="item-label">{{ item.type }}</div>
-          <div class="item-value">{{ item.countResult | locale}}</div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="item-icon"></div>
-        <div class="item-info">
-          <div class="item-label">占地面积(亩)</div>
-          <div class="item-value">103.2</div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="item-icon"></div>
-        <div class="item-info">
-          <div class="item-label">建筑面积(m²)</div>
-          <div class="item-value">53596.6</div>
-        </div>
-      </div>
-    </div>-->
   </div>
 </template>
 
 <script>
   import axios from "axios";
+  import handle from "../../utils/index";
 
   export default {
     name: "MultiRows",
-
+    mixins: [handle],
     props: {
       category: String,
       sql: String,
       deployOption: Object,
       DSId: String | Number,
     },
-
     data() {
       return {
         compData: [],
@@ -61,30 +35,7 @@
         timeout: null
       }
     },
-
-    watch: {
-      deployOption: {
-        deep: true,
-        handler: function (newV, oldV) {
-          this.handleData();
-        }
-      },
-    },
-
-    mounted() {
-      this.$nextTick(() => {
-        this.renderEChart();
-      });
-    },
-
     methods: {
-      renderEChart() {
-        if (this.DSId) {
-          this.getData();
-        } else {
-          this.getMock();
-        }
-      },
       getMock() {
         if (this.timeout) {
           clearTimeout(this.timeout);
@@ -97,20 +48,6 @@
           })
         }, 1000);
       },
-      getData() {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-        this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql/id', {
-            id: this.DSId
-          }).then((res) => {
-            this.baseData = res.data.rows;
-            this.columns = res.data.columns;
-            this.renderOption();
-          })
-        }, 1000)
-      },
       renderOption() {
         let base = [];
         this.baseData && this.baseData.forEach((item, index) => {
@@ -120,6 +57,7 @@
           });
           base.push(a)
         });
+        console.log(base);
         this.compData = base;
       }
     }

@@ -6,7 +6,7 @@
         <div><span>项目名称:</span>{{ projectInfo.name }}</div>
         <div><span>项目编号:</span>{{ projectInfo.projectCode }}</div>
         <div><span>适配分辨率:</span>1920*1080</div>
-        <div><span>主题风格:</span>深邃蓝</div>
+        <!--<div><span>主题风格:</span>深邃蓝</div>-->
       </div>
       <div class="info">
         <div><span>创建时间:</span>{{ projectInfo.createTime }}</div>

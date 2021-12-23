@@ -26,7 +26,6 @@ const echartMixin = {
     },
     DSId: {
       handler: function (newV, oldV) {
-        console.log(newV)
         this.renderEChart();
       }
     }

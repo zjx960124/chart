@@ -25,18 +25,16 @@
 
 <script>
   import axios from "axios";
-
+  import handle from '../../utils/index';
   export default {
     name: "TurnPage",
-
+    mixins: [handle],
     props: {
       refName: String,
       styleOption: Object,
       deployOption: Object,
-      datasourceId: String | Number,
-      sql: String,
+      DSId: String | Number
     },
-
     data() {
       return {
         baseData: [],
@@ -45,51 +43,7 @@
         timeout: null
       }
     },
-
-    watch: {
-      deployOption: {
-        deep: true,
-        handler: function (newV, oldV) {
-          this.renderComp();
-        }
-      },
-      sql: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderComp();
-        }
-      },
-      datasourceId: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderComp();
-        }
-      },
-    },
-
     methods: {
-      renderComp() {
-        if (this.datasourceId && this.sql) {
-          this.getMock();
-        } else {
-          this.getMock();
-        }
-      },
-      getData() {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-        this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql', {
-            datasourceId: this.datasourceId,
-            sql: this.sql
-          }).then((res) => {
-            this.baseData = res.data.rows;
-            this.columns = res.data.columns;
-            this.renderOption();
-          })
-        }, 1000);
-      },
       getMock() {
         if (this.timeout) {
           clearTimeout(this.timeout)
@@ -116,12 +70,6 @@
           this.compData.push(base.slice(i,i+5));
         }
       }
-    },
-
-    mounted() {
-      this.$nextTick(() => {
-        this.renderComp();
-      })
     }
   }
 </script>

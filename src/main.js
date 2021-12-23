@@ -23,6 +23,7 @@ Vue.prototype.http = http;
 Vue.prototype.$Bus = new Vue();
 
 Vue.filter('locale', function (val) {
+  val = parseInt(val);
   return Number.isFinite(val) ? val.toLocaleString('zh', { style: 'decimal' }) : 0;
 });
 

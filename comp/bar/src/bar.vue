@@ -10,9 +10,12 @@
   import echarts from 'echarts';
   import axios from 'axios';
   import { xAxis, Grid, debounce, fitChartSize, fitChartHeight } from '../../utils/construction';
-  import * as themeConfig from '../../utils/style'
+  import * as themeConfig from '../../utils/style';
+  import handle from "../../utils/index"
   export default {
     name: 'ClBar',
+
+    mixins: [handle],
 
     props: {
       refName: String,
@@ -47,18 +50,6 @@
           this.renderOption();
         }
       },
-      sql: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderEChart();
-        }
-      },
-      datasourceId: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderEChart();
-        }
-      },
       theme: {
         handler: function (newV, oldV) {
           this.renderOption();
@@ -69,22 +60,15 @@
         handler: function (newV, oldV) {
           this.renderOption();
         }
+      },
+      DSId: {
+        handler: function (newV, oldV) {
+          this.renderEChart();
+        }
       }
     },
 
-    beforeDestroy() {
-      // this[this.refName + 'Chart'].dispose();
-      // this[this.refName + 'Chart'] = null;
-    },
-
     methods: {
-      renderEChart() {
-        if (this.DSId) {
-          this.getData();
-        } else {
-          this.getMock();
-        }
-      },
       getMock() {
         if (this.timeout) {
           clearTimeout(this.timeout)
@@ -96,20 +80,6 @@
             this.renderOption();
           })
         }, 1000);
-      },
-      getData() {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-        this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql/id', {
-            id: this.DSId
-          }).then((res) => {
-            this.baseData = res.data.rows;
-            this.columns = res.data.columns;
-            this.renderOption();
-          })
-        }, 1000)
       },
       renderOption() {
         if (this[this.refName + 'Chart']) {
@@ -206,21 +176,7 @@
         option = this.theme && themeConfig[this.theme] ? _.merge(option, themeConfig[this.theme].bar) : option;
         this[this.refName + 'Chart'].setOption(option);
       },
-      setTheme() {
-        let str = this.theme;
-        function jikj(str) {   return `../../conf/${str}.js`; }
-        try {
-          const cc = () => import(jikj());
-        } catch (e) {}
-        this.renderEChart();
-      }
     },
-
-    mounted() {
-      this.$nextTick(() => {
-        this.setTheme();
-      })
-    }
   };
 </script>
 

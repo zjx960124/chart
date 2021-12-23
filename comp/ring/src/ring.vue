@@ -21,16 +21,21 @@
       dataModel: String,
       legend: String,
       category: String,
-      sql: String,
-      deployOption: Object
+      deployOption: Object,
+      DSId: String | Number,
     },
     methods: {
-      renderEChart() {
-        axios.get('/mock.json').then((res) => {
-          this.baseData = res.data.ring.rows;
-          this.columns = res.data.ring.columns;
-          this.renderOption();
-        })
+      getMock() {
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
+          axios.get(`/report/mock.json`).then((res) => {
+            this.baseData = res.data.ring.rows;
+            this.columns = res.data.ring.columns;
+            this.renderOption();
+          })
+        }, 1000);
       },
       renderOption() {
         if (this[this.refName + 'Chart']) {

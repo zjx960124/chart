@@ -32,18 +32,16 @@
 
 <script>
   import axios from "axios";
-
+  import handle from "../../utils/index";
   export default {
     name: "SvgTeacher",
-
+    mixins: [handle],
     props: {
       refName: String,
       styleOption: Object,
       deployOption: Object,
-      datasourceId: String | Number,
-      sql: String,
+      DSId: String | Number,
     },
-
     data() {
       return {
         baseData: [],
@@ -52,64 +50,15 @@
         timeout: null
       }
     },
-
-    watch: {
-      deployOption: {
-        deep: true,
-        handler: function (newV, oldV) {
-          this.renderComp();
-        }
-      },
-      sql: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderComp();
-        }
-      },
-      datasourceId: {
-        deep:true, //深度监听设置为 true
-        handler: function (newV, oldV) {
-          this.renderComp();
-        }
-      },
-    },
-
-    beforeDestroy() {
-      // this[this.refName + 'Chart'].dispose();
-      // this[this.refName + 'Chart'] = null;
-    },
-
     methods: {
-      renderComp() {
-        if (this.datasourceId && this.sql) {
-          this.getMock();
-        } else {
-          this.getMock();
-        }
-      },
-      getData() {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-        this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql', {
-            datasourceId: this.datasourceId,
-            sql: this.sql
-          }).then((res) => {
-            this.baseData = res.data.rows;
-            this.columns = res.data.columns;
-            this.handleData();
-          })
-        }, 1000);
-      },
       getMock() {
         axios.get('/report/mock.json').then((res) => {
           this.baseData = res.data.svg2.rows;
           this.columns = res.data.svg2.columns;
-          this.handleData();
+          this.renderOption();
         })
       },
-      handleData() {
+      renderOption() {
         let base = [];
         this.baseData.forEach((item, index) => {
           let a = new Object();
@@ -130,12 +79,6 @@
         });
         this.compData = base;
       }
-    },
-
-    mounted() {
-      this.$nextTick(() => {
-        this.renderComp();
-      })
     }
   }
 </script>

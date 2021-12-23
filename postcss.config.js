@@ -1,6 +1,6 @@
 module.exports = {
-  /*"plugins": {
-    "postcss-auto-rem": {size: 100},
+  "plugins": {
+    /*"postcss-auto-rem": {size: 100},*/
     "postcss-px-to-viewport": {
       unitToConvert: "px", // 要转化的单位
       viewportWidth: 1080, // UI设计稿的宽度
@@ -25,5 +25,5 @@ module.exports = {
       exclude: [/node_modules/], // 设置忽略文件，用正则做目录名匹配
       landscape: false, // 是否处理横屏情况
     },
-  }*/
-}
+  }
+};
