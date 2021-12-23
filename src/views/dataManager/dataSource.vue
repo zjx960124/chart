@@ -212,7 +212,7 @@
       },
       test() {
         let param = {dataSourceInfo : {...this.dataSourceForm}};
-        this.http.post('/data-source-info/test', param)
+        this.http.post('/rest/report/data-source-info/test', param)
           .then(res => {
             console.log(res);
           })
