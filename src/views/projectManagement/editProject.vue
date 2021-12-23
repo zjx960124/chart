@@ -40,12 +40,12 @@
             <div class="content-box">
               <div class="content-box-li">
                 <div class="name">{{ item.name }}</div>
-                <div class="resolution">福州商旅学校</div>
+                <div class="resolution">{{ item.createTime }}</div>
               </div>
-              <div class="content-box-li">
+              <!--<div class="content-box-li">
                 <div>类型：全校</div>
                 <div>2021-03-02</div>
-              </div>
+              </div>-->
             </div>
           </div>
         </transition-group>
@@ -219,7 +219,7 @@
           .item {
             min-width: 4.1rem;
             width: calc(25% - .2rem);
-            height: 320px;
+            height: 290px;
             background: #ffffff;
             border-radius: 4px;
             margin-right: .2rem;
@@ -275,7 +275,7 @@
             }
             .content-box {
               width: 100%;
-              height: 87px;
+              height: 57px;
               padding: 0 16px;
               box-sizing: border-box;
               display: flex;

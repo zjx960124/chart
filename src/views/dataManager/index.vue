@@ -57,7 +57,7 @@
     .left {
       width: 0;
       height: 100%;
-      flex: 2;
+      flex: 240;
       .el-menu-vertical-demo {
         width: 100%;
         height: 100%;
@@ -70,7 +70,8 @@
     .right {
       width: 0;
       height: 100%;
-      flex: 8;
+      flex: 1680;
+      background: #F0F2F5;
     }
   }
 </style>

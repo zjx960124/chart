@@ -1,8 +1,8 @@
 <template>
   <div class="d-s">
     <div class="search-view">
-      <el-button size="small" type="primary" @click="getDSList">查询</el-button>
-      <el-button type="primary" size="small" @click="createDS">新建数据集</el-button>
+      <!--<el-button size="small" type="primary" @click="getDSList">查询</el-button>-->
+      <el-button type="primary" icon="el-icon-plus" size="small" @click="createDS">新建数据集</el-button>
     </div>
     <div class="main-view">
       <page-table
@@ -232,16 +232,18 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    background: #F0F2F5;
+    padding: 0 12px;
+    box-sizing: border-box;
     .search-view {
       height: 56px;
       width: 100%;
       flex-shrink: 0;
-      background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      padding-left: 1.1rem;
-      padding-right: 1.1rem;
+      padding-left: 25px;
+      padding-right: 25px;
       box-sizing: border-box;
       ::v-deep .el-form {
         display: flex;
@@ -252,13 +254,17 @@
       }
     }
     .main-view {
-      background: #DCDCDC;
       flex: 1;
       box-sizing: border-box;
-      padding: .2rem .8rem .2rem 1rem;
+      padding: .2rem;
       display: flex;
       flex-wrap: wrap;
+      background: #ffffff;
+      margin-bottom: 25px;
       overflow-y: auto;
+      ::v-deep .el-table th.el-table__cell {
+        background: #DFE3F7;
+      }
     }
     ::v-deep .el-dialog__header {
       font-size: 12px;

@@ -24,5 +24,6 @@
   * {
     margin: 0;
     padding: 0;
+    font-family: PingFangSC-Medium, sans-serif;
   }
 </style>

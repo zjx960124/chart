@@ -79,6 +79,7 @@
             height: 56px;
             line-height: 56px;
             border-bottom: none;
+            font-family: PingFangSC-Medium;
           }
         }
       }

@@ -690,6 +690,7 @@ export default {
 <style lang="scss" scope>
 .page-table {
   width: 100%;
+  height: 100%;
   .tableCellImg {
     display: flex;
     align-items: center;
@@ -698,6 +699,9 @@ export default {
     height: auto;
     min-height: 40px;
     background-color: #f7f7f7;
+  }
+  ::v-deep.el-table {
+    max-height: calc(100% - 60px);
   }
 }
 
@@ -718,6 +722,9 @@ export default {
 .paginationBox {
   padding: 8px 0;
   overflow-x: auto;
+  height: 46px;
+  align-items: center;
+  overflow-y: hidden;
 }
 
 .operation {

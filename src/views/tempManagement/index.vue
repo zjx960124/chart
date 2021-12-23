@@ -14,10 +14,10 @@
         <el-form-item label="主题风格:">
           <el-input size="small" v-model="projectField"></el-input>
         </el-form-item>-->
-        <el-button size="small" type="primary" @click="getTempList">查询</el-button>
-        <el-button size="small" @click="reset">重置</el-button>
+        <el-button size="small" icon="el-icon-search" type="primary" @click="getTempList">查询</el-button>
+        <!--<el-button size="small" @click="reset">重置</el-button>-->
       </el-form>
-      <el-button type="primary" size="small" @click="createTemplate">新建模板</el-button>
+      <el-button type="primary" icon="el-icon-plus" size="small" @click="createTemplate">新建模板</el-button>
     </div>
     <div class="main-view">
       <div

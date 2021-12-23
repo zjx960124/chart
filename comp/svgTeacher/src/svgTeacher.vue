@@ -68,13 +68,13 @@
           base.push(a)
         });
         base.forEach((item, index) => {
-          let x2 = 19 + Math.sin((2 * Math.PI / 360) * (3.6 * item.bili )) * 10;
-          let y2 = 17 - Math.cos((2 * Math.PI / 360) * (3.6 * item.bili )) * 10;
-          let direction = parseInt(item.bili) > 50 ? 1 : 0;
+          let x2 = 19 + Math.sin((2 * Math.PI / 360) * (3.6 * Number(item[this.columns[2]]) )) * 10;
+          let y2 = 17 - Math.cos((2 * Math.PI / 360) * (3.6 * Number(item[this.columns[2]]) )) * 10;
+          let direction = parseInt(item[this.columns[2]]) > 50 ? 1 : 0;
           item.svgString = `
                       <circle cx="19" cy="17" r="10" fill="#134B50"></circle>
                       <path d="M19 17 L19 7 A 10 10, 0, ${direction}, 1, ${parseInt(x2)} ${parseInt(y2)} L19 17 Z" fill="#04F9FA"></path>
-                      <text x="18" y="38" font-size="12" font-family="DIN-MEDIUM" font-weight="500" text-anchor="middle" fill="#D6731A">${parseInt(item.bili)}</text>
+                      <text x="18" y="38" font-size="12" font-family="DIN-MEDIUM" font-weight="500" text-anchor="middle" fill="#D6731A">${parseInt(Number(item[this.columns[2]]))}</text>
                       <text x="28" y="37" font-size="9" font-family="DIN-MEDIUM" font-weight="500" text-anchor="middle" fill="#D6731A">%</text>`
         });
         this.compData = base;
