@@ -6,7 +6,7 @@
     <div class="main">
       <div class="left">
         <el-collapse v-model="activeNames" @change="handleChange">
-          <el-menu
+          <!--<el-menu
             default-active="1"
             class="el-menu-vertical-demo"
             @select="changeComp"
@@ -24,7 +24,22 @@
                 {{ item.name }}
               </el-menu-item>
             </el-submenu>
-          </el-menu>
+          </el-menu>-->
+          <el-collapse-item title="图表选择" name="1">
+            <div class="components-view">
+              <div
+                v-for="(element, index) in compList"
+                :key="index"
+                class="components-item"
+                @click="changeComp(element)"
+              >
+                <div class="components-body">
+                  <img :src="element.backgroundImage" class="components-image" />
+                  <div class="components-label">{{ element.name }}</div>
+                </div>
+              </div>
+            </div>
+          </el-collapse-item>
           <!--<el-collapse-item title="数据模型" name="1">
             <el-form
               :model="props"
@@ -122,10 +137,10 @@
         <div class="category">
           <el-form
             :model="props"
-            label-width="80px"
-            label-position="left"
+            label-width="60px"
+            label-position="right"
           >
-            <el-form-item label="数据集">
+            <el-form-item label="数据集:">
               <el-select
                 v-model="props.DSId"
                 @change="changeDS"
@@ -140,10 +155,10 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="sql">
+            <el-form-item label="sql:">
               <el-input v-model="props.sql" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="数据源">
+            <el-form-item label="数据源:">
               <el-select
                 v-model="props.datasourceId"
                 size="medium"
@@ -506,7 +521,7 @@
         themeFileList: [],
         dataSourceList: [],
         DSList: [],
-        activeNames: '3',
+        activeNames: ['1', '2', '3', '4'],
         dimension: [],
         baseData: [],
         compPros: {},
@@ -571,9 +586,9 @@
        * @param index
        * @param indexPath
        */
-      changeComp(index, indexPath) {
-        this.comp = index;
-        this.compProps = this.$cChart.find( item => item.component.name === index );
+      changeComp(data) {
+        this.comp = data.component.name;
+        this.compProps = this.$cChart.find( item => item.component.name === data.component.name );
         this.getCompProps();
       },
       /**
@@ -653,14 +668,17 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    padding: 15px 50px;
-    background-color: #ededed;
+    background: rgb(240, 242, 245);
+    padding-bottom: 42px;
     .header {
-      height: 45px;
+      height: 52px;
       display: flex;
       align-items: center;
+      justify-content: flex-end;
       flex-shrink: 0;
       width: 100%;
+      box-sizing: border-box;
+      padding-right: 30px;
     }
     .main {
       flex: 1;
@@ -670,10 +688,52 @@
       .left {
         height: 100%;
         width: 0;
-        flex: 370;
+        flex: 304;
         background: #ffffff;
-        padding: 0 6px;
+        padding: 0 11px;
         overflow-y: auto;
+        .components-view {
+          display: flex;
+          flex-wrap: wrap;
+          .components-item {
+            display: inline-block;
+            width: calc((100% - 15px) / 3);
+            .components-body {
+              box-sizing: border-box;
+              cursor: pointer;
+              .components-image {
+                width: 100%;
+                background: #000211;
+                aspect-ratio: auto 88 / 64;
+              }
+              .components-label {
+                font-size: 12px;
+                line-height: 12px;
+                text-align: center;
+                color: #333333;
+                font-family: PingFangSC-Medium;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+              }
+              .svg-icon{
+                color: #777;
+                font-size: 15px;
+              }
+              &:hover {
+                .components-label {
+                  color: #1569EB;
+                }
+                .svg-icon {
+                  color: #1569EB;
+                }
+              }
+            }
+          }
+          .components-item:nth-child(3n + 2) {
+            margin: 0 7px 10px;
+          }
+        }
         ::v-deep .el-collapse-item__content {
           padding-bottom: 0;
         }
@@ -695,17 +755,23 @@
       .center {
         height: 100%;
         width: 0;
-        flex: 1139;
+        flex: 1597;
         margin: 0 20px;
         display: flex;
         flex-direction: column;
         font-size: 14px;
         text-align: left;
+        background: rgb(240, 242, 245);
         .category {
           width: 100%;
           background: #ffffff;
-          padding: 20px 20px 0;
+          padding: 8px 20px;
           box-sizing: border-box;
+          margin-bottom: 20px;
+          height: 160px;
+          ::v-deep .el-form-item {
+            margin-bottom: 10px;
+          }
         }
         .value {
           height: 48px;

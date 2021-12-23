@@ -3,9 +3,9 @@
     <div class="search-view">
       <el-form :inline="true">
         <el-form-item label="模板名称:">
-          <el-input size="small" v-model="projectName"></el-input>
+          <el-input size="small" v-model="templateName"></el-input>
         </el-form-item>
-        <el-form-item label="类型:">
+        <!--<el-form-item label="类型:">
           <el-input size="small" v-model="projectCode"></el-input>
         </el-form-item>
         <el-form-item label="领域:">
@@ -13,9 +13,9 @@
         </el-form-item>
         <el-form-item label="主题风格:">
           <el-input size="small" v-model="projectField"></el-input>
-        </el-form-item>
-        <el-button size="small" type="primary">查询</el-button>
-        <el-button size="small">重置</el-button>
+        </el-form-item>-->
+        <el-button size="small" type="primary" @click="getTempList">查询</el-button>
+        <el-button size="small" @click="reset">重置</el-button>
       </el-form>
       <el-button type="primary" size="small" @click="createTemplate">新建模板</el-button>
     </div>
@@ -31,19 +31,20 @@
           <img src="../../assets/img.png" class="project-img" alt="">
           <div class="operate-panel" v-show="activeId === index">
             <el-button type="primary" plain @click="toEditTemp(item)">编辑</el-button>
-            <i class="el-icon-document-copy copy-icon"></i>
-            <i class="el-icon-delete delete-icon" @click="deleteTemp(item)"></i>
+            <!--<i class="el-icon-document-copy copy-icon"></i>-->
+            <i class="el-icon-delete delete-icon" v-show="index !== tempList.length - 1" @click="deleteTemp(item)"></i>
           </div>
         </div>
         <div class="content-box">
           <div class="content-box-li">
             <div class="name">{{ item.name }}</div>
-            <div class="resolution">适用分辨率：1920*1080</div>
+            <div class="resolution">{{ item.createTime }}</div>
+            <!--<div class="resolution">适用分辨率：1920*1080</div>-->
           </div>
-          <div class="content-box-li">
+          <!--<div class="content-box-li">
             <div></div>
             <div>{{ item.createTime }}</div>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
@@ -55,7 +56,7 @@
     name: "TempManagement",
     data() {
       return {
-        projectName: '',
+        templateName: '',
         projectField: '',
         projectCode: '',
         activeId: -1,
@@ -79,7 +80,8 @@
         );
       },
       getTempList() {
-        this.http.get('/rest/report/template/list').then((res) => {
+        let param = { name: this.templateName };
+        this.http.get('/rest/report/template/list', param).then((res) => {
           this.tempList = res.data || [];
           this.tempList.push(
             {
@@ -89,12 +91,26 @@
           )
         })
       },
+      reset() {
+        this.templateName = '';
+        this.getTempList();
+      },
       deleteTemp(data) {
-        let param = {
-          id: data.id
-        }
-        this.http.delete('/rest/report/template', param).then(res => {
-          this.getTempList()
+        this.$confirm('此操作将永久删除该模板, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let param = {
+            id: data.id
+          };
+          this.http.delete('/rest/report/template', param).then(res => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.getTempList()
+          })
         })
       },
       createTemplate() {
@@ -140,10 +156,11 @@
       padding: .2rem .8rem .2rem 1rem;
       display: flex;
       flex-wrap: wrap;
+      align-content: flex-start;
       .item {
         min-width: 4.1rem;
         width: calc(25% - .25rem);
-        height: 320px;
+        height: 290px;
         background: #ffffff;
         border-radius: 4px;
         margin-right: .2rem;
@@ -199,7 +216,7 @@
         }
         .content-box {
           width: 100%;
-          height: 87px;
+          height: 57px;
           padding: 0 16px;
           box-sizing: border-box;
           display: flex;

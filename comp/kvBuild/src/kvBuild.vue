@@ -38,11 +38,11 @@
           axios.get(`/report/mock.json`).then((res) => {
             this.baseData = res.data['kvBuild'].rows;
             this.columns = res.data['kvBuild'].columns;
-            this.handleData();
+            this.renderOption();
           })
         }, 1000);
       },
-      handleData() {
+      renderOption() {
         let base = [];
         this.baseData && this.baseData.forEach((item, index) => {
           let a = new Object();

@@ -78,7 +78,8 @@ const componentObj = {
       style: {
         ...current.style,
         ...backOption,
-        ...border
+        ...border,
+        ...flexObj
       },
       ref: current.renderKey,
       key: current.renderKey,

@@ -12,8 +12,8 @@
         <div><span>创建时间:</span>{{ projectInfo.createTime }}</div>
         <div><span>页面数量:</span>{{ this.pageList.length }}</div>
         <div class="operate">
-          <el-button size="small" type="primary">切换主题</el-button>
-          <el-button size="small" type="primary" icon="el-icon-s-promotion" @click="publish">发布</el-button>
+          <!--<el-button size="small" style="background: #E0E0E0; color: #333333" type="primary">切换主题</el-button>-->
+          <el-button size="small" style="background: #15B2EB" type="primary" icon="el-icon-s-promotion" @click="publish">发布</el-button>
           <el-button size="small" type="primary" icon="el-icon-plus" @click="appendPage">新增界面</el-button>
         </div>
       </div>
@@ -112,10 +112,17 @@
         })
       },
       deletePage(data) {
-        let param = { id: data.id };
-        this.http.delete('/rest/report/page', param).then(res => {
-          this.getPageList();
-        })
+        this.$confirm('此操作将永久删除该页面, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let param = { id: data.id };
+          this.http.delete('/rest/report/page', param).then(res => {
+            this.$message.success('删除成功');
+            this.getPageList();
+          })
+        });
       },
       previewPage(data) {
         let formData = JSON.parse(data.code);

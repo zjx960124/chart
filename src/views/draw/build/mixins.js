@@ -1,10 +1,10 @@
 import echarts from 'echarts';
 const echartMixin = {
-  mounted: function() {
+  /*mounted: function() {
     this.$nextTick(() => {
       this.renderEChart();
     })
-  },
+  },*/
   methods: {
     renderEChart: function() {
       // let layouts = this.options.layouts;

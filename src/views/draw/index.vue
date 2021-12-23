@@ -228,7 +228,6 @@
             style: {
               flexDirection: 'column',
               display: 'flex',
-              padding: '10',
               flex: 2,
               backgroundColor: '',
               backgroundImage: '',
@@ -286,24 +285,33 @@
           },
           children: [],
         },
-        drawingList: [],
+        drawingList: [
+          {
+            layout: 'rowFrame',
+            label: '画布',
+            type: 'canvas',
+            style: {
+              flexDirection: 'row',
+              display: 'flex',
+              width: '1920px',
+              height: '1080px',
+              backgroundColor: ''
+            },
+            children: [],
+          },
+        ],
         activeData: {
           layout: 'rowFrame',
-          tagIcon: 'row',
-          label: '行布局框',
-          layoutTree: true,
-          document: 'https://element.eleme.cn/#/zh-CN/component/layout#row-attributes',
+          label: '画布',
+          type: 'canvas',
           style: {
             flexDirection: 'row',
             display: 'flex',
-            padding: '10',
-            flex: 2,
-            backgroundColor: '#E1FFFF',
+            width: '1920px',
+            height: '1080px',
+            backgroundColor: ''
           },
           children: [],
-          type: 'default',
-          justify: 'start',
-          align: 'top'
         },
         activeId: '',
         formConf: {
@@ -454,7 +462,6 @@
         Promise.all([this.http.get('/rest/report/chart/list'), this.http.get('/rest/report/template/list')]).then(([v1, v2]) => {
           this.drawingList = [];
           this.leftElement = v1.data.map((item) => JSON.parse(item.code));
-          console.log(this.leftElement)
           let data = v2.data;
           data.forEach((item) => {item.code = JSON.parse(item.code)});
           this.templateComponents = data.map(item => item.code.layouts[0]);
@@ -1028,10 +1035,11 @@
             box-sizing: border-box;
             border: 1px dashed #ccc;
             border-radius: 3px;
-            padding: 0 2px;
+            padding: 10px !important;
+            /*padding: 0 2px;*/
             /*margin-bottom: 15px;*/
-            margin-right: 15px;
-            min-height: fit-content;
+            /*margin-right: 15px;*/
+            /*min-height: fit-content;*/
             .component-name {
               position: absolute;
               top: 0;

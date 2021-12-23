@@ -58,7 +58,7 @@
       }, [h('i', {class: 'el-icon-edit'}, [])]);
       return currentItem.type === 'chartContainer' ? [copyBtn, editBtn, deleteBtn] : [copyBtn, deleteBtn];
     }
-  }
+  };
   const layoutt = {
     rowFrame(h, currentItem, index, list, parentDirection) {
       const { activeItem } = this.$listeners;
@@ -115,7 +115,6 @@
         otherOption['padding'] = '10px'
       }
       // 拼接单位
-      console.log(config.style);
       let utils = {};
       if (config.type === 'container') {
         utils.marginTop = config.style.marginTop.toString() + 'px';
@@ -230,7 +229,7 @@
   }
   export default {
     name: "DraggableItem",
-    mixins: [echartMixin],
+    /*mixins: [echartMixin],*/
     components: {
       draggable
     },

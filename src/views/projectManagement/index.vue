@@ -5,9 +5,9 @@
         <el-form-item label="项目名称:">
           <el-input size="small" v-model="projectName"></el-input>
         </el-form-item>
-        <el-form-item label="项目编号:">
+        <!--<el-form-item label="项目编号:">
           <el-input size="small" v-model="projectCode"></el-input>
-        </el-form-item>
+        </el-form-item>-->
         <el-button size="small" icon="el-icon-search" type="primary" @click="getProjectList">查询</el-button>
         <!--<el-button size="small" icon="el-icon-refresh">重置</el-button>-->
       </el-form>
@@ -32,12 +32,12 @@
         <div class="content-box">
           <div class="content-box-li">
             <div class="name">{{ item.name }}</div>
-            <div class="resolution">适用分辨率：1920*1080</div>
+            <div class="resolution">{{ item.createTime }}</div>
           </div>
-          <div class="content-box-li">
-            <div>领域：中职院校 页面数：6</div>
+          <!--<div class="content-box-li">
+            <div>页面数：6</div>
             <div>2021-03-02</div>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
@@ -94,13 +94,23 @@
         this.projectDialogVisible = true;
       },
       deleteProject(data) {
-        let param = { id: data.id };
-        this.http.delete('/rest/report/project', param).then(res => {
-          this.getProjectList();
+        this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let param = { id: data.id };
+          this.http.delete('/rest/report/project', param).then(res => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.getProjectList();
+          });
         })
       },
       getProjectList() {
-        let param = { name: this.projectName, projectCode: this.projectCode }
+        let param = { name: this.projectName, projectCode: this.projectCode };
         this.http.get('/rest/report/project/list', param).then(res => {
           this.projectList = res.data || [];
         })
@@ -162,7 +172,7 @@
       .item {
         min-width: 4.1rem;
         width: calc(25% - .25rem);
-        height: 320px;
+        height: 290px;
         background: #ffffff;
         border-radius: 4px;
         margin-right: .2rem;
@@ -218,7 +228,7 @@
         }
         .content-box {
           width: 100%;
-          height: 87px;
+          height: 57px;
           padding: 0 16px;
           box-sizing: border-box;
           display: flex;

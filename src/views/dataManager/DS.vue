@@ -58,7 +58,7 @@
               v-for="(item, index) in dataFormatList"
               :key="index"
               :label="item.name"
-              :value="item.id.toString()"
+              :value="item.name"
             ></el-option>
           </el-select>
         </el-form-item>

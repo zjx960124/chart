@@ -23,7 +23,7 @@
         <div class="img-box">
           <img :src="item.backgroundImage" class="project-img" alt="">
           <div class="operate-panel" v-show="activeId === index">
-            <el-button type="primary" plain @click="toEditComp(item)">选择组件</el-button>
+            <el-button type="primary" plain @click="toEditComp(item)">编辑组件</el-button>
           </div>
         </div>
         <div class="content-box">

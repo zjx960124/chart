@@ -46,12 +46,12 @@
         <div class="content-box">
           <div class="content-box-li">
             <div class="name">{{ item.name }}</div>
-            <div class="resolution">福州商旅学校</div>
+            <div class="resolution">{{ item.createTime }}</div>
           </div>
-          <div class="content-box-li">
+          <!--<div class="content-box-li">
             <div>类型：全校</div>
             <div>2021-03-02</div>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
@@ -116,15 +116,14 @@
       padding-left: 1.1rem;
       padding-right: 1.1rem;
       box-sizing: border-box;
-      padding-bottom: 20px;
       .title {
         height: 36px;
         width: 100%;
-        line-height: 42px;
-        border-bottom: 1px solid #DCE6F5;
+        line-height: 36px;
+        /*border-bottom: 1px solid #DCE6F5;*/
         text-align: left;
         font-size: 14px;
-        font-family: PingFang SC;
+        font-family: PingFangSC-Medium;
         font-weight: 500;
         color: #333333;
         cursor: pointer;
@@ -163,10 +162,11 @@
       padding: .2rem .8rem .2rem 1rem;
       display: flex;
       flex-wrap: wrap;
+      align-content: flex-start;
       .item {
         min-width: 4.1rem;
         width: calc(25% - .2rem);
-        height: 320px;
+        height: 290px;
         background: #ffffff;
         border-radius: 4px;
         margin-right: .2rem;
@@ -222,7 +222,7 @@
         }
         .content-box {
           width: 100%;
-          height: 87px;
+          height: 57px;
           padding: 0 16px;
           box-sizing: border-box;
           display: flex;
