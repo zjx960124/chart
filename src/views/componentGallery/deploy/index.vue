@@ -1,6 +1,7 @@
 <template>
   <div class="deploy">
     <div class="header">
+      <el-button @click="returnPage" type="primary" size="small">返回</el-button>
       <el-button @click="submitComp" type="primary" size="small">保存</el-button>
     </div>
     <div class="main">
@@ -31,7 +32,8 @@
                 v-for="(element, index) in compList"
                 :key="index"
                 class="components-item"
-                @click="changeComp(element)"
+                :class="{'active': activeIndex === index}"
+                @click="changeComp(element, index)"
               >
                 <div class="components-body">
                   <img :src="element.backgroundImage" class="components-image" />
@@ -522,6 +524,7 @@
         dataSourceList: [],
         DSList: [],
         activeNames: ['1', '2', '3', '4'],
+        activeIndex: null,
         dimension: [],
         baseData: [],
         compPros: {},
@@ -534,6 +537,7 @@
     },
     created() {
       this.comp = this.$route.query.comp;
+      this.activeIndex = this.$cChart.findIndex((item) => item.component.name === this.comp);
       this.compProps = this.$cChart.find( item => item.component.name === this.$route.query.comp );
       let modulesFiles = require.context("../../../../comp/conf/", true, /\.js$/);
       this.themeFileList = modulesFiles.keys().reduce((modules, modulePath) => {
@@ -586,7 +590,8 @@
        * @param index
        * @param indexPath
        */
-      changeComp(data) {
+      changeComp(data, index) {
+        this.activeIndex = index;
         this.comp = data.component.name;
         this.compProps = this.$cChart.find( item => item.component.name === data.component.name );
         this.getCompProps();
@@ -657,6 +662,9 @@
           console.log(res)
         })
       },
+      returnPage() {
+        this.$router.go(-1);
+      }
     }
   }
 </script>
@@ -674,11 +682,11 @@
       height: 52px;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       flex-shrink: 0;
       width: 100%;
       box-sizing: border-box;
-      padding-right: 30px;
+      padding:0 30px;
     }
     .main {
       flex: 1;
@@ -730,12 +738,17 @@
               }
             }
           }
+          .components-item.active{
+            .components-label {
+              color: #1569EB;
+            }
+          }
           .components-item:nth-child(3n + 2) {
             margin: 0 7px 10px;
           }
         }
         ::v-deep .el-collapse-item__content {
-          padding-bottom: 0;
+          padding-bottom: 15px;
         }
         .el-menu-vertical-demo {
           text-align: left;
@@ -750,6 +763,9 @@
         ::v-deep .el-select {
           width: 100%;
           padding-right: 20px;
+        }
+        ::v-deep .el-form-item {
+          margin-bottom: 10px;
         }
       }
       .center {

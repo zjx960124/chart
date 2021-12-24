@@ -1,15 +1,46 @@
 <template>
   <div class="draw-container">
     <div class="operate-view">
-      <el-button type="primary" icon="el-icon-back" size="small" @click="goBack">返回</el-button>
-      <el-button type="primary" icon="el-icon-printer" size="small" @click="savePage">保存页面</el-button>
-      <el-button type="primary" icon="el-icon-printer" size="small" v-show="currentType !== 'project'" @click="uploadTemplate">保存模板</el-button>
-      <el-button type="primary" icon="el-icon-printer" size="small" @click="generateJSON">导出json文件</el-button>
-      <!--<el-button type="primary" icon="el-icon-printer" size="small" @click="upload">上传</el-button>-->
-      <!--<el-button type="primary" icon="el-icon-printer" size="small" @click="download">导出html文件</el-button>-->
-      <el-button type="primary" icon="el-icon-view" size="small" @click="preview">预览界面</el-button>
-      <el-button type="danger" icon="el-icon-delete" size="small" @click="empty">清空</el-button>
-      <!--<el-button type="text" icon="el-icon-view" style="color: #333333">预览界面</el-button>-->
+      <div>
+        <el-button type="primary" icon="el-icon-back" style="background: #15B2EB" size="small" @click="goBack">返回</el-button>
+      </div>
+      <div>
+        <!--<el-button type="primary" size="small" @click="savePage">保存页面</el-button>
+        <el-button type="primary" size="small" v-show="currentType !== 'project'" @click="uploadTemplate">保存模板</el-button>-->
+        <!--<el-button type="primary" size="small" @click="generateJSON">导出json文件</el-button>-->
+        <!--<el-button type="primary" icon="el-icon-printer" size="small" @click="upload">上传</el-button>-->
+        <!--<el-button type="primary" icon="el-icon-printer" size="small" @click="download">导出html文件</el-button>-->
+        <!--<el-button type="primary" icon="el-icon-view" size="small" @click="preview">预览界面</el-button>
+        <el-button type="danger" icon="el-icon-delete" size="small" @click="empty">清空</el-button>-->
+        <!--<el-button type="text" icon="el-icon-view" style="color: #333333">预览界面</el-button>-->
+        <div class="operate" @click="empty">
+          <img src="../../assets/static/delete.png" alt="">
+          <span>清空</span>
+        </div>
+        <div
+          v-show="currentType !== 'project'" @click="uploadTemplate"
+          class="operate">
+          <img src="../../assets/static/copy.png" alt="">
+          保存为模板
+        </div>
+        <div
+          class="operate"
+          @click="generateJSON"
+        >
+          <img src="../../assets/static/json.png" alt="">
+          下载JSON文件
+        </div>
+        <div class="operate"  @click="preview">
+          <img src="../../assets/static/preview.png" alt="">
+          预览界面
+        </div>
+        <div
+          v-show="currentType !== 'project'"
+          style="margin-left: 23px"
+        >
+          <el-button type="primary" size="small" @click="savePage">保存页面</el-button>
+        </div>
+      </div>
     </div>
     <div class="draw-view">
       <div class="left">
@@ -820,9 +851,34 @@
       flex-shrink: 0;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       box-sizing: border-box;
       padding: 0 30px;
+      div {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        .operate {
+          height: 32px;
+          display: flex;
+          line-height: 32px;
+          align-items: center;
+          font-size: 12px;
+          padding: 0 4px;
+          box-sizing: border-box;
+          cursor: pointer;
+          border-radius: 4px;
+          img {
+            margin-right: 5px;
+          }
+        }
+        .operate + .operate {
+          margin-left: 23px;
+        }
+        .operate:hover {
+          background: #E0E0E0;
+        }
+      }
     }
 
     .draw-view {

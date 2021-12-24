@@ -1,7 +1,11 @@
 <template>
   <div class="edit-project">
     <div class="detail-view">
-      <div class="title">编辑项目</div>
+      <div class="title">
+        <i class="el-icon-arrow-left"></i>
+        <span @click="returnPage" style="margin-right: 27px">返回</span>
+        <div class="ring" style="font-weight: 600">编辑项目</div>
+      </div>
       <div class="info">
         <div><span>项目名称:</span>{{ projectInfo.name }}</div>
         <div><span>项目编号:</span>{{ projectInfo.projectCode }}</div>
@@ -31,9 +35,9 @@
             <div class="img-box">
               <img src="../../assets/img.png" class="project-img" alt="">
               <div class="operate-panel" v-show="activeId === index">
-                <el-button type="primary" plain @click="toEditProjectPage(item)">编辑</el-button>
-                <el-button @click="previewPage(item)">预览</el-button>
-                <i class="el-icon-document-copy copy-icon"></i>
+                <el-button type="primary" style="border: none" @click="toEditProjectPage(item)">编辑</el-button>
+                <el-button class="preview-button" @click="previewPage(item)">预览</el-button>
+                <!--<i class="el-icon-document-copy copy-icon"></i>-->
                 <i class="el-icon-delete delete-icon" @click="deletePage(item)"></i>
               </div>
             </div>
@@ -149,7 +153,10 @@
         saveAs(blob, 'cs.json');
       },
       onStart() {},
-      onEnd() {}
+      onEnd() {},
+      returnPage() {
+        this.$router.go(-1);
+      }
     }
   }
 </script>
@@ -177,10 +184,25 @@
         border-bottom: 1px solid #DCE6F5;
         text-align: left;
         font-size: 14px;
-        font-family: PingFang SC;
+        font-family: PingFangSC-Bold;
         font-weight: 500;
         color: #333333;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        .ring {
+          position: relative;
+        }
+        .ring::after {
+          position: absolute;
+          content: '';
+          left: -8px;
+          top: 15px;
+          width: 0;
+          height: 0;
+          border-top: 5px solid #1569EB;
+          border-right: 5px solid transparent;
+        }
       }
       .info {
         width: 100%;
@@ -216,6 +238,7 @@
           height: 100%;
           display: flex;
           flex-wrap: wrap;
+          align-content: flex-start;
           .item {
             min-width: 4.1rem;
             width: calc(25% - .2rem);
@@ -265,6 +288,12 @@
                   right: 30px;
                   background: transparent;
                   color: #ffffff;
+                }
+                .delete-icon:hover {
+                  opacity: .9;
+                }
+                .preview-button:hover {
+                  color: #1569EB;
                 }
               }
             }

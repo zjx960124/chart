@@ -20,6 +20,9 @@
           <el-menu-item index="5">数据管理</el-menu-item>
         </el-menu>
       </div>
+      <div class="other">
+        <img src="../../assets/other_images/proj-logo.png">
+      </div>
     </div>
     <div class="page-view">
       <router-view></router-view>
@@ -61,13 +64,13 @@
       width: 100vw;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding-left: 100px;
       padding-right: 100px;
       box-sizing: border-box;
       flex-shrink: 0;
       background: #221E2C;
       .logo {
-        margin-right: 200px;
         color: #FFFFFF;
         font-size: 24px;
       }
@@ -82,6 +85,10 @@
             font-family: PingFangSC-Medium;
           }
         }
+      }
+      .other {
+        opacity: 0;
+        font-size: 24px;
       }
     }
     .page-view {

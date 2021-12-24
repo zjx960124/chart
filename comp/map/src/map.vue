@@ -161,6 +161,7 @@
             min: 0,
             max: 500,
             splitNumber: 4,
+            left: 0,
             right: 20,
             bottom: 30,
             itemGap: 10,

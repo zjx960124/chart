@@ -23,7 +23,12 @@
         <div class="img-box">
           <img :src="item.backgroundImage" class="project-img" alt="">
           <div class="operate-panel" v-show="activeId === index">
-            <el-button type="primary" plain @click="toEditComp(item)">编辑组件</el-button>
+            <el-button
+              type="primary"
+              class="search-btn"
+              style="background: #1569EB"
+              @click="toEditComp(item)"
+            >编辑组件</el-button>
           </div>
         </div>
         <div class="content-box">
@@ -154,6 +159,12 @@
               right: 30px;
               background: transparent;
               color: #ffffff;
+            }
+            .search-btn {
+              border: none;
+            }
+            .search-btn:hover {
+              opacity: .8;
             }
           }
         }

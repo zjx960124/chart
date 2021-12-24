@@ -8,10 +8,24 @@
         <!--<el-form-item label="项目编号:">
           <el-input size="small" v-model="projectCode"></el-input>
         </el-form-item>-->
-        <el-button size="small" icon="el-icon-search" type="primary" @click="getProjectList">查询</el-button>
+        <el-button
+          style="background: #15B2EB"
+          size="small"
+          icon="el-icon-search"
+          type="primary"
+          @click="getProjectList"
+          class="search-btn"
+        >查询</el-button>
         <!--<el-button size="small" icon="el-icon-refresh">重置</el-button>-->
       </el-form>
-      <el-button type="primary" icon="el-icon-plus" size="small" @click="createProject">新增项目</el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-plus"
+        size="small"
+        @click="createProject"
+        style="background: #1569EB"
+        class="search-btn"
+      >新增项目</el-button>
     </div>
     <div class="main-view">
       <div
@@ -24,8 +38,13 @@
         <div class="img-box">
           <img src="../../assets/img.png" class="project-img" alt="">
           <div class="operate-panel" v-show="activeId === index">
-            <el-button type="primary" plain @click="toEditProject(item)">编辑</el-button>
-            <i class="el-icon-document-copy copy-icon"></i>
+            <el-button
+              type="primary"
+              class="search-btn"
+              style="background: #1569EB"
+              @click="toEditProject(item)"
+            >编辑</el-button>
+            <!--<i class="el-icon-document-copy copy-icon"></i>-->
             <i class="el-icon-delete delete-icon" @click="deleteProject(item)"></i>
           </div>
         </div>
@@ -48,9 +67,10 @@
       top="30vh"
       class="project-dialog"
       :close-on-click-modal="false"
+      center
     >
       <el-form
-        label-width="120px"
+        label-width="70px"
         label-position="left"
         ref="sourceForm"
       >
@@ -166,6 +186,12 @@
       padding-left: 1.1rem;
       padding-right: 1.1rem;
       box-sizing: border-box;
+      .search-btn {
+        border: none;
+      }
+      .search-btn:hover {
+        opacity: .8;
+      }
       ::v-deep .el-form {
         display: flex;
         align-items: center;
@@ -230,6 +256,15 @@
               right: 30px;
               background: transparent;
               color: #ffffff;
+            }
+            .delete-icon:hover {
+              opacity: .9;
+            }
+            .search-btn {
+              border: none;
+            }
+            .search-btn:hover {
+              opacity: .8;
             }
           }
         }

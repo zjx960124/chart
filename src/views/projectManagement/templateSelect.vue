@@ -1,7 +1,11 @@
 <template>
   <div class="edit-project">
     <div class="detail-view">
-      <div class="title">新增版面</div>
+      <div class="title">
+        <i class="el-icon-arrow-left"></i>
+        <span @click="returnPage" style="margin-right: 27px">返回</span>
+        <div class="ring" style="font-weight: 600">新增版面</div>
+      </div>
       <!--<div class="info">
         <div>项目名称：福州商旅学校</div>
         <div>领域：高职院校</div>
@@ -40,7 +44,7 @@
         <div class="img-box">
           <img src="../../assets/img.png" class="project-img" alt="">
           <div class="operate-panel" v-show="activeId === index">
-            <el-button type="primary" plain @click="toEditProjectPage(item)">应用</el-button>
+            <el-button type="primary" style="border: none" @click="toEditProjectPage(item)">应用</el-button>
           </div>
         </div>
         <div class="content-box">
@@ -96,6 +100,9 @@
             }
           }
         );
+      },
+      returnPage() {
+        this.$router.go(-1);
       }
     }
   }
@@ -117,16 +124,31 @@
       padding-right: 1.1rem;
       box-sizing: border-box;
       .title {
-        height: 36px;
+        height: 56px;
         width: 100%;
-        line-height: 36px;
-        /*border-bottom: 1px solid #DCE6F5;*/
+        line-height: 56px;
+        border-bottom: 1px solid #DCE6F5;
         text-align: left;
         font-size: 14px;
-        font-family: PingFangSC-Medium;
+        font-family: PingFangSC-Bold;
         font-weight: 500;
         color: #333333;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        .ring {
+          position: relative;
+        }
+        .ring::after {
+          position: absolute;
+          content: '';
+          left: -8px;
+          top: 20px;
+          width: 0;
+          height: 0;
+          border-top: 5px solid #1569EB;
+          border-right: 5px solid transparent;
+        }
       }
       .info {
         width: 100%;

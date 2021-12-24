@@ -11,7 +11,11 @@ import store from './store'
 import FormBuild from '@/views/draw/build/index';
 import smartRem from 'smart-rem'
 smartRem(1920);
-import '@/assets/font/font.css'
+import '@/assets/font/font.css';
+import '../src/style/index.scss'
+
+let w = document.getElementsByTagName('script');
+console.log(w)
 
 Vue.use(xChart);
 Vue.use(ElementUI);

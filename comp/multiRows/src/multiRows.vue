@@ -122,6 +122,5 @@
       justify-content: space-between;
       width: 100%;
     }
-
   }
 </style>

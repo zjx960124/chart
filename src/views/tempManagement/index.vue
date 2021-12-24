@@ -14,7 +14,7 @@
         <el-form-item label="主题风格:">
           <el-input size="small" v-model="projectField"></el-input>
         </el-form-item>-->
-        <el-button size="small" icon="el-icon-search" type="primary" @click="getTempList">查询</el-button>
+        <el-button size="small" style="background: #15B2EB; border: none" icon="el-icon-search" type="primary" @click="getTempList">查询</el-button>
         <!--<el-button size="small" @click="reset">重置</el-button>-->
       </el-form>
       <el-button type="primary" icon="el-icon-plus" size="small" @click="createTemplate">新建模板</el-button>
@@ -30,7 +30,12 @@
         <div class="img-box">
           <img src="../../assets/img.png" class="project-img" alt="">
           <div class="operate-panel" v-show="activeId === index">
-            <el-button type="primary" plain @click="toEditTemp(item)">编辑</el-button>
+            <el-button
+              type="primary"
+              class="search-btn"
+              style="background: #1569EB"
+              @click="toEditTemp(item)"
+            >编辑</el-button>
             <!--<i class="el-icon-document-copy copy-icon"></i>-->
             <i class="el-icon-delete delete-icon" v-show="index !== tempList.length - 1" @click="deleteTemp(item)"></i>
           </div>
@@ -206,6 +211,15 @@
               right: 30px;
               background: transparent;
               color: #ffffff;
+            }
+            .delete-icon:hover {
+              opacity: .9;
+            }
+            .search-btn {
+              border: none;
+            }
+            .search-btn:hover {
+              opacity: .8;
             }
           }
         }
