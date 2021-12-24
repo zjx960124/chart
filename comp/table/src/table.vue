@@ -2,23 +2,23 @@
   <div class="table-views">
     <div class="header">
       <div
-        v-for="(item, index) in compData.fields"
+        v-for="(item, index) in columns"
         :key="index"
       >
-        {{ item.name }}
+        {{ item }}
       </div>
     </div>
     <div class="main">
       <div
-        v-for="(item, index) in compData.data"
+        v-for="(item, index) in baseData"
         class="column"
-        :key="index"
+        :key="index + 'w'"
       >
         <div
-          v-for="(items, indexs) in compData.fields"
-          :key="indexs"
+          v-for="(items, indexs) in item"
+          :key="indexs + '内'"
         >
-          {{ item[items['key']] }}
+          {{ items }}
         </div>
       </div>
     </div>
@@ -27,9 +27,11 @@
 
 <script>
   import axios from "axios";
+  import handle from '../../utils/index'
 
   export default {
     name: "ClTable",
+    mixins: [handle],
     props: {
       category: String,
       sql: String,
@@ -48,27 +50,7 @@
         timeout: null
       }
     },
-    watch: {
-      deployOption: {
-        deep: true,
-        handler: function (newV, oldV) {
-          this.handleData();
-        }
-      },
-    },
-    mounted() {
-      this.$nextTick(() => {
-        this.getMock();
-      });
-    },
     methods: {
-      renderEChart() {
-        if (this.DSId) {
-          this.getData();
-        } else {
-          this.getMock();
-        }
-      },
       getMock() {
         if (this.timeout) {
           clearTimeout(this.timeout);
@@ -78,26 +60,12 @@
             this.baseData = res.data.table.rows;
             this.columns = res.data.table.columns;
             this.options = res.data.table.options;
-            this.handleData();
+            this.renderOption();
           })
         }, 1000);
       },
-      getData() {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-        this.timeout = setTimeout(() => {
-          this.http.get('/rest/report/sql/id', {
-            id: this.DSId
-          }).then((res) => {
-            this.baseData = res.data.rows;
-            this.columns = res.data.columns;
-            this.handleData();
-          })
-        }, 1000)
-      },
-      handleData() {
-        let base = [];
+      renderOption() {
+        /*let base = [];
         this.baseData && this.baseData.forEach((item, index) => {
           let a = new Object();
           this.columns.forEach((items, indexs) => {
@@ -109,7 +77,7 @@
         let fields = Array.apply(null,new Array(this.options.length))
           .map((item, index) => { return {'name': this.options[index],'key': this.columns[index]} });
         this.compData.fields = fields;
-        console.log(this.compData);
+        console.log(this.compData);*/
       }
     }
   }

@@ -1,14 +1,15 @@
 <template>
   <div class="draw-container">
     <div class="operate-view">
-      <el-button type="primary" icon="el-icon-printer" size="small" @click="goBack">返回</el-button>
+      <el-button type="primary" icon="el-icon-back" size="small" @click="goBack">返回</el-button>
       <el-button type="primary" icon="el-icon-printer" size="small" @click="savePage">保存页面</el-button>
       <el-button type="primary" icon="el-icon-printer" size="small" v-show="currentType !== 'project'" @click="uploadTemplate">保存模板</el-button>
       <el-button type="primary" icon="el-icon-printer" size="small" @click="generateJSON">导出json文件</el-button>
       <!--<el-button type="primary" icon="el-icon-printer" size="small" @click="upload">上传</el-button>-->
       <!--<el-button type="primary" icon="el-icon-printer" size="small" @click="download">导出html文件</el-button>-->
-      <el-button type="primary" icon="el-icon-printer" size="small" @click="preview">预览界面</el-button>
-      <el-button type="primary" icon="el-icon-delete" size="small" @click="empty">清空</el-button>
+      <el-button type="primary" icon="el-icon-view" size="small" @click="preview">预览界面</el-button>
+      <el-button type="danger" icon="el-icon-delete" size="small" @click="empty">清空</el-button>
+      <!--<el-button type="text" icon="el-icon-view" style="color: #333333">预览界面</el-button>-->
     </div>
     <div class="draw-view">
       <div class="left">
@@ -433,7 +434,7 @@
       this.$Bus.$on('drawOpen', (res) => {
         console.log(res);
         res.type === 'project' && (this.currentPageName = res.name, this.currentType = 'project');
-      })
+      });
       this.getCompData();
       /*document.addEventListener("keydown", () => {
         let e = event.keyCode;
@@ -452,7 +453,6 @@
       this.$Bus.$off('drawOpen');
     },
     mounted() {
-      console.log(this.currentPageName);
       loadBeautifier(btf => {
         beautifier = btf
       })

@@ -42,14 +42,25 @@
       </div>
     </div>
     <el-dialog
-      title="提示"
+      title="新增项目"
       :visible.sync="projectDialogVisible"
       width="30%"
+      top="30vh"
       class="project-dialog"
       :close-on-click-modal="false"
     >
-      <span>项目名称：</span><el-input @input="inputName" v-model="newProjectName" size="small"></el-input>
-      <span>项目编号：</span><el-input v-model="newProjectCode" size="small"></el-input>
+      <el-form
+        label-width="120px"
+        label-position="left"
+        ref="sourceForm"
+      >
+        <el-form-item label="项目名称">
+          <el-input v-model="newProjectName"></el-input>
+        </el-form-item>
+        <el-form-item label="项目编号">
+          <el-input v-model="newProjectCode"></el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancer">取 消</el-button>
         <el-button type="primary" @click="sure">确 定</el-button>
@@ -130,6 +141,7 @@
           this.http.post('/rest/report/project', param).then(res => {
             this.projectDialogVisible = false;
             this.getProjectList();
+            this.$message.success('新增成功');
           })
         }
       },
