@@ -96,11 +96,6 @@ const constantRoutes = [
     path: '/development',
     name: 'development',
     component: () => import('../../examples/views/index')
-  },
-  {
-    path: '/canvas',
-    name: 'canvas',
-    component: () => import('../../src/views/canvas/index')
   }
 ];
 
