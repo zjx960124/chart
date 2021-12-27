@@ -135,9 +135,9 @@
 
       return h('div', {
         on: {
-          click: () => {
+          click: (e) => {
+            e.stopPropagation();
             activeItem(currentItem);
-            event.stopPropagation();
           }
         },
         style: {
@@ -190,8 +190,8 @@
       return h('div', {
         on: {
           click: () => {
-            activeItem(currentItem);
             event.stopPropagation();
+            activeItem(currentItem);
           }
         },
         style: {
@@ -212,7 +212,7 @@
     const config = currentItem; // config parent
     if (!Array.isArray(config.children)) return null
     return config.children.map((el, i) => {
-      const layout = layoutt[el.layout]
+      const layout = layoutt[el.layout];
       if (layout && el.type !== 'cChart') {
         return layout.call(this, h, el, i, config.children, el.style.flexDirection)
         // return layout.call(this, h, el, i, list, config)

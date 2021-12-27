@@ -122,7 +122,13 @@
           </el-collapse-item>
         </el-collapse>
       </div>
-      <div class="center">
+      <div
+        class="center-view"
+        ref="views"
+        @mousedown="handleDown"
+        @mousemove="handleDrag"
+        @mouseup="handleUp"
+      >
         <!--<div class="action-bar">
         &lt;!&ndash;<el-button icon="el-icon-video-play" type="text" @click="run">
           运行
@@ -141,29 +147,38 @@
         </el-button>&ndash;&gt;
         <el-button type="danger" icon="el-icon-delete" size="small" @click="empty">清空</el-button>
         </div>-->
-        <draggable
-          class="drawing-board img-scroll"
-          :list="drawingList"
-          :animation="340"
-          group="componentsGroup"
-          :style="{flexDirection: formConf.flexDirection}"
-          :disabled="dragFlag"
+        <div
+          ref="doms"
+          class="doms"
+          :style="{'transform': matrix}"
+          @onmouseover="handleBuild"
+          :class="[isCtrl ? 'event-ctrl' : '', isClick ? 'event-ctrl' : '']"
+          @click.stop="isClick = !isClick"
         >
-          <draggable-item
-            v-for="(item, index) in drawingList"
-            :key="item.renderKey"
-            :drawing-list="drawingList"
-            :current-item="item"
-            :active-id="activeId"
-            :index="index"
-            :form-conf="formConf"
-            :template-theme="templateTheme"
-            @activeItem="activeFormItem"
-            @copyItem="drawingItemCopy"
-            @deleteItem="drawingItemDelete"
-            @editItem="editItem"
-          />
-        </draggable>
+          <draggable
+            class="drawing-board img-scroll"
+            :list="drawingList"
+            :animation="340"
+            group="componentsGroup"
+            :style="{flexDirection: formConf.flexDirection}"
+            :disabled="dragFlag"
+          >
+            <draggable-item
+              v-for="(item, index) in drawingList"
+              :key="item.renderKey"
+              :drawing-list="drawingList"
+              :current-item="item"
+              :active-id="activeId"
+              :index="index"
+              :form-conf="formConf"
+              :template-theme="templateTheme"
+              @activeItem="activeFormItem"
+              @copyItem="drawingItemCopy"
+              @deleteItem="drawingItemDelete"
+              @editItem="editItem"
+            />
+          </draggable>
+        </div>
       </div>
       <div class="right">
         <attr-panel
@@ -458,7 +473,23 @@
         dragFlag: false,
         projectCode: '',
         currentType: '',
-        activeNames: ['1', '2', '3']
+        activeNames: ['1', '2', '3'],
+        matrix: `matrix(0.5, 0, 0, 0.5, 0, 0)`,
+        scaleX: 0.5,
+        scaleY: 0.5,
+        translateX: 0,
+        translateY: 0,
+        rotateX: 0,
+        rotateY: 0,
+        isDown: false,
+        x: 0,
+        y: 0,
+        l: 0,
+        t: 0,
+        dragX: 0,
+        dragY: 0,
+        isCtrl: false,
+        isClick: false,
       }
     },
     created() {
@@ -483,10 +514,37 @@
     beforeDestroy () {
       this.$Bus.$off('drawOpen');
     },
+    activated() {
+    },
     mounted() {
       loadBeautifier(btf => {
         beautifier = btf
-      })
+      });
+      document.addEventListener('keydown',(e)=>{
+        if (e.which === 17) {
+          this.isCtrl = true;
+        }
+      });
+      document.addEventListener('keyup',(e)=>{
+        if (e.which === 17) {
+          this.isCtrl = false;
+        }
+      });
+      this.$refs.views.addEventListener('mousewheel', this.handleScroll, false);
+      this.$refs.views.addEventListener('onMouseMove', this.handleDrag, false);
+      this.$refs.doms.addEventListener('onmousedown', this.buildDown, false);
+      window.addEventListener('mousewheel', function (e) {
+        if (this.isCtrl) {
+          e.preventDefault();
+        }
+      }, false);
+      // 居中
+      this.$nextTick(() => {
+        this.translateX = (this.$refs.views.offsetWidth - (this.$refs.doms.offsetWidth * this.scaleX )) / 2;
+        this.translateY = (this.$refs.views.offsetHeight - (this.$refs.doms.offsetHeight * this.scaleY )) / 2;
+        let matrix = `matrix(${this.scaleX}, 0, 0, ${this.scaleY}, ${this.translateX}, ${this.translateY})`;
+        this.matrix = matrix;
+      });
     },
     methods: {
       getCompData() {
@@ -832,7 +890,107 @@
         }]);
         const blob = new Blob([codeStr], { type: 'text/plain;charset=utf-8' });
         saveAs(blob, 'cs.json');
-      }
+      },
+      handleScroll(e) {
+        if (this.isCtrl) {
+          e.preventDefault();
+          return false;
+        }
+        let direction = e.deltaY > 0 ? .75 : 1.25;
+        // 缩放
+        let scaleX = this.scaleX * direction;
+        let scaleY = this.scaleY * direction;
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+        let translateX = this.translateX;
+        let translateY = this.translateY;
+        let w = this.$refs.doms.offsetWidth;
+        let h = this.$refs.doms.offsetHeight;
+        let ratioL = (e.clientX - this.translateX) / w,
+          ratioT = (e.clientY - this.translateY) / h;
+        let ratioDelta = e.deltaY > 0 ? 0.9 : 1.1;
+        console.log(ratioDelta)
+        let l = Math.round(e.clientX  - (w * ratioL * ratioDelta));
+        let t = Math.round(e.clientY - (h * ratioT * ratioDelta));
+        console.log(l, t);
+        let matrix = `matrix(${scaleX}, 0, 0, ${scaleY}, ${l}, ${t})`;
+        this.translateX = l;
+        this.translateY = t;
+        this.matrix = matrix;
+      },
+      handleDrag(e) {
+        console.log(this.isDown)
+        if (!this.isDown) return false;
+        //获取x和y
+        let nx = e.clientX;
+        let ny = e.clientY;
+        //计算移动后的左偏移量和顶部的偏移量
+        let nl = nx - this.x;
+        let nt = ny - this.y;
+        let translateX = this.translateX + nl;
+        let translateY = this.translateY + nt;
+        let matrix = `matrix(${this.scaleX}, 0, 0, ${this.scaleY}, ${translateX}, ${translateY})`;
+        this.matrix = matrix;
+        this.dragX = translateX;
+        this.dragY = translateY;
+      },
+      handleDown(e) {
+        this.isClick = false;
+        e.stopImmediatePropagation();
+        console.log(e)
+        console.log('事件冒泡了');
+        if (e.path[0].className !== 'center-view') {
+          return false;
+        }
+        // 初始移动
+        this.dragX = 0;
+        this.dragY = 0;
+        //获取x坐标和y坐标 (相对于页面)
+        this.x = e.clientX;
+        this.y = e.clientY;
+
+        //获取左部和顶部的偏移量 (相对于父容器)
+        this.l = e.offsetX;
+        this.t = e.offsetY;
+        /*console.log(e.offsetX, e.offsetY);
+        console.log(this.translateX, this.translateY);
+        console.log(this.translateX <= Number(e.offsetX))
+        console.log(Number(e.offsetX) <= (this.translateX + (this.$refs.doms.offsetWidth * this.scaleX)))
+        console.log(this.translateY <= Number(e.offsetY))
+        console.log(Number(e.offsetY) <= (this.translateY + (this.$refs.doms.offsetHeight * this.scaleY)))*/
+        //开关打开
+        if (
+          this.translateX <= Number(e.offsetX)
+          && Number(e.offsetX) <= (this.translateX + (this.$refs.doms.offsetWidth * this.scaleX))
+          && this.translateY <= Number(e.offsetY)
+          && Number(e.offsetY) <= (this.translateY + (this.$refs.doms.offsetHeight * this.scaleY))
+        ) {
+          console.log('在drag内');
+          if (this.isCtrl) {
+            this.isDown = true;
+          }
+        } else {
+          this.isDown = true;
+        }
+        //设置样式
+      },
+      handleUp() {
+        console.log('鼠标放开');
+        this.isDown = false;
+        this.dragX && (this.translateX = this.dragX);
+        this.dragY && (this.translateY = this.dragY);
+        /*this.translateX = JSON.parse(JSON.stringify(this.dragX));
+        this.translateY = JSON.parse(JSON.stringify(this.dragY));
+        this.dragX = 0;
+        this.dragY = 0;*/
+      },
+      handleBuild() {
+        console.log('移入');
+        this.isDown = false;
+      },
+      buildDown() {
+        console.log('点击');
+      },
     }
   }
 </script>
@@ -1009,7 +1167,7 @@
         }
       }
 
-      .center {
+      .center-view {
         flex: 1274;
         background: #ffffff;
         height: 100%;
@@ -1017,6 +1175,11 @@
         display: flex;
         flex-direction: column;
         margin: 0 20px;
+        outline: none !important;
+        position: relative;
+        cursor: grab;
+        overflow: hidden;
+        user-select: none;
 
         .action-bar{
           position: relative;
@@ -1071,123 +1234,134 @@
           /*position: relative;*/
         }
 
-        .drawing-board {
-          /*min-width: 100%;
-          min-height: 100%;
+        .doms {
+          /*width: 100%;*/
+          /*height: 100%;*/
           width: fit-content;
-          height: fit-content;*/
-          /*flex: 1;*/
-          width: 100%;
-          height: 100%;
-          /*display: flex;*/
-          padding: 50px;
-          box-sizing: border-box;
-          overflow: auto;
-          /*position: absolute;*/
-          ::v-deep .drawing-row-item {
-            position: relative;
-            cursor: move;
-            -webkit-box-sizing: border-box;
+          height: fit-content;
+          transform-origin: 0px 0px 0px;
+          background-color: azure;
+          display: flex;
+          .drawing-board {
+            /*min-width: 100%;
+            min-height: 100%;
+            width: fit-content;
+            height: fit-content;*/
+            /*flex: 1;*/
+            width: 100%;
+            height: 100%;
+            /*display: flex;*/
             box-sizing: border-box;
-            border: 1px dashed #ccc;
-            border-radius: 3px;
-            padding: 10px !important;
-            /*padding: 0 2px;*/
-            /*margin-bottom: 15px;*/
-            /*margin-right: 15px;*/
-            /*min-height: fit-content;*/
-            .component-name {
-              position: absolute;
-              top: 0;
-              left: 0;
-              font-size: 12px;
-              color: #bbb;
-              display: inline-block;
-              padding: 0 6px;
-              line-height: 20px;
+            overflow: auto;
+            /*position: absolute;*/
+            ::v-deep .drawing-row-item {
+              position: relative;
+              cursor: move;
+              -webkit-box-sizing: border-box;
+              box-sizing: border-box;
+              border: 1px dashed #ccc;
+              border-radius: 3px;
+              padding: 10px !important;
+              /*padding: 0 2px;*/
+              /*margin-bottom: 15px;*/
+              /*margin-right: 15px;*/
+              /*min-height: fit-content;*/
+              .component-name {
+                position: absolute;
+                top: 0;
+                left: 0;
+                font-size: 12px;
+                color: #bbb;
+                display: inline-block;
+                padding: 0 6px;
+                line-height: 20px;
+              }
+              .drawing-item-copy {
+                display: none;
+                position: absolute;
+                top: -10px;
+                width: 22px;
+                height: 22px;
+                line-height: 22px;
+                text-align: center;
+                border-radius: 50%;
+                font-size: 12px;
+                border: 1px solid;
+                cursor: pointer;
+                z-index: 1;
+              }
+              .drawing-item-delete {
+                display: none;
+                position: absolute;
+                top: -10px;
+                width: 22px;
+                height: 22px;
+                line-height: 22px;
+                text-align: center;
+                border-radius: 50%;
+                font-size: 12px;
+                border: 1px solid;
+                cursor: pointer;
+                z-index: 1;
+              }
+              .drawing-item-edit {
+                display: none;
+                position: absolute;
+                top: -10px;
+                width: 22px;
+                height: 22px;
+                line-height: 22px;
+                text-align: center;
+                border-radius: 50%;
+                font-size: 12px;
+                border: 1px solid;
+                cursor: pointer;
+                z-index: 1;
+              }
+              .drag-wrapper .drawing-row-item {
+                /*margin-top: 20px;*/
+              }
             }
-            .drawing-item-copy {
-              display: none;
-              position: absolute;
-              top: -10px;
-              width: 22px;
-              height: 22px;
-              line-height: 22px;
-              text-align: center;
-              border-radius: 50%;
-              font-size: 12px;
-              border: 1px solid;
-              cursor: pointer;
-              z-index: 1;
+            ::v-deep .drawing-row-item > .drag-wrapper {
+              margin: 0 !important;
             }
-            .drawing-item-delete {
-              display: none;
-              position: absolute;
-              top: -10px;
-              width: 22px;
-              height: 22px;
-              line-height: 22px;
-              text-align: center;
-              border-radius: 50%;
-              font-size: 12px;
-              border: 1px solid;
-              cursor: pointer;
-              z-index: 1;
+            ::v-deep .active-from-item > .drawing-item-copy {
+              display: initial;
             }
-            .drawing-item-edit {
-              display: none;
-              position: absolute;
-              top: -10px;
-              width: 22px;
-              height: 22px;
-              line-height: 22px;
-              text-align: center;
-              border-radius: 50%;
-              font-size: 12px;
-              border: 1px solid;
-              cursor: pointer;
-              z-index: 1;
+            ::v-deep .active-from-item > .drawing-item-delete {
+              display: initial;
             }
-            .drag-wrapper .drawing-row-item {
-              /*margin-top: 20px;*/
+            ::v-deep .active-from-item > .drawing-item-edit {
+              display: initial;
+            }
+            ::v-deep .drag-wrapper > .drawing-row-item {
+              margin-right: 0;
+            }
+            ::v-deep .drawing-row-item.active-from-item {
+              border: 1px dashed #409EFF;
+              .drawing-item-copy {
+                right: 46px;
+                border-color: #409EFF;
+                color: #409EFF;
+                background: #fff;
+              }
+              .drawing-item-delete {
+                right: 14px;
+                border-color: #F56C6C;
+                color: #F56C6C;
+                background: #fff;
+              }
+              .drawing-item-edit {
+                right: 78px;
+                border-color: #409EFF;
+                color: #409EFF;
+                background: #fff;
+              }
             }
           }
-          ::v-deep .drawing-row-item > .drag-wrapper {
-            margin: 0 !important;
-          }
-          ::v-deep .active-from-item > .drawing-item-copy {
-            display: initial;
-          }
-          ::v-deep .active-from-item > .drawing-item-delete {
-            display: initial;
-          }
-          ::v-deep .active-from-item > .drawing-item-edit {
-            display: initial;
-          }
-          ::v-deep .drag-wrapper > .drawing-row-item {
-            margin-right: 0;
-          }
-          ::v-deep .drawing-row-item.active-from-item {
-            border: 1px dashed #409EFF;
-            .drawing-item-copy {
-              right: 46px;
-              border-color: #409EFF;
-              color: #409EFF;
-              background: #fff;
-            }
-            .drawing-item-delete {
-              right: 14px;
-              border-color: #F56C6C;
-              color: #F56C6C;
-              background: #fff;
-            }
-            .drawing-item-edit {
-              right: 78px;
-              border-color: #409EFF;
-              color: #409EFF;
-              background: #fff;
-            }
-          }
+        }
+        .event-ctrl {
+          pointer-events: none;
         }
       }
 
