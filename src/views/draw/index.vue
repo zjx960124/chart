@@ -60,7 +60,6 @@
                   v-for="(element, index) in leftComponents"
                   :key="index"
                   class="components-item-widget"
-                  @click="addComponent(element)"
                 >
                   <div class="components-body back">
                     {{ element.label }}
@@ -85,7 +84,6 @@
                   v-for="(element, index) in leftElement"
                   :key="index"
                   class="components-item"
-                  @click="addComponent(element)"
                 >
                   <div class="components-body">
                     <img :src="element.backgroundImage" class="components-image"></img>
@@ -110,7 +108,6 @@
                   v-for="(element, index) in templateComponents"
                   :key="index"
                   class="components-template"
-                  @click="addComponent(element, 'temp')"
                 >
                   <div class="components-body">
                     <div class="components-image"></div>
@@ -150,7 +147,7 @@
         <div
           ref="doms"
           class="doms"
-          :style="{'transform': matrix}"
+          :style="{'transform': matrix, 'width': drawingList.length > 0 ? 'fit-content' : '', 'height': drawingList.length > 0 ? 'fit-content' : ''}"
           @onmouseover="handleBuild"
           :class="[isCtrl ? 'event-ctrl' : '', isClick ? 'event-ctrl' : '']"
           @click.stop="isClick = !isClick"
@@ -475,8 +472,8 @@
         currentType: '',
         activeNames: ['1', '2', '3'],
         matrix: `matrix(0.5, 0, 0, 0.5, 0, 0)`,
-        scaleX: 0.5,
-        scaleY: 0.5,
+        scaleX: 0.9,
+        scaleY: 0.9,
         translateX: 0,
         translateY: 0,
         rotateX: 0,
@@ -540,8 +537,8 @@
       }, false);
       // 居中
       this.$nextTick(() => {
-        this.translateX = (this.$refs.views.offsetWidth - (this.$refs.doms.offsetWidth * this.scaleX )) / 2;
-        this.translateY = (this.$refs.views.offsetHeight - (this.$refs.doms.offsetHeight * this.scaleY )) / 2;
+        this.translateX = (this.$refs.views.offsetWidth - (this.$refs.views.offsetWidth * this.scaleX )) / 2;
+        this.translateY = (this.$refs.views.offsetHeight - (this.$refs.views.offsetHeight * this.scaleY )) / 2;
         let matrix = `matrix(${this.scaleX}, 0, 0, ${this.scaleY}, ${this.translateX}, ${this.translateY})`;
         this.matrix = matrix;
       });
@@ -621,9 +618,10 @@
         return item
       },
       addComponent(item, type = null) {
+        console.log(type);
         if (item.length < 1) return false;
-        if (type) this.drawingList = [];
-        const clone = this.cloneComponent(item)
+        if (type === 'temp') this.drawingList = [];
+        const clone = this.cloneComponent(item);
         this.fetchData(clone);
         this.drawingList.push(clone);
         clone.children && (this.isHasChart([clone]) && this.traverseKey());
@@ -1235,25 +1233,15 @@
         }
 
         .doms {
-          /*width: 100%;*/
-          /*height: 100%;*/
-          width: fit-content;
-          height: fit-content;
+          flex: 1;
           transform-origin: 0px 0px 0px;
           background-color: azure;
           display: flex;
           .drawing-board {
-            /*min-width: 100%;
-            min-height: 100%;
-            width: fit-content;
-            height: fit-content;*/
-            /*flex: 1;*/
             width: 100%;
             height: 100%;
-            /*display: flex;*/
             box-sizing: border-box;
             overflow: auto;
-            /*position: absolute;*/
             ::v-deep .drawing-row-item {
               position: relative;
               cursor: move;
