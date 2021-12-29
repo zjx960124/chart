@@ -61,7 +61,7 @@
   };
   const layoutt = {
     rowFrame(h, currentItem, index, list) {
-      const { activeItem } = this.$listeners;
+      const { activeItem, end } = this.$listeners;
       const config = currentItem;
       const className = this.activeId === config.formId
         ? 'drawing-row-item active-from-item'
@@ -70,6 +70,12 @@
       let name = h('span', { class: 'component-name' }, config.componentName);
       let minHeight = config.type !== 'canvas' ? {minHeight: '60px'} : {};
       let draggable = h('draggable', {
+        on: {
+          'end': (e) => {
+            e.stopPropagation();
+            end(e, currentItem);
+          }
+        },
         props: {
           animation: 340,
           group: 'componentsGroup',

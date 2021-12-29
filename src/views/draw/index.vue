@@ -172,8 +172,7 @@
             :animation="340"
             group="componentsGroup"
             :style="{flexDirection: formConf.flexDirection}"
-            :disabled="dragFlag"
-            @end="drag"
+            draggable=".drawing-row-item"
           >
             <draggable-item
               v-for="(item, index) in drawingList"
@@ -188,6 +187,7 @@
               @copyItem="drawingItemCopy"
               @deleteItem="drawingItemDelete"
               @editItem="editItem"
+              @end="drag"
             />
           </draggable>
         </div>
@@ -945,7 +945,6 @@
       undo() {
         if (this.record.length === 0) return false;
         if (this.record.length === 1) {
-          console.log(this.currentData);
           this.drawingList = [this.currentData];
           this.isHasChart(this.drawingList) && this.traverseKey();
           this.activeFormItem(this.drawingList[0]);
@@ -1011,8 +1010,10 @@
         this.record.push({type, data});
         console.log(this.record)
       },
-      drag(obj){
+      drag(e, obj){
+        console.log(e);
         console.log(obj);
+        // this.record.push({type: 'move', data: obj, from})
       }
     }
   }
