@@ -173,6 +173,7 @@
             group="componentsGroup"
             :style="{flexDirection: formConf.flexDirection}"
             :disabled="dragFlag"
+            @end="drag"
           >
             <draggable-item
               v-for="(item, index) in drawingList"
@@ -405,7 +406,7 @@
         isCtrl: false,
         isClick: false,
         // 记录
-        currentData: [],
+        currentData: {},
         record: []
       }
     },
@@ -413,6 +414,7 @@
       this.$Bus.$on('drawOpen', (res) => {
         this.currentPageName = res.name;
         this.currentType = res.type;
+        console.log(this.currentType)
       });
       this.getCompData();
     },
@@ -432,6 +434,11 @@
           e.preventDefault();
           // 保存
           this.saveOperation();
+        }
+        if (e.ctrlKey === true && e.keyCode === 90) {
+          e.preventDefault();
+          // 保存
+          this.undo();
         }
       });
       document.addEventListener('keyup',(e)=>{
@@ -485,21 +492,41 @@
         if (obj.from !== obj.to) {
           this.fetchData(tempActiveData);
           this.activeData = tempActiveData;
-          this.activeId = this.idGlobal
+          this.activeId = this.idGlobal;
+          if (obj.from.__vue__.$attrs.group.pull === 'clone') {
+            console.log('新增');
+            this.traverseIndex();
+            console.log(tempActiveData.formId);
+            console.log(this.drawingList);
+            this.recordDrag('add', this.findData(tempActiveData.formId));
+          }
         }
+        // obj.from.__vue__.$attrs.type && this.traverseKey();
         obj.from.__vue__.$attrs.type && this.traverseKey();
-        this.traverseKey();
       },
-      traverseKey() {
+      traverseIndex() {
+        console.log('重置Index');
+        function alertArr(arr, parentIndex) {
+          arr.forEach((item, index) => {
+            item.compIndex = parentIndex !== undefined ? parentIndex + '-' + index : index;
+            item.children && alertArr(item.children, item.compIndex);
+          })
+        }
+        alertArr(this.drawingList);
+      },
+      /**
+       * cons 是否初始化compIndex
+       */
+      traverseKey(cons) {
         let global = 0;
         function alertArr(arr, con, parentIndex) {
           arr.forEach((item, index) => {
             item.renderKey = `${++global}${+new Date()}`;
-            item.compIndex = parentIndex !== undefined ? parentIndex + '-' + index : index;
+            con && (item.compIndex = parentIndex !== undefined ? parentIndex + '-' + index : index);
             item.children && alertArr(item.children, con, item.compIndex);
           })
         }
-        alertArr(this.drawingList);
+        alertArr(this.drawingList, cons);
       },
       cloneComponent(origin) {
         const clone = deepClone(origin);
@@ -538,12 +565,15 @@
         const clone = this.cloneComponent(item);
         this.fetchData(clone);
         this.drawingList.push(clone);
-        clone.children && (this.isHasChart([clone]) && this.traverseKey());
+        // 新增了初次渲染需要注入compIndex而关闭判断Haschart
+        // clone.children && (this.isHasChart([clone]) && this.traverseKey(true));
+        this.traverseKey(true);
         this.activeFormItem(clone)
       },
       setBaseCurrentData(data) {
         const clone = this.cloneComponent(data);
         this.currentData = clone;
+        console.log(this.currentData)
       },
       isHasChart(data) {
         let flag = false;
@@ -583,7 +613,7 @@
         let clone = deepClone(item)
         clone = this.createIdAndKey(clone)
         list.push(clone)
-        this.traverseKey()
+        this.traverseKey(true)
         this.activeFormItem(clone)
       },
       drawingItemDelete(index, list) {
@@ -905,48 +935,84 @@
        * 保存
        */
       saveOperation() {
-        /*// 页面
-        this.currentType === 'project' && throttle(this.fetchPage(), 2000);
-        if (this.currentType === 'page') {
-          this.currentPageName && throttle(this.fetchPage(), 2000) || throttle(this.savePage(), 2000);
-        }
-        // 模板
-        if (this.currentType === 'template') {
-          this.currentTempName && throttle(this.fetchTemplate(), 2000) || throttle(this.uploadTemplate(), 2000);
-        }*/
-        this.currentData = this.drawingList;
+        console.log(this.drawingList[0]);
+        this.currentData = deepClone(this.drawingList[0]);
         this.record = [];
       },
       optionChange(key, value) {
         this.record.push({name: key, value: value, index: this.activeIndex});
-        console.log(this.record)
       },
       undo() {
-        console.log(this.record);
-        if (this.record.length < 2) {
+        if (this.record.length === 0) return false;
+        if (this.record.length === 1) {
           console.log(this.currentData);
           this.drawingList = [this.currentData];
+          this.isHasChart(this.drawingList) && this.traverseKey();
+          this.activeFormItem(this.drawingList[0]);
           this.record = [];
-        } else {
-          let currentRecord = this.record[this.record.length - 1]; // 记录
-          console.log(currentRecord)
-          let compIndex = currentRecord['index'].split('-');
-          let indexList = Array.from(new Array(compIndex.length),(item,index) => [compIndex[index]])
-          var data = null, datas;
-          indexList.forEach((item, index) => {
-            if (index < indexList.length - 1) {
-              data = data ? data[item].children : this.drawingList[item].children;
-            } else {
-              data = data[item]
-            }
-            if (data.compIndex === currentRecord['index']) {
-              datas = data;
-            }
-          });
-          let record = this.record[this.record.length - 2];
-          datas[record['name'][0]][record['name'][1]] = record['value'];
-          this.record.splice(this.record.length - 1,1)
+          return false;
         }
+        else {
+          const currentRecord = this.record[this.record.length - 1]; // 记录
+          if (currentRecord.type) {
+            // 结构
+            let compIndex = currentRecord.data.compIndex.split('-');
+            let indexLists = Array.from(new Array(compIndex.length),(item,index) => [compIndex[index]]);
+            let data = null, parentData = null;
+            compIndex.forEach((item, index) => {
+              if (index <= compIndex.length - 2) {
+                parentData = parentData ? parentData.children[item] : this.drawingList[item];
+              }
+            });
+            parentData.children.splice(compIndex[compIndex.length - 1], 1);
+            this.record.splice(this.record.length - 1,1);
+            return
+          }
+          else if (currentRecord.name) {
+            // 属性
+            let compIndex = currentRecord['index'].split('-');
+            var data = null, datas;
+            compIndex.forEach((item, index) => {
+              if (index < compIndex.length - 1) {
+                data = data ? data[item].children : this.drawingList[item].children;
+              } else {
+                data = data[item];
+                datas = data;
+              }
+            });
+            let record = this.record[this.record.length - 2];
+            datas[record['name'][0]][record['name'][1]] = record['value'];
+            this.record.splice(this.record.length - 1,1);
+            return false;
+          }
+        }
+      },
+      /**
+       * 移动
+       */
+      findData(key) {
+        let data = null;
+        function treeFind(tree, func) {
+          for (const data of tree) {
+            if (func(data)) return data
+            if (data.children) {
+              const res = treeFind(data.children, func);
+              if (res) return res
+            }
+          }
+          return null
+        }
+        function func(data) {
+          return data.formId === key;
+        }
+        return treeFind(this.drawingList, func);
+      },
+      recordDrag(type, data) {
+        this.record.push({type, data});
+        console.log(this.record)
+      },
+      drag(obj){
+        console.log(obj);
       }
     }
   }
