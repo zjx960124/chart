@@ -22,6 +22,7 @@
         <el-form-item label="容器排列方向">
           <el-select
             v-model="activeData.style.flexDirection"
+            @change="(e) => optionChange(e, ['style','flexDirection'])"
           >
             <el-option
               v-for="(item, index) in arrangeOption"
@@ -32,43 +33,32 @@
           </el-select>
         </el-form-item>
         <el-form-item label="容器内间距">
-          <el-input-number v-model="activeData.style.padding" />
+          <el-input-number @change="(e) => optionChange(e, ['style','padding'])" v-model="activeData.style.padding" />
         </el-form-item>
         <el-form-item label="容器占比">
-          <el-input-number v-model="activeData.style.flex" />
+          <el-input-number @change="(e) => optionChange(e, ['style','flex'])" v-model="activeData.style.flex" />
         </el-form-item>
         <el-form-item label="容器背景色">
-          <el-color-picker v-model="activeData.style.backgroundColor" show-alpha></el-color-picker>
+          <el-color-picker @change="(e) => optionChange(e, ['style','backgroundColor'])" v-model="activeData.style.backgroundColor" show-alpha></el-color-picker>
         </el-form-item>
         <div v-show="activeType === 'container'">
-          <!--<el-form-item label="容器背景图">
-            <el-select
-              v-model="activeData.style.backgroundImage"
-            >
-              <el-option
-                v-for="(item, index) in backImgList"
-                :key="item"
-                :label="item"
-                :value="item"
-              ></el-option>
-            </el-select>
-          </el-form-item>-->
           <el-form-item label="左边距">
-            <el-input-number type="number" v-model="activeData.style.marginLeft" />
+            <el-input-number @change="(e) => optionChange(e, ['style','marginLeft'])" type="number" v-model="activeData.style.marginLeft" />
           </el-form-item>
           <el-form-item label="上边距">
-            <el-input-number type="number" v-model="activeData.style.marginTop" />
+            <el-input-number @change="(e) => optionChange(e, ['style','marginTop'])" type="number" v-model="activeData.style.marginTop" />
           </el-form-item>
           <el-form-item label="下边距">
-            <el-input-number type="number" v-model="activeData.style.marginBottom" />
+            <el-input-number @change="(e) => optionChange(e, ['style','marginBottom'])" type="number" v-model="activeData.style.marginBottom" />
           </el-form-item>
           <el-form-item label="右边距">
-            <el-input-number type="number" v-model="activeData.style.marginRight" />
+            <el-input-number @change="(e) => optionChange(e, ['style','marginRight'])" type="number" v-model="activeData.style.marginRight" />
           </el-form-item>
           <el-form-item label="背景图(文件夹)">
             <el-select
               clearable
               v-model="activeData.style.backgroundGroup"
+              @change="(e) => optionChange(e, ['style','flexDirection'])"
             >
               <el-option
                 v-for="(item, key, index) in imgGroup"
@@ -82,6 +72,7 @@
             <el-select
               clearable
               v-model="activeData.style.backgroundImage"
+              @change="(e) => optionChange(e, ['style','flexDirection'])"
             >
               <el-option
                 v-for="(item, index) in imgGroup[activeData.style.backgroundGroup]"
@@ -97,20 +88,21 @@
         </div>
         <div v-show="activeType === 'title'">
           <el-form-item label="内容">
-            <el-input v-model="activeData.text" placeholder="请输入容器内间距" />
+            <el-input @change="(e) => optionChange(e, 'text')" v-model="activeData.text" placeholder="请输入容器内间距" />
           </el-form-item>
           <el-form-item label="内容颜色">
-            <el-color-picker v-model="activeData.style.color"></el-color-picker>
+            <el-color-picker @change="(e) => optionChange(e, ['style','color'])" v-model="activeData.style.color"></el-color-picker>
           </el-form-item>
           <el-form-item label="字体大小">
-            <el-input-number v-model="activeData.style.fontSize" />
+            <el-input-number @change="(e) => optionChange(e, ['style','fontSize'])" v-model="activeData.style.fontSize" />
           </el-form-item>
           <el-form-item label="容器高度">
-            <el-input-number v-model="activeData.style.height" />
+            <el-input-number @change="(e) => optionChange(e, ['style','height'])" v-model="activeData.style.height" />
           </el-form-item>
           <el-form-item label="字体位置">
             <el-select
               v-model="activeData.style.justifyContent"
+              @change="(e) => optionChange(e, ['style','justifyContent'])"
             >
               <el-option
                 v-for="(item, index) in positionList"
@@ -122,6 +114,7 @@
           <el-form-item label="字体样式">
             <el-select
               v-model="activeData.style.fontFamily"
+              @change="(e) => optionChange(e, ['style','fontFamily'])"
             >
               <el-option
                 v-for="(item, index) in fontFamilyList"
@@ -135,6 +128,7 @@
           <el-form-item label="标题背景图">
             <el-select
               v-model="activeData.style.backgroundImage"
+              @change="(e) => optionChange(e, ['style','backgroundImage'])"
             >
               <el-option
                 v-for="(item, index) in imgList"
@@ -144,30 +138,30 @@
             </el-select>
           </el-form-item>
           <el-form-item label="左边距">
-            <el-input-number type="number" v-model="activeData.style.marginLeft" />
+            <el-input-number @change="(e) => optionChange(e, ['style','marginLeft'])" type="number" v-model="activeData.style.marginLeft" />
           </el-form-item>
           <el-form-item label="上边距">
-            <el-input-number type="number" v-model="activeData.style.marginTop" />
+            <el-input-number @change="(e) => optionChange(e, ['style','marginTop'])" type="number" v-model="activeData.style.marginTop" />
           </el-form-item>
           <el-form-item label="下边距">
-            <el-input-number type="number" v-model="activeData.style.marginBottom" />
+            <el-input-number @change="(e) => optionChange(e, ['style','marginBottom'])" type="number" v-model="activeData.style.marginBottom" />
           </el-form-item>
           <el-form-item label="右边距">
-            <el-input-number type="number" v-model="activeData.style.marginRight" />
+            <el-input-number @change="(e) => optionChange(e, ['style','marginRight'])" type="number" v-model="activeData.style.marginRight" />
           </el-form-item>
         </div>
         <div v-show="activeType === 'chartContainer'">
           <el-form-item label="左边距(内)">
-            <el-input-number type="number" v-model="activeData.style.paddingLeft" />
+            <el-input-number @change="(e) => optionChange(e, ['style','paddingLeft'])" type="number" v-model="activeData.style.paddingLeft" />
           </el-form-item>
           <el-form-item label="上边距(内)">
-            <el-input-number type="number" v-model="activeData.style.paddingTop" />
+            <el-input-number @change="(e) => optionChange(e, ['style','paddingTop'])" type="number" v-model="activeData.style.paddingTop" />
           </el-form-item>
           <el-form-item label="下边距(内)">
-            <el-input-number type="number" v-model="activeData.style.paddingBottom" />
+            <el-input-number @change="(e) => optionChange(e, ['style','paddingBottom'])" type="number" v-model="activeData.style.paddingBottom" />
           </el-form-item>
           <el-form-item label="右边距(内)">
-            <el-input-number type="number" v-model="activeData.style.paddingRight" />
+            <el-input-number @change="(e) => optionChange(e, ['style','paddingRight'])" type="number" v-model="activeData.style.paddingRight" />
           </el-form-item>
         </div>
       </el-form>
@@ -176,9 +170,9 @@
         size="small"
         label-width="100px"
       >
-        <el-form-item label="容器间隔:">
+        <!--<el-form-item label="容器间隔:">
           <el-input-number v-model="formConf.gutter" />
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="画布排列方向:">
           <el-select
             v-model="formConf.flexDirection"
@@ -231,7 +225,6 @@
         fontFamilyList: [],
         imgList: [],
         backImgList: [],
-        activeType: '',
         imgGroup: null,
         currentGroupIndex: '',
         currentGroup: '',
@@ -239,12 +232,15 @@
       }
     },
     watch: {
-      activeData(old) {
-        if (old.componentName.indexOf('echart') !== -1) this.currentTab = '3';
-        this.activeType = old.type;
-        // this.currentGroup = this.allImage.filter((item) => item.indexOf(this.activeData.style.backgroundImage) > -1)[0].split('/')[0] || '';
-        // console.log(this.currentGroup);
-        // old.type === 'title' && (this.activeData = new Map(Object.entries(old)));
+      activeData: {
+        handler(news, olds) {
+        },
+        deep: true
+      }
+    },
+    computed: {
+      activeType() {
+        return this.activeData.type || ''
       }
     },
     created() {
@@ -301,6 +297,11 @@
         }
         this.allImage = group;
         this.imgGroup = a;
+      },
+      optionChange(value, key) {
+        console.log(value);
+        console.log(key);
+        this.$emit('optionChange', key, value);
       }
     }
   }

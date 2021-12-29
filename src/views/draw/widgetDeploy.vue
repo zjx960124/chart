@@ -5,6 +5,7 @@
     width="80%"
     class="widget-deploy-dialog"
     @close="close"
+    top="10vh"
   >
     <div class="widget-deploy">
       <div class="left">
@@ -592,11 +593,11 @@
   .widget-deploy-dialog {
     font-size: 14px;
     height: 100vh;
-    overflow-y: auto;
+    overflow-y: hidden;
     .widget-deploy {
       display: flex;
       align-items: center;
-      height: 75vh;
+      height: 60vh;
       overflow-y: auto;
       .left {
         height: 100%;

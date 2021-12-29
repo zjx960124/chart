@@ -6,7 +6,7 @@
 import logger from "vuex/dist/logger";
 
 class Legend {
-  constructor(legendData, option) {
+  constructor(legendData, option = {}) {
     this.baseData = {
       data: legendData,
       left: option.legendLeft || 'auto',
@@ -15,12 +15,11 @@ class Legend {
       right: option.legendRight || 'auto',
       orient: option.legendOrient,
     };
-
   }
   getData() {
     return this.baseData;
   }
-  splitArray(arrLength, option) {
+  splitArray(arrLength, option = {}) {
     let result = [];
     this.baseData.data.reduce((x, y, index, arr) => {
       if (x.length < Number(arrLength)) {
@@ -72,7 +71,7 @@ class xAxis {
  * 绘图网格
  */
 class Grid {
-  constructor(option) {
+  constructor(option = {}) {
     this.baseData = {
       left: fitChartSize(option.girdLeft) || '5%',
       top: fitChartSize(option.girdTop) || '40',

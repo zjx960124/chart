@@ -295,7 +295,7 @@
               color: #333333;
             }
             .resolution {
-              color: #376AB8;
+              color: #999999;
               font-size: 12px;
               font-family: "PingFang SC";
             }

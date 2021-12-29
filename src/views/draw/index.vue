@@ -2,26 +2,43 @@
   <div class="draw-container">
     <div class="operate-view">
       <div>
-        <el-button type="primary" icon="el-icon-back" style="background: #15B2EB" size="small" @click="goBack">返回</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-back"
+          style="background: #15B2EB"
+          size="small"
+          @click="goBack"
+        >
+          返回
+        </el-button>
       </div>
       <div>
-        <!--<el-button type="primary" size="small" @click="savePage">保存页面</el-button>
-        <el-button type="primary" size="small" v-show="currentType !== 'project'" @click="uploadTemplate">保存模板</el-button>-->
-        <!--<el-button type="primary" size="small" @click="generateJSON">导出json文件</el-button>-->
         <!--<el-button type="primary" icon="el-icon-printer" size="small" @click="upload">上传</el-button>-->
         <!--<el-button type="primary" icon="el-icon-printer" size="small" @click="download">导出html文件</el-button>-->
-        <!--<el-button type="primary" icon="el-icon-view" size="small" @click="preview">预览界面</el-button>
-        <el-button type="danger" icon="el-icon-delete" size="small" @click="empty">清空</el-button>-->
-        <!--<el-button type="text" icon="el-icon-view" style="color: #333333">预览界面</el-button>-->
-        <div class="operate" @click="empty">
+        <div
+          class="operate"
+          @click="undo"
+        >
+          <span>撤销</span>
+        </div>
+        <div
+          class="operate"
+          @click="empty"
+        >
           <img src="../../assets/static/delete.png" alt="">
           <span>清空</span>
         </div>
         <div
-          v-show="currentType !== 'project'" @click="uploadTemplate"
+          v-show="currentType === 'template'" @click="uploadTemplate"
           class="operate">
           <img src="../../assets/static/copy.png" alt="">
           保存为模板
+        </div>
+        <div
+          v-show="currentType === 'project' || currentType === 'page'" @click="savePage"
+          class="operate">
+          <img src="../../assets/static/copy.png" alt="">
+          保存页面
         </div>
         <div
           class="operate"
@@ -30,15 +47,12 @@
           <img src="../../assets/static/json.png" alt="">
           下载JSON文件
         </div>
-        <div class="operate"  @click="preview">
+        <div
+          class="operate"
+          @click="preview"
+        >
           <img src="../../assets/static/preview.png" alt="">
           预览界面
-        </div>
-        <div
-          v-show="currentType !== 'project'"
-          style="margin-left: 23px"
-        >
-          <el-button type="primary" size="small" @click="savePage">保存页面</el-button>
         </div>
       </div>
     </div>
@@ -127,22 +141,22 @@
         @mouseup="handleUp"
       >
         <!--<div class="action-bar">
-        &lt;!&ndash;<el-button icon="el-icon-video-play" type="text" @click="run">
+          <el-button icon="el-icon-video-play" type="text" @click="run">
           运行
         </el-button>
-        <el-button icon="el-icon-view" type="text" @click="showJson">
+          <el-button icon="el-icon-view" type="text" @click="showJson">
           查看json
         </el-button>
-        <el-button icon="el-icon-download" type="text" @click="download">
+          <el-button icon="el-icon-download" type="text" @click="download">
           导出vue文件
         </el-button>
-        <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy">
+          <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy">
           复制代码
-        </el-button>&ndash;&gt;
-        &lt;!&ndash;<el-button class="delete-btn" icon="el-icon-delete" type="text" @click="empty">
+        </el-button>
+          <el-button class="delete-btn" icon="el-icon-delete" type="text" @click="empty">
           清空
-        </el-button>&ndash;&gt;
-        <el-button type="danger" icon="el-icon-delete" size="small" @click="empty">清空</el-button>
+        </el-button>
+          <el-button type="danger" icon="el-icon-delete" size="small" @click="empty">清空</el-button>
         </div>-->
         <div
           ref="doms"
@@ -183,6 +197,7 @@
           :form-conf="formConf"
           :show-field="!!drawingList.length"
           @changeTemplateTheme="themeOfAttrPanel"
+          @optionChange="optionChange"
         ></attr-panel>
       </div>
     </div>
@@ -228,7 +243,7 @@
   import loadBeautifier from '@/utils/loadBeautifier'
   import DraggableItem from "./draggableItem";
   import AttrPanel from "./attrPanel";
-  import {titleCase} from '@/utils/index';
+  import {titleCase, throttle} from '@/utils/index';
   import {
     makeUpHtml, vueTemplate, vueScript, cssStyle
   } from './generateCode/index'
@@ -329,21 +344,7 @@
           },
           children: [],
         },
-        drawingList: [
-          {
-            layout: 'rowFrame',
-            label: '画布',
-            type: 'canvas',
-            style: {
-              flexDirection: 'row',
-              display: 'flex',
-              width: '1920px',
-              height: '1080px',
-              backgroundColor: ''
-            },
-            children: [],
-          },
-        ],
+        drawingList: [],
         activeData: {
           layout: 'rowFrame',
           label: '画布',
@@ -358,6 +359,7 @@
           children: [],
         },
         activeId: '',
+        activeIndex: '',
         formConf: {
           span: 24,
           gutter: 10,
@@ -369,93 +371,7 @@
         showFileName: false,
         operationType: '',
         generateConf: null,
-        formData: {
-          ref: '',
-          hasForm: false,
-          style: {},
-          props: {},
-          className: '',
-          formItem: [
-            {
-              type: 'div',
-              className: 'cross-frame',
-              style: {
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'row',
-                flexWarp: 'wrap',
-                boxSizing: 'border-box',
-                border: '1px solid blue',
-                marginRight: '5px'
-              }
-            },
-            {
-              type: 'div',
-              className: 'cross-frame',
-              style: {
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'row',
-                flexWarp: 'wrap',
-                boxSizing: 'border-box',
-                border: '1px solid blue',
-                marginRight: '5px'
-              }
-            },
-            {
-              type: 'div',
-              className: 'cross-frame',
-              style: {
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                flexWarp: 'wrap',
-                boxSizing: 'border-box',
-                border: '1px solid blue'
-              },
-              children: [
-                {
-                  type: 'div',
-                  className: 'cross-frame',
-                  style: {
-                    flex: 1,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWarp: 'wrap',
-                    boxSizing: 'border-box',
-                    border: '1px solid blue',
-                    marginBottom: '5px'
-                  },
-                },
-                {
-                  type: 'div',
-                  className: 'cross-frame',
-                  style: {
-                    flex: 1,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWarp: 'wrap',
-                    boxSizing: 'border-box',
-                    border: '1px solid blue',
-                    marginBottom: '5px'
-                  },
-                },
-                {
-                  type: 'div',
-                  className: 'cross-frame',
-                  style: {
-                    flex: 1,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWarp: 'wrap',
-                    boxSizing: 'border-box',
-                    border: '1px solid blue'
-                  },
-                }
-              ]
-            },
-          ]
-        },
+        formData: {},
         drawerVisible: false,
         previewVisible: false,
         widgetDeployVisible: false,
@@ -471,6 +387,7 @@
         projectCode: '',
         currentType: '',
         activeNames: ['1', '2', '3'],
+        // 拖拽缩放
         matrix: `matrix(0.5, 0, 0, 0.5, 0, 0)`,
         scaleX: 0.9,
         scaleY: 0.9,
@@ -487,31 +404,20 @@
         dragY: 0,
         isCtrl: false,
         isClick: false,
+        // 记录
+        currentData: [],
+        record: []
       }
     },
     created() {
       this.$Bus.$on('drawOpen', (res) => {
-        console.log(res);
-        res.type === 'project' && (this.currentPageName = res.name, this.currentType = 'project');
+        this.currentPageName = res.name;
+        this.currentType = res.type;
       });
       this.getCompData();
-      /*document.addEventListener("keydown", () => {
-        let e = event.keyCode;
-        if (e === 17) {
-          this.dragFlag = true;
-        }
-      })
-      document.addEventListener("keyup", () => {
-        let e = event.keyCode;
-        if (e === 17) {
-          this.dragFlag = false;
-        }
-      })*/
     },
     beforeDestroy () {
       this.$Bus.$off('drawOpen');
-    },
-    activated() {
     },
     mounted() {
       loadBeautifier(btf => {
@@ -520,6 +426,12 @@
       document.addEventListener('keydown',(e)=>{
         if (e.which === 17) {
           this.isCtrl = true;
+        }
+        if (e.ctrlKey === true && e.keyCode === 83) {
+          console.log(e)
+          e.preventDefault();
+          // 保存
+          this.saveOperation();
         }
       });
       document.addEventListener('keyup',(e)=>{
@@ -552,7 +464,7 @@
           data.forEach((item) => {item.code = JSON.parse(item.code)});
           this.templateComponents = data.map(item => item.code.layouts[0]);
           let datas = data.find((item, index) => item.id === Number(this.$route.query.tempId) ) || [];
-          this.$route.query.tempId && (this.addComponent(datas.code.layouts[0]), this.currentTempId = datas.id, this.currentTempName = datas.name);
+          this.$route.query.tempId && (this.addComponent(datas.code.layouts[0]), this.setBaseCurrentData(datas.code.layouts[0]),this.currentTempId = datas.id, this.currentTempName = datas.name);
           this.$route.query.id && this.getPageData();
         });
       },
@@ -564,24 +476,27 @@
           let { code } = res.data;
           code = JSON.parse(code);
           this.drawingList = [];
+          this.setBaseCurrentData(code.layouts[0]);
           this.addComponent(code.layouts[0]);
           this.formConf = code.conf;
         })
       },
       onEnd(obj) {
         if (obj.from !== obj.to) {
-          this.fetchData(tempActiveData)
-          this.activeData = tempActiveData
+          this.fetchData(tempActiveData);
+          this.activeData = tempActiveData;
           this.activeId = this.idGlobal
         }
         obj.from.__vue__.$attrs.type && this.traverseKey();
+        this.traverseKey();
       },
       traverseKey() {
         let global = 0;
-        function alertArr(arr, con) {
+        function alertArr(arr, con, parentIndex) {
           arr.forEach((item, index) => {
             item.renderKey = `${++global}${+new Date()}`;
-            item.children && alertArr(item.children, con);
+            item.compIndex = parentIndex !== undefined ? parentIndex + '-' + index : index;
+            item.children && alertArr(item.children, con, item.compIndex);
           })
         }
         alertArr(this.drawingList);
@@ -600,7 +515,7 @@
       createIdAndKey(item) {
         const config = item
         config.formId = ++this.idGlobal
-        config.renderKey = `${config.formId}${+new Date()}` // 改变renderKey后可以实现强制更新组件
+        config.renderKey = `${config.formId}${+new Date()}`; // 改变renderKey后可以实现强制更新组件
         if (config.layout === 'colFormItem') {
           item.__vModel__ = `field${this.idGlobal}`
         }
@@ -608,7 +523,7 @@
           !Array.isArray(config.children) && (config.children = [])
           delete config.label // rowFormItem无需配置label属性
         }
-        config.componentName = `row${this.idGlobal}`
+        config.componentName = `row${this.idGlobal}`;
         if (config.layout === 'echart') {
           config.componentName = 'echart' + config.componentName
         }
@@ -618,7 +533,6 @@
         return item
       },
       addComponent(item, type = null) {
-        console.log(type);
         if (item.length < 1) return false;
         if (type === 'temp') this.drawingList = [];
         const clone = this.cloneComponent(item);
@@ -626,6 +540,10 @@
         this.drawingList.push(clone);
         clone.children && (this.isHasChart([clone]) && this.traverseKey());
         this.activeFormItem(clone)
+      },
+      setBaseCurrentData(data) {
+        const clone = this.cloneComponent(data);
+        this.currentData = clone;
       },
       isHasChart(data) {
         let flag = false;
@@ -656,9 +574,10 @@
           })
         }
       },
-      activeFormItem(currentItem) {
+      activeFormItem(currentItem, index) {
         this.activeData = currentItem;
-        this.activeId = currentItem.formId
+        this.activeId = currentItem.formId;
+        this.activeIndex = currentItem.compIndex;
       },
       drawingItemCopy(item, list) {
         let clone = deepClone(item)
@@ -794,6 +713,7 @@
         this.templateNameDialogVisible = true;
       },
       fetchTemplate() {
+        if (this.drawingList.length < 1) return false;
         this.drawingList[0].name = this.currentTempName;
         this.drawingList[0].theme = this.formConf.theme;
         let param = {
@@ -802,7 +722,7 @@
             conf: this.formConf
           }),
           name: this.currentTempName,
-        }
+        };
         if (this.$route.query.tempId) {
           param.id = this.$route.query.tempId;
           this.http.put('/rest/report/template', param).then(res => { this.getCompData() })
@@ -828,7 +748,6 @@
             projectCode: this.projectCode || this.$route.query.code
           };
           this.http.post('/rest/report/page', param).then(res => {
-            console.log(res)
             this.projectCode = res.data.id;
             this.$message.success('保存成功');
             this.getPageData();
@@ -844,7 +763,6 @@
             projectCode: this.$route.query.code
           };
           this.http.post('/rest/report/page', param).then(res => {
-            console.log(res);
             this.$message.success('保存成功');
             this.getPageData();
           });
@@ -889,6 +807,9 @@
         const blob = new Blob([codeStr], { type: 'text/plain;charset=utf-8' });
         saveAs(blob, 'cs.json');
       },
+      /**
+       * 拖拽缩放
+       */
       handleScroll(e) {
         if (this.isCtrl) {
           e.preventDefault();
@@ -907,17 +828,14 @@
         let ratioL = (e.clientX - this.translateX) / w,
           ratioT = (e.clientY - this.translateY) / h;
         let ratioDelta = e.deltaY > 0 ? 0.9 : 1.1;
-        console.log(ratioDelta)
         let l = Math.round(e.clientX  - (w * ratioL * ratioDelta));
         let t = Math.round(e.clientY - (h * ratioT * ratioDelta));
-        console.log(l, t);
         let matrix = `matrix(${scaleX}, 0, 0, ${scaleY}, ${l}, ${t})`;
         this.translateX = l;
         this.translateY = t;
         this.matrix = matrix;
       },
       handleDrag(e) {
-        console.log(this.isDown)
         if (!this.isDown) return false;
         //获取x和y
         let nx = e.clientX;
@@ -935,8 +853,6 @@
       handleDown(e) {
         this.isClick = false;
         e.stopImmediatePropagation();
-        console.log(e)
-        console.log('事件冒泡了');
         if (e.path[0].className !== 'center-view') {
           return false;
         }
@@ -963,7 +879,6 @@
           && this.translateY <= Number(e.offsetY)
           && Number(e.offsetY) <= (this.translateY + (this.$refs.doms.offsetHeight * this.scaleY))
         ) {
-          console.log('在drag内');
           if (this.isCtrl) {
             this.isDown = true;
           }
@@ -973,7 +888,6 @@
         //设置样式
       },
       handleUp() {
-        console.log('鼠标放开');
         this.isDown = false;
         this.dragX && (this.translateX = this.dragX);
         this.dragY && (this.translateY = this.dragY);
@@ -983,12 +897,57 @@
         this.dragY = 0;*/
       },
       handleBuild() {
-        console.log('移入');
         this.isDown = false;
       },
       buildDown() {
-        console.log('点击');
       },
+      /**
+       * 保存
+       */
+      saveOperation() {
+        /*// 页面
+        this.currentType === 'project' && throttle(this.fetchPage(), 2000);
+        if (this.currentType === 'page') {
+          this.currentPageName && throttle(this.fetchPage(), 2000) || throttle(this.savePage(), 2000);
+        }
+        // 模板
+        if (this.currentType === 'template') {
+          this.currentTempName && throttle(this.fetchTemplate(), 2000) || throttle(this.uploadTemplate(), 2000);
+        }*/
+        this.currentData = this.drawingList;
+        this.record = [];
+      },
+      optionChange(key, value) {
+        this.record.push({name: key, value: value, index: this.activeIndex});
+        console.log(this.record)
+      },
+      undo() {
+        console.log(this.record);
+        if (this.record.length < 2) {
+          console.log(this.currentData);
+          this.drawingList = [this.currentData];
+          this.record = [];
+        } else {
+          let currentRecord = this.record[this.record.length - 1]; // 记录
+          console.log(currentRecord)
+          let compIndex = currentRecord['index'].split('-');
+          let indexList = Array.from(new Array(compIndex.length),(item,index) => [compIndex[index]])
+          var data = null, datas;
+          indexList.forEach((item, index) => {
+            if (index < indexList.length - 1) {
+              data = data ? data[item].children : this.drawingList[item].children;
+            } else {
+              data = data[item]
+            }
+            if (data.compIndex === currentRecord['index']) {
+              datas = data;
+            }
+          });
+          let record = this.record[this.record.length - 2];
+          datas[record['name'][0]][record['name'][1]] = record['value'];
+          this.record.splice(this.record.length - 1,1)
+        }
+      }
     }
   }
 </script>
@@ -1072,7 +1031,7 @@
               .components-image {
                 width: 100%;
                 background: #000211;
-                aspect-ratio: auto 88 / 64;
+                aspect-ratio: 88 / 64;
               }
               .components-label {
                 font-size: 12px;
@@ -1080,6 +1039,9 @@
                 text-align: center;
                 color: #333333;
                 font-family: PingFangSC-Medium;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
               }
               .svg-icon{
                 color: #777;
@@ -1128,7 +1090,7 @@
               .components-image {
                 width: 100%;
                 background: #000211;
-                aspect-ratio: auto 134 / 80;
+                aspect-ratio: 134 / 80;
               }
               .components-label {
                 font-size: 12px;

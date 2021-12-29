@@ -60,13 +60,13 @@
     }
   };
   const layoutt = {
-    rowFrame(h, currentItem, index, list, parentDirection) {
+    rowFrame(h, currentItem, index, list) {
       const { activeItem } = this.$listeners;
       const config = currentItem;
       const className = this.activeId === config.formId
         ? 'drawing-row-item active-from-item'
         : 'drawing-row-item';
-      let child = renderChildren.apply(this, arguments);
+      let child = currentItem.children.length > 0 && renderChildren.apply(this, arguments) || null;
       let name = h('span', { class: 'component-name' }, config.componentName);
       let minHeight = config.type !== 'canvas' ? {minHeight: '60px'} : {};
       let draggable = h('draggable', {
@@ -210,12 +210,11 @@
   };
   function renderChildren(h, currentItem, index, list, conf, templateTheme) {
     const config = currentItem; // config parent
-    if (!Array.isArray(config.children)) return null
+    if (!Array.isArray(config.children)) return null;
     return config.children.map((el, i) => {
       const layout = layoutt[el.layout];
       if (layout && el.type !== 'cChart') {
-        return layout.call(this, h, el, i, config.children, el.style.flexDirection)
-        // return layout.call(this, h, el, i, list, config)
+        return layout.call(this, h, el, i, config.children)
       }
       if (el.type === 'cChart') {
         const layoutc = layoutt.cChart;
@@ -237,7 +236,7 @@
       'drawingList': {
         deep:true, //深度监听设置为 true
         handler: function (newV, oldV) {
-          this.renderEChart();
+          // this.renderEChart();
         }
       }
     },
@@ -250,14 +249,14 @@
       'templateTheme'
     ],
     render(h) {
-      const layout = layoutt[this.currentItem.layout]
+      const layout = layoutt[this.currentItem.layout];
       if (layout && this.currentItem.type !== 'cChart') {
-        return layout.call(this, h, this.currentItem, this.index, this.drawingList, this.formConf, this.templateTheme)
+        return layout.call(this, h, this.currentItem, this.index, this.drawingList)
       }
-      if (this.currentItem.type === 'cChart') {
+      /*if (this.currentItem.type === 'cChart') {
         const cChartLayout = layoutt.cChart;
         return cChartLayout.call(this, h, this.currentItem, this.index, this.drawingList, this.formConf, this.templateTheme)
-      }
+      }*/
       return layoutIsNotFound.call(this)
     }
   }

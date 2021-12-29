@@ -125,34 +125,7 @@
               show: this.deployOption.showYAxisLine
             }
           },
-          // legend: new Legend(legendData, this.deployOption).getData(),
-          /*legend: {
-            orient: 'horizontal',
-            type: 'scroll',
-            bottom: 5,
-            itemHeight: 5,
-            itemWidth: 5,
-            itemGap: 25,
-            icon: 'rect',
-            selectedMode: true,
-            textStyle: {
-              padding: [0, 0, 0, 2],
-              color: 'rgba(167, 199, 199, .8)',
-              fontSize: fitChartSize(12),
-              fontWeight: '500',
-              fontFamily: 'DINPro-Medium, PingFang SC, sans-serif'
-            },
-            tooltip: {
-              show: true
-            },
-            borderRadius: 0,
-            pageIconColor: '#04F9FA',
-            pageIconInactiveColor: 'transparent',
-            pageTextStyle: {
-              color: '#04F9FA'
-            },
-            data: legendData
-          },*/
+          legend: new Legend(legendData, this.deployOption).getData(),
           series: seriesData
         };
         // 渲染主题
@@ -162,6 +135,7 @@
           option.series.map((item, index) => _.merge(item, themeConfig[this.theme].line.series[0]))
         }
         this[this.refName + 'Chart'].setOption(option);
+        console.log(option);
       }
     }
   };

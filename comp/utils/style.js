@@ -109,6 +109,9 @@ const walden = {
         }
       }
     },
+    legend: {
+      show: false
+    },
     series: [{
       symbol: 'circle',
       showSymbol: false,
@@ -159,7 +162,8 @@ const walden = {
         show: false,
       },
     },
-  }
+  },
+  battery: {}
 };
 
 export {

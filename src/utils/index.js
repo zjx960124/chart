@@ -583,4 +583,25 @@ export function logout() {
   window.location.href = process.env.VUE_APP_BASE_API + '/cas/logout?service=' + encodeURIComponent(window.location.href)
 }
 
+/**
+ * 节流
+ * @param fn
+ * @param delay
+ * @returns {function(...[*]=)}
+ */
+export function throttle(fn, delay) {
+  console.log(11111);
+  let t = delay || 500;
+  let timer;
+  return function() {
+    if (!timer) {
+      timer = setTimeout(() => {
+        // 为了方便下次执行定时器
+        timer = null;
+        fn.apply(this, arguments)
+      }, t)
+    }
+  };
+}
+
 

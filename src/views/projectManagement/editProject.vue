@@ -86,7 +86,6 @@
     mounted() {
     },
     beforeDestroy() {
-      console.log(this.currentName)
       this.currentName && this.$Bus.$emit('drawOpen',{type: 'project', name: this.currentName});
     },
     methods: {
@@ -112,7 +111,6 @@
             }
         });
         this.$once('hook:beforeDestroy', () => {
-
         })
       },
       deletePage(data) {
@@ -324,7 +322,7 @@
                   color: #333333;
                 }
                 .resolution {
-                  color: #376AB8;
+                  color: #999999;
                   font-size: 12px;
                   font-family: "PingFang SC";
                 }

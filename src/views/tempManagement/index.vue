@@ -5,15 +5,6 @@
         <el-form-item label="模板名称:">
           <el-input size="small" v-model="templateName"></el-input>
         </el-form-item>
-        <!--<el-form-item label="类型:">
-          <el-input size="small" v-model="projectCode"></el-input>
-        </el-form-item>
-        <el-form-item label="领域:">
-          <el-input size="small" v-model="projectField"></el-input>
-        </el-form-item>
-        <el-form-item label="主题风格:">
-          <el-input size="small" v-model="projectField"></el-input>
-        </el-form-item>-->
         <el-button size="small" style="background: #15B2EB; border: none" icon="el-icon-search" type="primary" @click="getTempList">查询</el-button>
         <!--<el-button size="small" @click="reset">重置</el-button>-->
       </el-form>
@@ -62,8 +53,7 @@
     data() {
       return {
         templateName: '',
-        projectField: '',
-        projectCode: '',
+        tempId: '',
         activeId: -1,
         tempList: []
       }
@@ -73,8 +63,12 @@
     },
     mounted() {
     },
+    beforeDestroy() {
+      this.$Bus.$emit('drawOpen',{type: 'template', name: this.tempId});
+    },
     methods: {
       toEditTemp(data) {
+        this.tempId = data.id;
         this.$router.push(
           {
             path: '/home/editPage/',
@@ -246,13 +240,13 @@
             font-size: 12px;
             .name {
               font-size: 14px;
-              font-family: "PingFang SC";
+              font-family: PingFangSC-Medium;
               color: #333333;
             }
             .resolution {
-              color: #376AB8;
+              color: #999999;
               font-size: 12px;
-              font-family: "PingFang SC";
+              font-family: PingFangSC-Medium;
             }
           }
         }

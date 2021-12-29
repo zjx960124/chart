@@ -78,6 +78,9 @@
     },
     mounted() {
     },
+    beforeDestroy() {
+      this.$Bus.$emit('drawOpen',{type: 'page', name: ''});
+    },
     methods: {
       getTemplateList() {
         this.http.get('/rest/report/template/list').then(res => {
@@ -91,7 +94,6 @@
         })
       },
       toEditProjectPage(data) {
-        console.log(this.projectData)
         this.$router.push({
             path: '/home/editPage',
             query: {
@@ -264,7 +266,7 @@
               color: #333333;
             }
             .resolution {
-              color: #376AB8;
+              color: #999999;
               font-size: 12px;
               font-family: "PingFang SC";
             }
