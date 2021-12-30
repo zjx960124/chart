@@ -571,8 +571,8 @@
         this.activeFormItem(clone)
       },
       setBaseCurrentData(data) {
-        const clone = this.cloneComponent(data);
-        this.currentData = clone;
+        let clone = this.cloneComponent(data);
+        this.currentData = deepClone(clone);
         console.log(this.currentData)
       },
       isHasChart(data) {
@@ -608,19 +608,27 @@
         this.activeData = currentItem;
         this.activeId = currentItem.formId;
         this.activeIndex = currentItem.compIndex;
-        console.log(currentItem)
       },
       drawingItemCopy(item, list) {
-        let clone = deepClone(item)
-        clone = this.createIdAndKey(clone)
-        list.push(clone)
-        this.traverseKey(true)
-        this.activeFormItem(clone)
+        let clone = deepClone(item);
+        clone = this.createIdAndKey(clone);
+        list.push(clone);
+        this.traverseKey(true);
+        this.activeFormItem(clone);
+        this.record.push({
+          type: 'copy',
+          data: clone
+        });
       },
       drawingItemDelete(index, list) {
-        list.splice(index, 1)
+        let data = list.splice(index, 1)[0];
+        this.record.push(
+          {
+          type: 'delete',
+          data
+        });
         this.$nextTick(() => {
-          const len = this.drawingList.length
+          const len = this.drawingList.length;
           if (len) {
             this.traverseKey();
             this.activeFormItem(this.drawingList[len - 1])
@@ -936,7 +944,6 @@
        * 保存
        */
       saveOperation() {
-        console.log(this.drawingList[0]);
         this.currentData = deepClone(this.drawingList[0]);
         this.record = [];
       },
@@ -946,7 +953,7 @@
       undo() {
         if (this.record.length === 0) return false;
         if (this.record.length === 1) {
-          this.drawingList = [this.currentData];
+          this.drawingList = [deepClone(this.currentData)];
           this.isHasChart(this.drawingList) && this.traverseKey();
           this.activeFormItem(this.drawingList[0]);
           this.record = [];
@@ -954,6 +961,7 @@
         }
         else {
           const currentRecord = this.record[this.record.length - 1]; // 记录
+          console.log(currentRecord);
           if (currentRecord.type === 'add') {
             // 结构
             let compIndex = currentRecord.data.compIndex.split('-');
@@ -967,7 +975,8 @@
             parentData.children.splice(compIndex[compIndex.length - 1], 1);
             this.record.splice(this.record.length - 1,1);
             return
-          } else if (currentRecord.type === 'move') {
+          }
+          else if (currentRecord.type === 'move') {
             // 移动
             let positionNow = this.findData(currentRecord.to);
             let positionBefore = this.findData(currentRecord.from);
@@ -976,6 +985,31 @@
             // 操作
             positionBefore.children.splice(beforeIndex, 0, positionNow.children.splice(nowIndex, 1)[0]);
             this.record.splice(this.record.length - 1,1);
+            return;
+          }
+          else if (currentRecord.type === 'copy') {
+            let compIndex = currentRecord.data.compIndex.split('-');
+            let parent_copy = null;
+            compIndex.forEach((item, index) => {
+              if (index <= compIndex.length - 2) {
+                parent_copy = parent_copy ? parent_copy.children[item] : this.drawingList[item];
+              }
+            });
+            parent_copy.children.splice(parent_copy.children.length - 1, 1);
+            this.record.splice(this.record.length - 1,1);
+            return;
+          }
+          else if (currentRecord.type === 'delete') {
+            let compIndex = currentRecord.data.compIndex.split('-');
+            let parent_copy = null;
+            compIndex.forEach((item, index) => {
+              if (index <= compIndex.length - 2) {
+                parent_copy = parent_copy ? parent_copy.children[item] : this.drawingList[item];
+              }
+            });
+            parent_copy.children.splice(compIndex[compIndex.length - 1], 0, currentRecord.data);
+            this.record.splice(this.record.length - 1,1);
+            return;
           }
           else if (currentRecord.name) {
             // 属性
@@ -1035,7 +1069,6 @@
       },
       recordDrag(type, data) {
         this.record.push({type, data});
-        console.log(this.record)
       },
       drag(e, obj){
         // 采用formId锚点， compIndex会随着拖动而手动变化
@@ -1046,7 +1079,6 @@
           beforeNode: this.activeData.compIndex.split('-')[this.activeData.compIndex.split('-').length - 1],
           fromId: this.activeId
         });
-        console.log(this.record);
         this.traverseIndex();
       }
     }
