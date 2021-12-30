@@ -19,6 +19,7 @@
           class="operate"
           @click="undo"
         >
+          <img src="../../assets/static/undo.png" alt="">
           <span>撤销</span>
         </div>
         <div
