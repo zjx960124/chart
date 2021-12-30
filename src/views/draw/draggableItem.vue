@@ -84,7 +84,8 @@
         attrs: {
           animation: 340,
           group: 'componentsGroup',
-          list: config.children || []
+          list: config.children || [],
+          formId: config.formId
         },
         style: {
           width: '100%',
@@ -137,7 +138,6 @@
           backgroundSize: '100% 100%'
         }
       }
-
 
       return h('div', {
         on: {
@@ -218,7 +218,7 @@
     const config = currentItem; // config parent
     if (!Array.isArray(config.children)) return null;
     return config.children.map((el, i) => {
-      const layout = layoutt[el.layout];
+      let layout = layoutt[el.layout];
       if (layout && el.type !== 'cChart') {
         return layout.call(this, h, el, i, config.children)
       }

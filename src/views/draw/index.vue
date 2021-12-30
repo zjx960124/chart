@@ -608,6 +608,7 @@
         this.activeData = currentItem;
         this.activeId = currentItem.formId;
         this.activeIndex = currentItem.compIndex;
+        console.log(currentItem)
       },
       drawingItemCopy(item, list) {
         let clone = deepClone(item)
@@ -953,11 +954,11 @@
         }
         else {
           const currentRecord = this.record[this.record.length - 1]; // 记录
-          if (currentRecord.type) {
+          if (currentRecord.type === 'add') {
             // 结构
             let compIndex = currentRecord.data.compIndex.split('-');
             let indexLists = Array.from(new Array(compIndex.length),(item,index) => [compIndex[index]]);
-            let data = null, parentData = null;
+            let parentData = null;
             compIndex.forEach((item, index) => {
               if (index <= compIndex.length - 2) {
                 parentData = parentData ? parentData.children[item] : this.drawingList[item];
@@ -966,6 +967,15 @@
             parentData.children.splice(compIndex[compIndex.length - 1], 1);
             this.record.splice(this.record.length - 1,1);
             return
+          } else if (currentRecord.type === 'move') {
+            // 移动
+            let positionNow = this.findData(currentRecord.to);
+            let positionBefore = this.findData(currentRecord.from);
+            let nowIndex = positionNow.children.findIndex((item) => item.formId === currentRecord.fromId);
+            let beforeIndex = currentRecord.beforeNode;
+            // 操作
+            positionBefore.children.splice(beforeIndex, 0, positionNow.children.splice(nowIndex, 1)[0]);
+            this.record.splice(this.record.length - 1,1);
           }
           else if (currentRecord.name) {
             // 属性
@@ -993,7 +1003,7 @@
         let data = null;
         function treeFind(tree, func) {
           for (const data of tree) {
-            if (func(data)) return data
+            if (func(data)) return data;
             if (data.children) {
               const res = treeFind(data.children, func);
               if (res) return res
@@ -1006,14 +1016,38 @@
         }
         return treeFind(this.drawingList, func);
       },
+      findDataCompIndex(index) {
+        let data = null;
+        function treeFind(tree, func) {
+          for (const data of tree) {
+            if (func(data)) return data
+            if (data.children) {
+              const res = treeFind(data.children, func);
+              if (res) return res
+            }
+          }
+          return null
+        }
+        function func(data) {
+          return data.compIndex === index;
+        }
+        return treeFind(this.drawingList, func);
+      },
       recordDrag(type, data) {
         this.record.push({type, data});
         console.log(this.record)
       },
       drag(e, obj){
-        console.log(e);
-        console.log(obj);
-        // this.record.push({type: 'move', data: obj, from})
+        // 采用formId锚点， compIndex会随着拖动而手动变化
+        this.record.push({
+          type: 'move',
+          from: obj.formId,
+          to: e.to.__vue__.$attrs.formId,
+          beforeNode: this.activeData.compIndex.split('-')[this.activeData.compIndex.split('-').length - 1],
+          fromId: this.activeId
+        });
+        console.log(this.record);
+        this.traverseIndex();
       }
     }
   }
