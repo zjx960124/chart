@@ -54,6 +54,7 @@
       return {
         templateName: '',
         tempId: '',
+        tempName: '',
         activeId: -1,
         tempList: []
       }
@@ -64,17 +65,16 @@
     mounted() {
     },
     beforeDestroy() {
-      this.$Bus.$emit('drawOpen',{type: 'template', name: this.tempId});
+      this.$Bus.$emit('drawOpen',{type: 'template', id: this.tempId, name: this.tempName});
     },
     methods: {
       toEditTemp(data) {
-        this.tempId = data.id;
+        sessionStorage.setItem("type", 'template');
+        sessionStorage.setItem("id", data.id);
+        sessionStorage.setItem("name", data.name);
         this.$router.push(
           {
             path: '/home/editPage/',
-            query: {
-              tempId: data.id || ''
-            }
           }
         );
       },
@@ -85,6 +85,7 @@
           this.tempList.push(
             {
               name: '空模板',
+              id: -1,
               createTime: ''
             }
           )

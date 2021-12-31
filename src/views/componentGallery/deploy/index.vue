@@ -1,7 +1,13 @@
 <template>
   <div class="deploy">
     <div class="header">
-      <el-button @click="returnPage" type="primary" size="small">返回</el-button>
+      <el-button
+        style="background: #15B2EB; border-color: #15B2EB"
+        @click="returnPage"
+        type="primary"
+        icon="el-icon-back"
+        size="small"
+      >返回</el-button>
       <el-button @click="submitComp" type="primary" size="small">保存</el-button>
     </div>
     <div class="main">

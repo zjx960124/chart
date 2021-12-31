@@ -97,21 +97,15 @@
       getProject() {
         let param = { projectCode: this.projectCode, id: this.projectId }
         this.http.get('/rest/report/project', param).then(res => {
-          console.log(res);
           this.projectInfo = res.data;
         })
       },
       toEditProjectPage(data) {
-        this.currentName = data.name;
-        this.$router.push({
-            path: '/home/editPage',
-            query: {
-              code: this.projectCode,
-              id: data.id
-            }
-        });
-        this.$once('hook:beforeDestroy', () => {
-        })
+        sessionStorage.setItem("type", 'project');
+        sessionStorage.setItem("code", this.projectCode);
+        sessionStorage.setItem("name", data.name);
+        sessionStorage.setItem("id", data.id);
+        this.$router.push({path: '/home/editPage'});
       },
       deletePage(data) {
         this.$confirm('此操作将永久删除该页面, 是否继续?', '提示', {

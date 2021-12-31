@@ -32,18 +32,18 @@
     >
       <el-form
         :model="DSForm"
-        label-width="120px"
+        label-width="80px"
         label-position="left"
         ref="sourceForm"
       >
         <el-form-item label="名称">
-          <el-input v-model="DSForm.name"></el-input>
+          <el-input :disabled="dialogType === '查看数据集'" v-model="DSForm.name"></el-input>
         </el-form-item>
         <el-form-item label="sql">
-          <el-input v-model="DSForm.sqlValue"></el-input>
+          <el-input :disabled="dialogType === '查看数据集'" v-model="DSForm.sqlValue"></el-input>
         </el-form-item>
         <el-form-item label="数据源">
-          <el-select v-model="DSForm.datasourceId" style="width: 100%">
+          <el-select :disabled="dialogType === '查看数据集'" v-model="DSForm.datasourceId" style="width: 100%">
             <el-option
               v-for="(item, index) in dataSourceList"
               :key="index"
@@ -53,7 +53,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="数据格式">
-          <el-select v-model="DSForm.format" style="width: 100%">
+          <el-select :disabled="dialogType === '查看数据集'" v-model="DSForm.format" style="width: 100%">
             <el-option
               v-for="(item, index) in dataFormatList"
               :key="index"
@@ -64,7 +64,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancer">取 消</el-button>
+        <el-button v-show="dialogType !== '查看数据集'" @click="cancer">取 消</el-button>
         <el-button type="primary" @click="sure">确 定</el-button>
       </span>
     </el-dialog>
@@ -263,7 +263,7 @@
       margin-bottom: 25px;
       overflow-y: auto;
       ::v-deep .el-table th.el-table__cell {
-        background: #DFE3F7;
+        background: #f2f3f8;
       }
     }
     ::v-deep .el-dialog__header {
@@ -272,6 +272,10 @@
     }
     ::v-deep .el-dialog__footer {
       font-size: 12px;
+    }
+    ::v-deep .el-dialog__body {
+      padding-top: 10px;
+      padding-bottom: 0;
     }
   }
 </style>

@@ -263,12 +263,12 @@
         modules.push(moduleName);
         return modules;
       }, []);
-      let backImgFiles = require.context("@/assets/backV/", true, /\.jpg|\.png$/);
+      /*let backImgFiles = require.context("@/assets/backV/", true, /\.jpg|\.png$/);
       this.backImgList = backImgFiles.keys().reduce((modules, modulePath) => {
         const moduleName = modulePath.replace(/^\.\/(.*)$/, "$1");
         modules.push(moduleName);
         return modules;
-      }, []);
+      }, []);*/
     },
     mounted() {
       this.requireImg();

@@ -5,7 +5,7 @@
         <el-form-item label="数据格式名称:">
           <el-input size="small" v-model="name"></el-input>
         </el-form-item>
-        <el-button size="small" type="primary" plain @click="getList">查询</el-button>
+        <el-button size="small" icon="el-icon-search" type="primary" plain @click="getList">查询</el-button>
       </el-form>
       <el-button size="small" type="primary" icon="el-icon-plus" @click="create">新增</el-button>
     </div>
@@ -36,12 +36,12 @@
     >
       <el-form
         :model="dataFormatForm"
-        label-width="120px"
+        label-width="40px"
         label-position="left"
         ref="sourceForm"
       >
         <el-form-item label="名称">
-          <el-input v-model="dataFormatForm.name"></el-input>
+          <el-input :disabled="dialogType === '查看数据格式'" v-model="dataFormatForm.name"></el-input>
         </el-form-item>
         <el-form-item label="脚本">
           <!--<el-input type="textarea" autosize v-model="dataFormatForm.script"></el-input>-->
@@ -53,11 +53,11 @@
           ></codemirror>
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="dataFormatForm.description"></el-input>
+          <el-input :disabled="dialogType === '查看数据格式'" v-model="dataFormatForm.description"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancer">取 消</el-button>
+        <el-button v-show="dialogType !== '查看数据格式'" @click="cancer">取 消</el-button>
         <el-button type="primary" @click="sure">确 定</el-button>
       </span>
     </el-dialog>
@@ -171,6 +171,7 @@
           script: '',
           description: ''
         };
+        this.dataFormatVisible = false;
       },
       close() {
         this.dataFormatForm = {
@@ -259,7 +260,7 @@
       margin-bottom: 25px;
       overflow-y: auto;
       ::v-deep .el-table th.el-table__cell {
-        background: #DFE3F7;
+        background: #f2f3f8;
       }
     }
     ::v-deep .el-dialog__header {
@@ -268,6 +269,10 @@
     }
     ::v-deep .el-dialog__footer {
       font-size: 12px;
+    }
+    ::v-deep .el-dialog__body {
+      padding-top: 10px;
+      padding-bottom: 0;
     }
     .template-upload-dialog {
       text-align: left;

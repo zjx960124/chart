@@ -5,10 +5,10 @@
         <el-form-item label="数据库名称:">
           <el-input size="small" v-model="dataSourceName"></el-input>
         </el-form-item>
-        <el-button size="small" type="primary" plain @click="getList">查询</el-button>
+        <el-button size="small" icon="el-icon-search" type="primary" plain @click="getList">查询</el-button>
       </el-form>
       <div class="btn-group">
-        <el-button type="primary" icon="el-icon-upload" size="small" style="background: #15B2EB" @click="uploadFile">文件上传</el-button>
+        <el-button type="primary" icon="el-icon-upload" size="small" style="background: #15B2EB; border-color: #15B2EB" @click="uploadFile">文件上传</el-button>
         <el-button type="primary" icon="el-icon-plus" size="small" @click="createDataSource">新建数据源</el-button>
       </div>
     </div>
@@ -37,18 +37,19 @@
       class="template-name-dialog"
       :close-on-click-modal="false"
       :before-close="close"
+      center
     >
       <el-form
         :model="dataSourceForm"
-        label-width="120px"
+        label-width="40px"
         label-position="left"
         ref="sourceForm"
       >
         <el-form-item label="名称">
-          <el-input v-model="dataSourceForm.dataSourceName"></el-input>
+          <el-input :disabled="dialogType === '查看数据源'" v-model="dataSourceForm.dataSourceName"></el-input>
         </el-form-item>
         <el-form-item label="驱动">
-          <el-select style="width: 100%" v-model="dataSourceForm.dataSourceType">
+          <el-select :disabled="dialogType === '查看数据源'" style="width: 100%" v-model="dataSourceForm.dataSourceType">
             <el-option
               v-for="(item, index) in dataSourceTypeList"
               :key="index"
@@ -58,19 +59,19 @@
           </el-select>
         </el-form-item>
         <el-form-item label="url">
-          <el-input v-model="dataSourceForm.dataSourceUrl"></el-input>
+          <el-input :disabled="dialogType === '查看数据源'" v-model="dataSourceForm.dataSourceUrl"></el-input>
         </el-form-item>
         <el-form-item label="用户">
-          <el-input v-model="dataSourceForm.user"></el-input>
+          <el-input :disabled="dialogType === '查看数据源'" v-model="dataSourceForm.user"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="dataSourceForm.password" show-password></el-input>
+          <el-input :disabled="dialogType === '查看数据源'" v-model="dataSourceForm.password" show-password></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="test">连接测试</el-button>
-        <el-button @click="cancer">取 消</el-button>
-        <el-button type="primary" @click="sure">确 定</el-button>
+        <el-button style="background: #15B2EB; border-color: #15B2EB" type="primary" size="small" @click="test">连接测试</el-button>
+        <el-button v-show="dialogType !== '查看数据源'" @click="cancer" size="small">关 闭</el-button>
+        <el-button type="primary" size="small" @click="sure">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -224,6 +225,7 @@
           dataSourceUrl: '',
           dataSourceType: ''
         };
+        this.dataSourceVisible= false;
       },
       close() {
         this.dataSourceForm = {
@@ -354,7 +356,7 @@
       margin-bottom: 25px;
       overflow-y: auto;
       ::v-deep .el-table th.el-table__cell {
-        background: #DFE3F7;
+        background: #f2f3f8;
       }
     }
     ::v-deep .el-dialog__header {
@@ -363,6 +365,10 @@
     }
     ::v-deep .el-dialog__footer {
       font-size: 12px;
+    }
+    ::v-deep .el-dialog__body {
+      padding-top: 10px;
+      padding-bottom: 0;
     }
     .template-upload-dialog {
       text-align: left;

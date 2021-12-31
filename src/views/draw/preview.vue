@@ -10,12 +10,15 @@
     name: 'Preview',
     data() {
       return {
-        pageData: {}
+        // pageData: {}
+      }
+    },
+    computed: {
+      pageData() {
+        return JSON.parse(sessionStorage.getItem("pageData"))
       }
     },
     mounted() {
-      this.pageData = JSON.parse(sessionStorage.getItem("pageData"))
-      console.log(this.pageData)
     },
     methods: {
     }

@@ -7,11 +7,11 @@
         @select="changeActiveIndex"
       >
         <el-menu-item index="1">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-coin"></i>
           <span slot="title">数据源</span>
         </el-menu-item>
         <el-menu-item index="2">
-          <i class="el-icon-document"></i>
+          <i class="el-icon-menu"></i>
           <span slot="title">数据集</span>
         </el-menu-item>
         <el-menu-item index="3">

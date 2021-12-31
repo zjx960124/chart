@@ -88,20 +88,17 @@
           this.templateList.push(
             {
               name: '空模板',
+              id: null,
               createTime: ''
             }
           )
         })
       },
       toEditProjectPage(data) {
-        this.$router.push({
-            path: '/home/editPage',
-            query: {
-              tempId: data.id,
-              code: this.projectCode
-            }
-          }
-        );
+        sessionStorage.setItem("type", 'page');
+        sessionStorage.setItem("code", this.projectCode);
+        sessionStorage.setItem("id", data.id);
+        this.$router.push({path: '/home/editPage'});
       },
       returnPage() {
         this.$router.go(-1);
