@@ -29,7 +29,7 @@
     <el-dialog
       :title="dialogType"
       :visible.sync="dataFormatVisible"
-      width="60%"
+      width="40%"
       class="template-name-dialog"
       :close-on-click-modal="false"
       :before-close="close"

@@ -4,7 +4,7 @@
       <div class="title">
         <i class="el-icon-arrow-left"></i>
         <span @click="returnPage" style="margin-right: 27px">返回</span>
-        <div class="ring" style="font-weight: 600">新增版面</div>
+        <div class="ring" style="font-weight: 700">新增版面</div>
       </div>
       <!--<div class="info">
         <div>项目名称：福州商旅学校</div>
@@ -44,7 +44,7 @@
         <div class="img-box">
           <img :src="item.image" class="project-img" alt="">
           <div class="operate-panel" v-show="activeId === index">
-            <el-button type="primary" style="border: none" @click="toEditProjectPage(item)">应用</el-button>
+            <el-button size="small" type="primary" style="border: none" @click="toEditProjectPage(item)">应用</el-button>
           </div>
         </div>
         <div class="content-box">

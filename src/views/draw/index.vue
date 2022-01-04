@@ -225,16 +225,24 @@
       @changeWidget="changeWidget"
     ></widget-deploy>
     <el-dialog
-      title="提示"
+      title="保存为模板"
       :visible.sync="templateNameDialogVisible"
       width="30%"
       class="template-name-dialog"
       :close-on-click-modal="false"
+      center
     >
-      <span>模板名称：</span><el-input v-model="currentTempName" size="small"></el-input>
+      <el-form
+        label-width="70px"
+        label-position="left"
+      >
+        <el-form-item label="模板名称">
+          <el-input v-model="currentTempName"></el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancer">取 消</el-button>
-        <el-button type="primary" @click="sure">确 定</el-button>
+        <el-button size="small" @click="cancer">取 消</el-button>
+        <el-button size="small" type="primary" @click="sure">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog

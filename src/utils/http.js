@@ -50,7 +50,7 @@ server.interceptors.response.use(
         message: res.msg || '请求失败,请重试',
         type: 'error',
         duration: 5 * 1000
-      })
+      });
       return Promise.reject(new Error(res.msg || '请求失败,请重试'))
     } else {
       return res

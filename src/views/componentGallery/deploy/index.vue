@@ -666,6 +666,7 @@
         this.http.post('/rest/report/chart', param)
         .then((res) => {
           console.log(res)
+          this.$message.success('保存成功');
         })
       },
       returnPage() {

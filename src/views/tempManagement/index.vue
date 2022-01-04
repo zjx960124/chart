@@ -25,6 +25,7 @@
               type="primary"
               class="search-btn"
               style="background: #1569EB"
+              size="small"
               @click="toEditTemp(item)"
             >编辑</el-button>
             <!--<i class="el-icon-document-copy copy-icon"></i>-->

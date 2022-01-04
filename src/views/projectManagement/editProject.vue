@@ -4,7 +4,7 @@
       <div class="title">
         <i class="el-icon-arrow-left"></i>
         <span @click="returnPage" style="margin-right: 27px">返回</span>
-        <div class="ring" style="font-weight: 600">编辑项目</div>
+        <div class="ring" style="font-weight: 700">编辑项目</div>
       </div>
       <div class="info">
         <div><span>项目名称:</span>{{ projectInfo.name }}</div>
@@ -48,6 +48,11 @@
               <div class="operate-panel" v-show="activeId === index">
                 <el-button type="primary" style="border: none" @click="toEditProjectPage(item)">编辑</el-button>
                 <el-button class="preview-button" @click="previewPage(item)">预览</el-button>
+                <el-button
+                  type="primary"
+                  style="background: #15B2EB; border-color: #15B2EB"
+                  @click="setImage(item)"
+                >设为首页预览图</el-button>
                 <!--<i class="el-icon-document-copy copy-icon"></i>-->
                 <i class="el-icon-delete delete-icon" @click="deletePage(item)"></i>
               </div>
@@ -139,6 +144,23 @@
           name: "preview"
         });
         window.open(routeData.href, "_blank");
+      },
+      setImage(data) {
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+        this.http.put(
+          '/rest/report/project/image',
+          {id: this.projectInfo.id, image: data.image}
+        ).then(result => {
+          loading.close();
+          this.$message.success('设置成功');
+        }).catch((err) => {
+          loading.close();
+        })
       },
       appendPage() {
         this.$router.push({

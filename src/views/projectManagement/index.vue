@@ -36,7 +36,7 @@
         @mouseleave="activeId = -1"
       >
         <div class="img-box">
-          <img src="../../assets/img.png" class="project-img" alt="">
+          <img :src="item.image || require('../../assets/img.png')" class="project-img" alt="">
           <div class="operate-panel" v-show="activeId === index">
             <el-button
               type="primary"

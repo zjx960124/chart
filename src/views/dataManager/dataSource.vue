@@ -5,10 +5,10 @@
         <el-form-item label="数据库名称:">
           <el-input size="small" v-model="dataSourceName"></el-input>
         </el-form-item>
-        <el-button size="small" icon="el-icon-search" type="primary" plain @click="getList">查询</el-button>
+        <el-button type="primary" size="small" style="background: #15B2EB; border-color: #15B2EB"  icon="el-icon-search" @click="getList">查询</el-button>
       </el-form>
       <div class="btn-group">
-        <el-button type="primary" icon="el-icon-upload" size="small" style="background: #15B2EB; border-color: #15B2EB" @click="uploadFile">文件上传</el-button>
+        <el-button  icon="el-icon-upload" size="small" style="background: #15B2EB; border-color: #15B2EB" @click="uploadFile">文件上传</el-button>
         <el-button type="primary" icon="el-icon-plus" size="small" @click="createDataSource">新建数据源</el-button>
       </div>
     </div>
@@ -33,7 +33,7 @@
     <el-dialog
       :title="dialogType"
       :visible.sync="dataSourceVisible"
-      width="60%"
+      width="40%"
       class="template-name-dialog"
       :close-on-click-modal="false"
       :before-close="close"
@@ -85,8 +85,9 @@
       class="template-upload-dialog"
       :close-on-click-modal="false"
       :before-close="uploadClose"
+      center
     >
-      <span>数据源:</span>
+      <span style="margin-right: 8px">数据源</span>
       <el-select v-model="uploadId">
         <el-option
           v-for="(item, index) in dataSourceList"
@@ -98,6 +99,7 @@
       <el-upload
         class="upload-demo"
         ref="upload"
+        drag
         action=""
         :limit="1"
         :on-preview="handlePreview"
@@ -105,11 +107,12 @@
         :on-change="changeUpload"
         :file-list="fileList"
         :auto-upload="false">
-        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       </el-upload>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="uploadCancer">取 消</el-button>
-        <el-button type="primary" @click="uploadSure">确 定</el-button>
+        <el-button size="small" @click="uploadCancer">取 消</el-button>
+        <el-button size="small" type="primary" @click="uploadSure">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -276,6 +279,7 @@
                     dataSourceUrl: '',
                     dataSourceType: ''
                   };
+                  this.$message.success('保存成功');
                   this.dataSourceVisible = false;
                 })
             }
