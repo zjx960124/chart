@@ -4,6 +4,7 @@ import Menu from '@/components/menu';
 
 Vue.use(Router);
 
+
 const constantRoutes = [
   {
     path: '/',

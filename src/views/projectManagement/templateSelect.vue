@@ -89,7 +89,8 @@
             {
               name: '空模板',
               id: null,
-              createTime: ''
+              createTime: '',
+              image: require('../../assets/img.png')
             }
           )
         })

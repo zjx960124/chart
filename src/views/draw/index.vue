@@ -1214,9 +1214,13 @@
           let res = canvas.toDataURL('image/jpeg',1.0);// toDataURL :图片格base64
           // this.url = res;
           // this.generate = true;
+          loading.close();
           if (this.currentType === 'template' && Number(this.currentTempId) === -1) {
-            loading.close();
             this.$message.warning('未找到归属模板，请先保存画布为模板');
+            return false;
+          }
+          if (this.currentType === 'page' && !this.pageId) {
+            this.$message.warning('未找到归属页面，请先保存画布为页面');
             return false;
           }
           if (this.currentType === 'template') {
@@ -1228,10 +1232,10 @@
               this.$message.success('设置成功');
             })
           }
-          if (currentType === 'project' || currentType === 'page') {
+          if (this.currentType === 'project' || this.currentType === 'page') {
             this.http.put(
-              '/rest/report/template/image',
-              {id: this.currentTempId, image: res}
+              '/rest/report/page/image',
+              {id: this.pageId, image: res}
             ).then(result => {
               loading.close();
               this.$message.success('设置成功');

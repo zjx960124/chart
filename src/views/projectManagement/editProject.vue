@@ -17,8 +17,19 @@
         <div><span>页面数量:</span>{{ this.pageList.length }}</div>
         <div class="operate">
           <!--<el-button size="small" style="background: #E0E0E0; color: #333333" type="primary">切换主题</el-button>-->
-          <el-button size="small" style="background: #15B2EB" type="primary" icon="el-icon-s-promotion" @click="publish">发布</el-button>
-          <el-button size="small" type="primary" icon="el-icon-plus" @click="appendPage">新增界面</el-button>
+          <el-button
+            size="small"
+            style="background: #15B2EB; border-color: #15B2EB"
+            type="primary"
+            icon="el-icon-s-promotion"
+            @click="publish"
+          >发布</el-button>
+          <el-button
+            size="small"
+            type="primary"
+            icon="el-icon-plus"
+            @click="appendPage"
+          >新增界面</el-button>
         </div>
       </div>
     </div>
@@ -33,7 +44,7 @@
             @mouseleave="activeId = -1"
           >
             <div class="img-box">
-              <img src="../../assets/img.png" class="project-img" alt="">
+              <img :src="item.image" class="project-img" alt="">
               <div class="operate-panel" v-show="activeId === index">
                 <el-button type="primary" style="border: none" @click="toEditProjectPage(item)">编辑</el-button>
                 <el-button class="preview-button" @click="previewPage(item)">预览</el-button>
