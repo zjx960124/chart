@@ -19,7 +19,7 @@
         @mouseleave="activeId = -1"
       >
         <div class="img-box">
-          <img src="../../assets/img.png" class="project-img" alt="">
+          <img :src="item.image" class="project-img" alt="">
           <div class="operate-panel" v-show="activeId === index">
             <el-button
               type="primary"
@@ -86,7 +86,8 @@
             {
               name: '空模板',
               id: -1,
-              createTime: ''
+              createTime: '',
+              image: require('../../assets/img.png')
             }
           )
         })

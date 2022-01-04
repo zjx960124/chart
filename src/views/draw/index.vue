@@ -272,7 +272,7 @@
         @click="generateImage"
         type="primary"
       >
-        生成缩略图
+        设置为缩略图
       </el-button>
       <div id="previewRow"></div>
     </div>
@@ -1196,29 +1196,48 @@
           background: 'rgba(0, 0, 0, 0.7)'
         });
         let scaleBy = window.devicePixelRatio;
-        setTimeout(() => {
-          document.body.scrollTop = document.documentElement.scrollTop = 0;
-          html2canvas(
-            document.getElementsByClassName('preview-view')[0],
-            {
-              width: 1920, // canvas宽度
-              height: 969,
-              backgroundColor:null,//画出来的图片有白色的边框,不要可设置背景为透明色（null）
-              useCORS: true,//支持图片跨域
-              scale:scaleBy,//设置放大的倍数
-              dpi: 300, // 处理模糊问题
-              x: 0, //x坐标
-              y: 0, //y坐标
-            }
-          ).then(canvas => {
-            let img = new Image();
-            let res = canvas.toDataURL('image/jpeg',1.0);// toDataURL :图片格base64
-            this.url = res;
-            this.generate = true;
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        html2canvas(
+          document.getElementsByClassName('preview-view')[0],
+          {
+            width: 1920, // canvas宽度
+            height: 969,
+            backgroundColor:null,//画出来的图片有白色的边框,不要可设置背景为透明色（null）
+            useCORS: true,//支持图片跨域
+            scale:scaleBy,//设置放大的倍数
+            dpi: 300, // 处理模糊问题
+            x: 0, //x坐标
+            y: 0, //y坐标
+          }
+        ).then(canvas => {
+          let img = new Image();
+          let res = canvas.toDataURL('image/jpeg',1.0);// toDataURL :图片格base64
+          // this.url = res;
+          // this.generate = true;
+          if (this.currentType === 'template' && Number(this.currentTempId) === -1) {
             loading.close();
-            console.log(this.url);
-          });
-        }, 2000)
+            this.$message.warning('未找到归属模板，请先保存画布为模板');
+            return false;
+          }
+          if (this.currentType === 'template') {
+            this.http.put(
+              '/rest/report/template/image',
+              {id: this.currentTempId, image: res}
+            ).then(result => {
+              loading.close();
+              this.$message.success('设置成功');
+            })
+          }
+          if (currentType === 'project' || currentType === 'page') {
+            this.http.put(
+              '/rest/report/template/image',
+              {id: this.currentTempId, image: res}
+            ).then(result => {
+              loading.close();
+              this.$message.success('设置成功');
+            })
+          }
+        });
       }
     }
   }
