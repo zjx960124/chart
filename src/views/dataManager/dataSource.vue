@@ -70,8 +70,12 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button style="background: #15B2EB; border-color: #15B2EB" type="primary" size="small" @click="test">连接测试</el-button>
-        <el-button v-show="dialogType !== '查看数据源'" @click="cancer" size="small">关 闭</el-button>
-        <el-button type="primary" size="small" @click="sure">确 定</el-button>
+        <el-button v-show="dialogType !== '查看数据源'" @click="cancer" size="small">
+          {{ dialogType !== '查看数据源' ? '取 消' : '关 闭'}}
+        </el-button>
+        <el-button type="primary" size="small" @click="sure">
+          {{ dialogType !== '查看数据源' ? '保 存' : '确 定'}}
+        </el-button>
       </span>
     </el-dialog>
     <el-dialog

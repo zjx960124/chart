@@ -29,6 +29,7 @@
       class="template-name-dialog"
       :close-on-click-modal="false"
       :before-close="close"
+      center
     >
       <el-form
         :model="DSForm"
@@ -64,8 +65,12 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button v-show="dialogType !== '查看数据集'" @click="cancer">取 消</el-button>
-        <el-button type="primary" @click="sure">确 定</el-button>
+        <el-button v-show="dialogType !== '查看数据集'" size="small" @click="cancer">
+          {{ dialogType !== '查看数据集' ? '取 消' : '关 闭'}}
+        </el-button>
+        <el-button size="small" type="primary" @click="sure">
+          {{ dialogType !== '查看数据集' ? '保 存' : '确 定'}}
+        </el-button>
       </span>
     </el-dialog>
   </div>

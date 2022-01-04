@@ -33,7 +33,7 @@
           @click="restore"
         >
           <img src="../../assets/static/restore.png" alt="">
-          <span>恢复</span>
+          <span>恢复至已存储样式</span>
         </div>
         <div
           class="operate"
@@ -1216,6 +1216,7 @@
             this.url = res;
             this.generate = true;
             loading.close();
+            console.log(this.url);
           });
         }, 2000)
       }

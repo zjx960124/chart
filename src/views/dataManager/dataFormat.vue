@@ -7,7 +7,7 @@
         </el-form-item>
         <el-button size="small" icon="el-icon-search" type="primary" plain @click="getList">查询</el-button>
       </el-form>
-      <el-button size="small" type="primary" icon="el-icon-plus" @click="create">新增</el-button>
+      <el-button size="small" type="primary" icon="el-icon-plus" @click="create">新建数据格式</el-button>
     </div>
     <div class="main-view">
       <page-table
@@ -33,6 +33,7 @@
       class="template-name-dialog"
       :close-on-click-modal="false"
       :before-close="close"
+      center
     >
       <el-form
         :model="dataFormatForm"
@@ -57,8 +58,12 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button v-show="dialogType !== '查看数据格式'" @click="cancer">取 消</el-button>
-        <el-button type="primary" @click="sure">确 定</el-button>
+        <el-button v-show="dialogType !== '查看数据格式'" size="small" @click="cancer">
+          {{ dialogType !== '查看数据格式' ? '取 消' : '关 闭'}}
+        </el-button>
+        <el-button type="primary" size="small" @click="sure">
+          {{ dialogType !== '查看数据格式' ? '保 存' : '确 定'}}
+        </el-button>
       </span>
     </el-dialog>
   </div>
