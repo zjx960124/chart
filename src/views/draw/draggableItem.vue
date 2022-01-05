@@ -60,7 +60,7 @@
     }
   };
   const layoutt = {
-    rowFrame(h, currentItem, index, list) {
+    rowFrame(h, currentItem, index, list, parentDirection) {
       const { activeItem, end } = this.$listeners;
       const config = currentItem;
       const className = this.activeId === config.formId
@@ -139,6 +139,13 @@
         }
       }
 
+      // 解决元素被撑大问题
+      let flexObj = {};
+      if (config.type !== 'cChart' && config.type !== 'chartContainer' && config.type !== 'canvas') {
+        flexObj = parentDirection === 'row' ?
+          { width: 0 } : { height: 0 } || {};
+      }
+
       return h('div', {
         on: {
           click: (e) => {
@@ -150,7 +157,8 @@
           ...config.style,
           ...backOption,
           ...otherOption,
-          ...utils
+          ...utils,
+          ...flexObj
         },
         class: className,
         key: config.renderKey,
@@ -220,7 +228,7 @@
     return config.children.map((el, i) => {
       let layout = layoutt[el.layout];
       if (layout && el.type !== 'cChart') {
-        return layout.call(this, h, el, i, config.children)
+        return layout.call(this, h, el, i, config.children, currentItem.style.flexDirection)
       }
       if (el.type === 'cChart') {
         const layoutc = layoutt.cChart;
@@ -257,7 +265,7 @@
     render(h) {
       const layout = layoutt[this.currentItem.layout];
       if (layout && this.currentItem.type !== 'cChart') {
-        return layout.call(this, h, this.currentItem, this.index, this.drawingList)
+        return layout.call(this, h, this.currentItem, this.index, this.drawingList, this.formConf.flexDirection)
       }
       /*if (this.currentItem.type === 'cChart') {
         const cChartLayout = layoutt.cChart;

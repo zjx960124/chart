@@ -33,7 +33,7 @@
     >
       <el-form
         :model="DSForm"
-        label-width="80px"
+        label-width="70px"
         label-position="left"
         ref="sourceForm"
       >
@@ -197,6 +197,7 @@
                   };
                   this.DSVisible = false;
                   this.getDSList();
+                  this.$message.success('新增成功');
                 })
             }
             if (this.dialogType === '编辑数据集') {
@@ -211,6 +212,7 @@
                   };
                   this.DSVisible = false;
                   this.getDSList();
+                  this.$message.success('修改成功');
                 })
             }
           } else {
@@ -281,6 +283,11 @@
     ::v-deep .el-dialog__body {
       padding-top: 10px;
       padding-bottom: 0;
+    }
+    .template-name-dialog {
+      .el-form-item {
+        margin-bottom: 16px;
+      }
     }
   }
 </style>

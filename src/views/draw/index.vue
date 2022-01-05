@@ -246,16 +246,24 @@
       </span>
     </el-dialog>
     <el-dialog
-      title="提示"
+      title="保存页面"
       :visible.sync="pageNameDialogVisible"
       width="30%"
       class="template-name-dialog"
       :close-on-click-modal="false"
+      center
     >
-      <span>页面名称：</span><el-input v-model="currentPageName" size="small"></el-input>
+      <el-form
+        label-position="right"
+        label-width="70px"
+      >
+        <el-form-item label="页面名称">
+          <el-input v-model="currentPageName" size="small"></el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancerPage">取 消</el-button>
-        <el-button type="primary" @click="surePage">确 定</el-button>
+        <el-button size="small" @click="cancerPage">取 消</el-button>
+        <el-button size="small" type="primary" @click="surePage">确 定</el-button>
       </span>
     </el-dialog>
     <img

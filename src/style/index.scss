@@ -10,3 +10,13 @@
 .el-message {
   font-size: 12px;
 }
+.el-form-item {
+  margin-bottom: 16px;
+}
+.el-form-item:last-child {
+  margin-bottom: 0;
+}
+.el-message-box__btns button:nth-child(2) {
+  background-color: #0c64eb;
+  border-color: #0c64eb;
+}

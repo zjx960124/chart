@@ -44,7 +44,7 @@
         <div class="img-box">
           <img :src="item.image" class="project-img" alt="">
           <div class="operate-panel" v-show="activeId === index">
-            <el-button size="small" type="primary" style="border: none" @click="toEditProjectPage(item)">应用</el-button>
+            <el-button type="primary" style="border: none" @click="toEditProjectPage(item)">应用</el-button>
           </div>
         </div>
         <div class="content-box">

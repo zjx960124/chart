@@ -219,7 +219,7 @@
           type: 'input'
         },
         girdRight: {
-          name: '网格又间距',
+          name: '网格右间距',
           type: 'input'
         },
         girdBottom: {
@@ -812,6 +812,7 @@
           padding: 20px;
           box-sizing: border-box;
           display: flex;
+          height: 0;
         }
       }
       .right {

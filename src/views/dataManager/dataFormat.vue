@@ -5,7 +5,7 @@
         <el-form-item label="数据格式名称:">
           <el-input size="small" v-model="name"></el-input>
         </el-form-item>
-        <el-button size="small" icon="el-icon-search" type="primary" plain @click="getList">查询</el-button>
+        <el-button type="primary" size="small" style="background: #15B2EB; border-color: #15B2EB"  icon="el-icon-search" @click="getList">查询</el-button>
       </el-form>
       <el-button size="small" type="primary" icon="el-icon-plus" @click="create">新建数据格式</el-button>
     </div>
@@ -200,7 +200,10 @@
                   };
                   this.dataFormatVisible = false;
                   this.getList();
-                })
+                  this.$message.success('保存成功');
+                }).catch((err) => {
+                this.$message.error(err.msg);
+              })
             }
             if (this.dialogType === '编辑数据格式') {
               let param = this.dataFormatForm;
@@ -213,7 +216,10 @@
                   };
                   this.dataFormatVisible = false;
                   this.getList();
-                })
+                  this.$message.success('修改成功');
+                }).catch((err) => {
+                  this.$message.error(err.msg);
+              })
             }
           } else {
             return false;
@@ -283,6 +289,11 @@
       text-align: left;
       .upload-demo {
         margin-top: 15px;
+      }
+    }
+    .template-name-dialog {
+      .el-form-item {
+        margin-bottom: 16px;
       }
     }
   }

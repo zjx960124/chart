@@ -8,7 +8,7 @@
         <el-button type="primary" size="small" style="background: #15B2EB; border-color: #15B2EB"  icon="el-icon-search" @click="getList">查询</el-button>
       </el-form>
       <div class="btn-group">
-        <el-button  icon="el-icon-upload" size="small" style="background: #15B2EB; border-color: #15B2EB" @click="uploadFile">文件上传</el-button>
+        <el-button type="primary" icon="el-icon-upload" size="small" style="background: #15B2EB; border-color: #15B2EB" @click="uploadFile">文件上传</el-button>
         <el-button type="primary" icon="el-icon-plus" size="small" @click="createDataSource">新建数据源</el-button>
       </div>
     </div>
@@ -87,29 +87,39 @@
       :before-close="uploadClose"
       center
     >
-      <span style="margin-right: 8px">数据源</span>
-      <el-select v-model="uploadId">
-        <el-option
-          v-for="(item, index) in dataSourceList"
-          :key="index"
-          :label="item.dataSourceName"
-          :value="item.id"
-        ></el-option>
-      </el-select>
-      <el-upload
-        class="upload-demo"
-        ref="upload"
-        drag
-        action=""
-        :limit="1"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :on-change="changeUpload"
-        :file-list="fileList"
-        :auto-upload="false">
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      </el-upload>
+      <el-form
+        label-width="80px"
+        label-position="right"
+        ref="sourceForm"
+      >
+        <el-form-item label="数据源">
+          <el-select style="width: 100%" v-model="uploadId">
+            <el-option
+              v-for="(item, index) in dataSourceList"
+              :key="index"
+              :label="item.dataSourceName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="文件上传">
+          <el-upload
+            class="upload-demo"
+            ref="upload"
+            drag
+            action=""
+            :limit="1"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :on-change="changeUpload"
+            :file-list="fileList"
+            :auto-upload="false">
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div class="el-upload__tip" slot="tip">文件大小限制不超过1000kb</div>
+          </el-upload>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="uploadCancer">取 消</el-button>
         <el-button size="small" type="primary" @click="uploadSure">确 定</el-button>
@@ -223,7 +233,10 @@
         this.http.post('/rest/report/data-source-info/test', param)
           .then(res => {
             console.log(res);
-          })
+            this.$message.success('连接成功');
+          }).catch((err) => {
+            this.$message.error('连接失败');
+        })
       },
       cancer() {
         this.dataSourceForm = {
@@ -381,7 +394,18 @@
     .template-upload-dialog {
       text-align: left;
       .upload-demo {
-        margin-top: 15px;
+        .el-upload__tip {
+          line-height: 12px;
+          margin-top: 0;
+        }
+      }
+      .el-form-item {
+        margin-bottom: 16px;
+      }
+    }
+    .template-name-dialog {
+      .el-form-item {
+        margin-bottom: 16px;
       }
     }
   }

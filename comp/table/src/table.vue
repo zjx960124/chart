@@ -16,7 +16,7 @@
       >
         <div
           v-for="(items, indexs) in item"
-          :key="indexs + '内'"
+          :key="indexs + 'n'"
         >
           {{ items }}
         </div>
@@ -46,7 +46,6 @@
         },
         baseData: [],
         columns: [],
-        options: [],
         timeout: null
       }
     },
@@ -59,7 +58,6 @@
           axios.get(`/report/mock.json`).then((res) => {
             this.baseData = res.data.table.rows;
             this.columns = res.data.table.columns;
-            this.options = res.data.table.options;
             this.renderOption();
           })
         }, 1000);
@@ -111,12 +109,9 @@
     }
     .main {
       width: 100%;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
       .column {
         width: 100%;
+        padding: 5px 0;
         height: 23px;
         display: flex;
         align-items: center;
